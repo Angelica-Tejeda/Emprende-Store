@@ -1,145 +1,54 @@
-<body class="index-page sidebar-collapse">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-transparent " color-on-scroll="400">
-        <div class="container">
-            <div class="navbar-translate">
-                <a class="navbar-brand" href="https://demos.creative-tim.com/now-ui-kit/index.html" rel="tooltip"
-                    title="Designed by Invision. Coded by Creative Tim" data-placement="bottom" target="_blank">
-                    Now Ui Kit
-                </a>
-                <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navigation" aria-controls="navigation-index" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-bar top-bar"></span>
-                    <span class="navbar-toggler-bar middle-bar"></span>
-                    <span class="navbar-toggler-bar bottom-bar"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse justify-content-end" id="navigation"
-                data-nav-image="./assets/img/blurred-image-1.jpg">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToDownload()">
-                            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
-                            <p>Download</p>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink1"
-                            data-toggle="dropdown">
-                            <i class="now-ui-icons design_app"></i>
-                            <p>Components</p>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink1">
-                            <a class="dropdown-item" href="./index.html">
-                                <i class="now-ui-icons business_chart-pie-36"></i> All components
-                            </a>
-                            <a class="dropdown-item" target="_blank"
-                                href="https://demos.creative-tim.com/now-ui-kit/docs/1.0/getting-started/introduction.html">
-                                <i class="now-ui-icons design_bullet-list-67"></i> Documentation
-                            </a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-neutral" href="https://www.creative-tim.com/product/now-ui-kit-pro"
-                            target="_blank">
-                            <i class="now-ui-icons arrows-1_share-66"></i>
-                            <p>Upgrade to PRO</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" rel="tooltip" title="Follow us on Twitter" data-placement="bottom"
-                            href="https://twitter.com/CreativeTim" target="_blank">
-                            <i class="fab fa-twitter"></i>
-                            <p class="d-lg-none d-xl-none">Twitter</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" rel="tooltip" title="Like us on Facebook" data-placement="bottom"
-                            href="https://www.facebook.com/CreativeTim" target="_blank">
-                            <i class="fab fa-facebook-square"></i>
-                            <p class="d-lg-none d-xl-none">Facebook</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" rel="tooltip" title="Follow us on Instagram" data-placement="bottom"
-                            href="https://www.instagram.com/CreativeTimOfficial" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                            <p class="d-lg-none d-xl-none">Instagram</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- End Navbar -->
-
-    <div class="wrapper">
-        <div class="page-header clear-filter" filter-color="orange">
-            <div class="page-header-image" data-parallax="true">
-            </div>
-            <div class="container">
-                <div class="content-center brand">
-                    <img class="n-logo" src="./assets/img/now-logo.png" alt="">
-                    <h1 class="h1-seo">Now UI Kit.</h1>
-                    <h3>A beautiful Bootstrap 4 UI kit. Yours free.</h3>
-                </div>
-                <h6 class="category category-absolute">Designed by
-                    <a href="http://invisionapp.com/" target="_blank">
-                        <img src="./assets/img/invision-white-slim.png" class="invision-logo" />
-                    </a>. Coded by
-                    <a href="https://www.creative-tim.com" target="_blank">
-                        <img src="./assets/img/creative-tim-white-slim2.png" class="creative-tim-logo" />
-                    </a>.
-                </h6>
-            </div>
-        </div>
-        <div class="section section-images">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="hero-images-container">
-                            <img src="assets/img/hero-image-1.png" alt="">
-                        </div>
-                        <div class="hero-images-container-1">
-                            <img src="assets/img/hero-image-2.png" alt="">
-                        </div>
-                        <div class="hero-images-container-2">
-                            <img src="assets/img/hero-image-3.png" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--Navbar-->
+<nav class="navbar sticky-top">
+    <div class="logo-box"><img class="logo" src="../../assets/img/logoV1.png" alt="logo-store"></div>
+    <div class="nav-content">
+        <ul class="nav-list">
+            <li class="nav-item"><a [routerLink]="['#start']">Inicio</a></li>
+            <li class="nav-item"><a [routerLink]="['#about']">Sobre Nosotros</a></li>
+            <li class="nav-item"><a [routerLink]="['#contacto']" routerLinkActive="router-link-active" >Contacto</a></li>
+            <li class="nav-item"><a [routerLink]="['/store']">Tienda</a></li>
+            <li class="nav-item"><a [routerLink]="['/login']">Soy Emprendedor</a></li>
+        </ul>
     </div>
+    <i class="bi bi-list hamburguer" (click)="toggleHamburguer()"></i>
+</nav>
 
-    <!--   Core JS Files   -->
-    <script src="../../assets/js/core/jquery.min.js" type="text/javascript"></script>
-    <script src="../../assets/js/core/popper.min.js" type="text/javascript"></script>
-    <script src="../../assets/js/core/bootstrap.min.js" type="text/javascript"></script>
-    <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
-    <script src="../../assets/js/plugins/bootstrap-switch.js"></script>
-    <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-    <script src="../../assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
-    <!--  Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker -->
-    <script src="../../assets/js/plugins/bootstrap-datepicker.js" type="text/javascript"></script>
-    <!--  Google Maps Plugin    -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-    <!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
-    <script src="../../assets/js/now-ui-kit.js?v=1.3.0" type="text/javascript"></script>
-    <script>
-        $(document).ready(function () {
-            // the body of this function is in assets/js/now-ui-kit.js
-            nowuiKit.initSliders();
-        });
+<div class="nav-content-mobile" id="nav-mobile">
+    <ul class="nav-list-mobile">
+        <li class="nav-item"><a href="#start">Inicio</a></li>
+        <li class="nav-item"><a href="#about">Sobre Nosotros</a></li>
+        <li class="nav-item"><a href="#contacto">Contacto</a></li>
+        <li class="nav-item"><a [routerLink]="['/store']">Tienda</a></li>
+        <li class="nav-item"><a [routerLink]="['/login']">Soy Emprendedor</a></li>
+    </ul>
 
-        function scrollToDownload() {
+</div>
+<!--/.Navbar-->
+<header class="hero" id="start">
 
-            if ($('.section-download').length != 0) {
-                $("html, body").animate({
-                    scrollTop: $('.section-download').offset().top
-                }, 1000);
-            }
-        }
-    </script>
-</body>
+    <div class="banner" id="banner">
+        <video loop muted autoplay oncanplay="this.play()" onloadedmetadata="this.muted = true" class="video">
+            <source src="../../assets/videos/Who decides how long a second is_ - John Kitching.mp4" type="video/mp4">
+        </video>
+    </div>
+</header>
+<!--/.header-->
+<section class="about-us" id="about">
+    <div class="content">
+        <h2>Sobre Nosotros</h2>
+        <p class="text-content">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo unde, officia veritatis,
+            cupiditate soluta sit
+            molestias dolor architecto impedit nam rem quis quam totam eaque sunt quae optio obcaecati illum! Lorem
+            ipsum dolor sit amet consectetur, adipisicing elit. Placeat illo sint accusantium molestiae minus sit,
+            tenetur quisquam? Quasi officia, asperiores a veritatis cupiditate consequatur eos impedit autem earum
+            similique fuga.</p>
+    </div>
+</section>
+<section class="contacto content" id="contacto">
+    <h2>Contacto</h2>
+    <div class="contact-icons">
+        <div class="icon"><i class="bi bi-facebook"></i></div>
+        <div class="icon"><i class="bi bi-instagram"></i></div>
+        <div class="icon"><i class="bi bi-twitter"></i></div>
+    </div>
+</section>
