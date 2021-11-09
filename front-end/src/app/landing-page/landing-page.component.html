@@ -1,31 +1,5 @@
-<!--Navbar-->
-<nav class="navbar sticky-top">
-    <div class="logo-box"><img class="logo" src="../../assets/img/logoV1.png" alt="logo-store"></div>
-    <div class="nav-content">
-        <ul class="nav-list">
-            <li class="nav-item"><a [routerLink]="['#start']">Inicio</a></li>
-            <li class="nav-item"><a [routerLink]="['#about']">Sobre Nosotros</a></li>
-            <li class="nav-item"><a [routerLink]="['#contacto']" routerLinkActive="router-link-active" >Contacto</a></li>
-            <li class="nav-item"><a [routerLink]="['/store']">Tienda</a></li>
-            <li class="nav-item"><a [routerLink]="['/login']">Soy Emprendedor</a></li>
-        </ul>
-    </div>
-    <i class="bi bi-list hamburguer" (click)="toggleHamburguer()"></i>
-</nav>
-
-<div class="nav-content-mobile" id="nav-mobile">
-    <ul class="nav-list-mobile">
-        <li class="nav-item"><a href="#start">Inicio</a></li>
-        <li class="nav-item"><a href="#about">Sobre Nosotros</a></li>
-        <li class="nav-item"><a href="#contacto">Contacto</a></li>
-        <li class="nav-item"><a [routerLink]="['/store']">Tienda</a></li>
-        <li class="nav-item"><a [routerLink]="['/login']">Soy Emprendedor</a></li>
-    </ul>
-
-</div>
-<!--/.Navbar-->
+<app-navbar></app-navbar>
 <header class="hero" id="start">
-
     <div class="banner" id="banner">
         <video loop muted autoplay oncanplay="this.play()" onloadedmetadata="this.muted = true" class="video">
             <source src="../../assets/videos/Who decides how long a second is_ - John Kitching.mp4" type="video/mp4">
