@@ -9,6 +9,8 @@ import { TiendaComponent } from './tienda/tienda.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
+import { DetallesProfileComponent } from './detalles-profile/detalles-profile.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     LandingPageComponent,
     TiendaComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    PerfilUsuarioComponent,
+    DetallesProfileComponent
   ],
   imports: [
     BrowserModule,
