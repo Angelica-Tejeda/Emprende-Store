@@ -53,3 +53,14 @@ body {
     font-weight: 700;
     font-size: 19px;
   }
+  .container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin-right: 0;
+    margin-left: 0;
+    width: 100%;
+    height: 100%;
+  }
