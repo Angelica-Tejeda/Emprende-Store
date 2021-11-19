@@ -1,0 +1,23 @@
+{
+    "development": {
+        "username": "root",
+        "password": "root",
+        "database": "emprende_store",
+        "host": "localhost",
+        "dialect": "posrgres"
+    },
+    "test": {
+        "username": "root",
+        "password": "root",
+        "database": "emprende_store",
+        "host": "localhost",
+        "dialect": "posrgres"
+    },
+    "production": {
+        "username": "root",
+        "password": "root",
+        "database": "emprende_store",
+        "host": "localhost",
+        "dialect": "posrgres"
+    }
+}
