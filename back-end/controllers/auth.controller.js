@@ -76,6 +76,63 @@ exports.iniciarSesion = async (req, res) => {
                     status: "error",
                     message: "El email ingresado no ha sido registrado.",
                 });
+            } else if (usuario.id != 0) {
+                res.status(403).json({
+                    status: "error",
+                    message: "El email ingresado no corresponde con el de un usuario emprendedor.",
+                });
+            } else {
+                if (bcrypt.compareSync(req.body.password, usuario.password)) {
+                    const token = jwt.sign(
+                        { usuario: usuario },
+                        "emprendestore",
+                        { expiresIn: "7d" }
+                    );
+                    res.status(200).json({
+                        status: "success",
+                        message: "El usuario ha sido identificado con éxito.",
+                        usuario: {
+                            id: usuario.id,
+                            rol: usuario.rol,
+                            activo: usuario.activo,
+                        },
+                        token: token,
+                    });
+                } else {
+                    res.status(401).json({
+                        status: "error",
+                        message: "La contraseña ingresada no es correcta.",
+                    });
+                }
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};
+
+exports.iniciarSesionAdmin = async (req, res) => {
+    Usuario.findOne({
+        where: { email: req.body.email },
+        attributes: ["id", "password", "rol", "activo"],
+        // attributes: { exclude: ["password"] },
+    })
+        .then((usuario) => {
+            if (!usuario) {
+                res.status(404).json({
+                    status: "error",
+                    message: "El email ingresado no ha sido registrado.",
+                });
+            } else if (usuario.id != 1) {
+                res.status(403).json({
+                    status: "error",
+                    message: "El email ingresado no corresponde con el de un usuario administrador.",
+                });
             } else {
                 if (bcrypt.compareSync(req.body.password, usuario.password)) {
                     const token = jwt.sign(
