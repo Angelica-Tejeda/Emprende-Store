@@ -9,6 +9,7 @@ import { TiendaComponent } from './tienda/tienda.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
 import { DetallesProfileComponent } from './detalles-profile/detalles-profile.component';
 
@@ -27,7 +28,9 @@ import { DetallesProfileComponent } from './detalles-profile/detalles-profile.co
     AppRoutingModule,
     FontAwesomeModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
