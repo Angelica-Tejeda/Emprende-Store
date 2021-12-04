@@ -1,14 +1,20 @@
 const express = require("express");
 const app = express();
 const sequelize = require("./database/db");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 const cors = require("cors");
+const fs = require('fs');
+require("dotenv").config();
 require("./database/associations");
 
-// Configuracion
-const PORT = process.env.PORT || 3000;
+// Directorios
+const dirs = ['media/banner', 'media/profile'];
 
-// Middleware
+// Configuracion
+const PORT = process.env.DBPORT;
+const HOST = process.env.DBHOST;
+
+// Middlewares
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     next();
@@ -26,17 +32,20 @@ app.use("/api/usuario", require("./routes/Usuario.routes"));
 
 // Inicialización del servidor
 app.listen(PORT, function () {
-    console.log(`App en puerto http://localhost:${PORT}`);
+    console.log(`App corriendo en http://${HOST}:${PORT}`);
 
     // Conexion a la base de datos
     sequelize
         .authenticate()
         .then(() => {
-            console.log(
-                "Conexión a la base de datos establecida correctamente"
-            );
+            for (const dir of dirs) {
+                if (!fs.existsSync(dir)){
+                    fs.mkdirSync(dir, { recursive: true });
+                }
+            }
+            console.log("Conexión a la base de datos establecida correctamente.");
         })
         .catch((error) => {
-            console.log("Se ha producido un error", error);
+            console.log("Se ha producido un error durante la conexión con la base de datos.", error);
         });
 });

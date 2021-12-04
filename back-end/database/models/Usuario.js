@@ -55,12 +55,12 @@ Usuario.init(
         foto_perfil: {
             type: Sequelize.STRING(127),
             allowNull: false,
-            defaultValue: "/profile/foto_perfil-default.png",
+            defaultValue: "/default/profile-default.png",
         },
         foto_portada: {
             type: Sequelize.STRING(127),
             allowNull: false,
-            defaultValue: "/banner/foto_portada-default.png",
+            defaultValue: "/default/banner-default.png",
         },
         bio: {
             type: Sequelize.TEXT,

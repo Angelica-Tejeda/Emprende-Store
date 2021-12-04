@@ -1,6 +1,7 @@
 const Usuario = require("../database/models/Usuario");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.registrarUsuario = async (req, res) => {
     const prepass = req.body.password;
@@ -76,16 +77,28 @@ exports.iniciarSesion = async (req, res) => {
                     status: "error",
                     message: "El email ingresado no ha sido registrado.",
                 });
-            } else if (usuario.id != 0) {
+            } else if (usuario.rol) {
                 res.status(403).json({
                     status: "error",
-                    message: "El email ingresado no corresponde con el de un usuario emprendedor.",
+                    message:
+                        "El email ingresado no corresponde con el de un usuario emprendedor.",
                 });
+            /*} else if (!usuario.activo) {
+                res.status(403).json({
+                    status: "error",
+                    message: "Este usuario ha sido deshabilitado.",
+                });*/
             } else {
                 if (bcrypt.compareSync(req.body.password, usuario.password)) {
                     const token = jwt.sign(
-                        { usuario: usuario },
-                        "emprendestore",
+                        {
+                            usuario: {
+                                id: usuario.id,
+                                rol: usuario.rol,
+                                activo: usuario.activo,
+                            },
+                        },
+                        process.env.SECRET,
                         { expiresIn: "7d" }
                     );
                     res.status(200).json({
@@ -128,16 +141,28 @@ exports.iniciarSesionAdmin = async (req, res) => {
                     status: "error",
                     message: "El email ingresado no ha sido registrado.",
                 });
-            } else if (usuario.id != 1) {
+            } else if (!usuario.rol) {
                 res.status(403).json({
                     status: "error",
-                    message: "El email ingresado no corresponde con el de un usuario administrador.",
+                    message:
+                        "El email ingresado no corresponde con el de un usuario administrador.",
                 });
+            /*} else if (!usuario.activo) {
+                res.status(403).json({
+                    status: "error",
+                    message: "Este usuario ha sido deshabilitado.",
+                });*/
             } else {
                 if (bcrypt.compareSync(req.body.password, usuario.password)) {
                     const token = jwt.sign(
-                        { usuario: usuario },
-                        "emprendestore",
+                        {
+                            usuario: {
+                                id: usuario.id,
+                                rol: usuario.rol,
+                                activo: usuario.activo,
+                            },
+                        },
+                        process.env.SECRET,
                         { expiresIn: "7d" }
                     );
                     res.status(200).json({
