@@ -31,7 +31,7 @@ const uploadImage = multer({
 
 exports.getAllUsuarios = async (req, res) => {
     Usuario.findAll({
-        attributes: { exclude: ["password"] },
+        attributes: { exclude: ["password", "balance"] },
     })
         .then((usuarios) => {
             const nUsers = usuarios.length;
@@ -62,36 +62,8 @@ exports.getAllUsuarios = async (req, res) => {
 };
 
 exports.getUsuarioById = async (req, res) => {
-    Usuario.findByPk(req.params.id, { attributes: { exclude: ["password"] } })
-        .then((usuario) => {
-            if (usuario) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Usuario obtenido con éxito.",
-                    result: usuario,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Usuario no encontrado.",
-                    result: usuario,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.getUsuarioByEmail = async (req, res) => {
-    Usuario.findOne({
-        where: { email: req.params.email },
-        attributes: { exclude: ["password"] },
+    Usuario.findByPk(req.params.id, {
+        attributes: { exclude: ["password", "balance"] },
     })
         .then((usuario) => {
             if (usuario) {
@@ -118,10 +90,67 @@ exports.getUsuarioByEmail = async (req, res) => {
         });
 };
 
-exports.getUsuariosByRol = async (req, res) => {
+exports.getFullUsuarioById = async (req, res) => {
+    Usuario.findByPk(req.params.id, { attributes: { exclude: ["password"] } })
+        .then((usuario) => {
+            if (usuario) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Usuario obtenido con éxito.",
+                    result: usuario,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Usuario no encontrado.",
+                    result: usuario,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};
+
+/*exports.getUsuarioByEmail = async (req, res) => {
+    Usuario.findOne({
+        where: { email: req.params.email },
+        attributes: { exclude: ["password", "balance"] },
+    })
+        .then((usuario) => {
+            if (usuario) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Usuario obtenido con éxito.",
+                    result: usuario,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Usuario no encontrado.",
+                    result: usuario,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};*/
+
+exports.getUsuariosEmpr = async (req, res) => {
     Usuario.findAll({
-        where: { rol: req.params.rol },
-        attributes: { exclude: ["password"] },
+        where: { rol: false },
+        attributes: { exclude: ["password", "balance"] },
     })
         .then((usuarios) => {
             const nUsers = usuarios.length;
@@ -164,13 +193,71 @@ exports.updateUsuario = async (req, res) => {
             bio: req.body.bio,
             celular: req.body.celular,
             facebook: req.body.facebook,
-            instragram: req.body.instragram,
+            instagram: req.body.instagram,
             twitter: req.body.twitter,
             tiktok: req.body.tiktok,
             linkedin: req.body.linkedin,
-            balance: req.body.balance,
-            puntuacion: req.body.puntuacion,
-            rol: req.body.rol,
+        },
+        {
+            where: { id: req.params.id },
+        }
+    )
+        .then((result) => {
+            if (result == 1) {
+                res.status(200).json({
+                    status: "success",
+                    message: "El usuario se ha actualizado con éxito.",
+                    result: result,
+                });
+            } else {
+                res.status(403).json({
+                    status: "error",
+                    message:
+                        "El usuario no se ha podido actualizar o no existe.",
+                    result: result,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            if (err.name === "SequelizeUniqueConstraintError") {
+                res.status(403).json({
+                    status: "error",
+                    message:
+                        "El " +
+                        err.errors[0].path +
+                        " ingresado ya ha sido registrado.",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeValidationError") {
+                res.status(400).json({
+                    status: "error",
+                    message:
+                        "El valor ingresado en el campo " +
+                        err.errors[0].path +
+                        " no es válido.",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeDatabaseError") {
+                res.status(400).json({
+                    status: "error",
+                    message: "Uno de los valores ingresados no es válido.",
+                    error: err,
+                });
+            } else {
+                res.status(500).json({
+                    status: "error",
+                    message: "Ha ocurrido un error inesperado.",
+                    error: err,
+                });
+            }
+        });
+};
+
+exports.updateUsuarioAct = async (req, res) => {
+    Usuario.update(
+        {
+            activo: req.body.activo,
         },
         {
             where: { id: req.params.id },
@@ -326,7 +413,7 @@ exports.updateFotoPerfil = async (req, res) => {
 
 exports.deleteFotoPerfil = async (req, res) => {
     const oldRuta = "./media/profile/profile-" + req.params.id + ".png";
-    const newRuta = "/profile/profile-default.png";
+    const newRuta = "/default/profile-default.png";
     Usuario.update(
         {
             foto_perfil: newRuta,
@@ -426,7 +513,7 @@ exports.updateFotoPortada = async (req, res) => {
 
 exports.deleteFotoPortada = async (req, res) => {
     const oldRuta = "./media/banner/banner-" + req.params.id + ".png";
-    const newRuta = "/banner/banner-default.png";
+    const newRuta = "/default/banner-default.png";
     Usuario.update(
         {
             foto_portada: newRuta,
@@ -472,11 +559,15 @@ exports.deleteFotoPortada = async (req, res) => {
 };
 
 exports.deleteUsuario = async (req, res) => {
+    const rutaPerfil = "./media/profile/profile-" + req.params.id + ".png";
+    const rutaPortada = "./media/banner/banner-" + req.params.id + ".png";
     Usuario.destroy({
         where: { id: req.params.id },
     })
         .then((result) => {
             if (result == 1) {
+                fs.unlink(rutaPerfil, (err) => {});
+                fs.unlink(rutaPortada, (err) => {});
                 res.status(200).json({
                     status: "success",
                     message: "El usuario se ha eliminado con éxito.",

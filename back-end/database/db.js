@@ -1,12 +1,12 @@
 const { Sequelize } = require("sequelize");
-const { database } = require("../config");
+require("dotenv").config();
 
 const sequelize = new Sequelize(
-    database.database,
-    database.username,
-    database.password,
+    process.env.DBNAME,
+    process.env.DBUSER,
+    process.env.DBPASS,
     {
-        host: database.host,
+        host: process.env.DBHOST,
         dialect: "postgres",
         define: {
             // Previene que sequelize transforme los nombres de las tablas a plural
