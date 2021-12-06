@@ -1,13 +1,14 @@
 const Usuario = require('./models/Usuario');
+const Publicacion = require('./models/Publicacion');
+
+Publicacion.belongsTo(Usuario, {
+    foreignKey: 'emprendedor'
+});
+Usuario.hasMany(Publicacion, {
+    foreignKey: 'emprendedor'
+});
+
 /*
-Obra.belongsTo(Usuario, {
-    foreignKey: 'escritor'
-});
-Usuario.hasMany(Obra, {
-    foreignKey: 'escritor'
-});
-
-
 Biblioteca.belongsTo(Obra, {
     foreignKey: 'obraId'
 });

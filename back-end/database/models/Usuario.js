@@ -128,14 +128,6 @@ Usuario.init(
         modelName: "usuario",
         freezeTableName: true,
         timestamps: false,
-        /* hooks: {
-            afterCreate: (record) => {
-                delete record.dataValues.contrasena;
-            },
-            afterUpdate: (record) => {
-                delete record.dataValues.contrasena;
-            },
-        }*/
     }
 );
 

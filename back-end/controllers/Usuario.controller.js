@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
         cb(null, "./media/" + req.params.type + "/");
     },
     filename: (req, file, cb) => {
-        cb(null, req.params.type + "-" + req.params.id + ".png");
+        cb(null, req.params.type + "-" + req.params.userId + ".png");
     },
 });
 
@@ -62,7 +62,7 @@ exports.getAllUsuarios = async (req, res) => {
 };
 
 exports.getUsuarioById = async (req, res) => {
-    Usuario.findByPk(req.params.id, {
+    Usuario.findByPk(req.params.userId, {
         attributes: { exclude: ["password", "balance"] },
     })
         .then((usuario) => {
@@ -91,7 +91,9 @@ exports.getUsuarioById = async (req, res) => {
 };
 
 exports.getFullUsuarioById = async (req, res) => {
-    Usuario.findByPk(req.params.id, { attributes: { exclude: ["password"] } })
+    Usuario.findByPk(req.params.userId, {
+        attributes: { exclude: ["password"] },
+    })
         .then((usuario) => {
             if (usuario) {
                 res.status(200).json({
@@ -199,7 +201,7 @@ exports.updateUsuario = async (req, res) => {
             linkedin: req.body.linkedin,
         },
         {
-            where: { id: req.params.id },
+            where: { id: req.params.userId },
         }
     )
         .then((result) => {
@@ -260,7 +262,7 @@ exports.updateUsuarioAct = async (req, res) => {
             activo: req.body.activo,
         },
         {
-            where: { id: req.params.id },
+            where: { id: req.params.userId },
         }
     )
         .then((result) => {
@@ -329,7 +331,7 @@ exports.updatePassword = async (req, res) => {
                 password: password,
             },
             {
-                where: { id: req.params.id },
+                where: { id: req.params.userId },
             }
         )
             .then((result) => {
@@ -379,7 +381,7 @@ exports.updateFotoPerfil = async (req, res) => {
                     foto_perfil: ruta,
                 },
                 {
-                    where: { id: req.params.id },
+                    where: { id: req.params.userId },
                 }
             )
                 .then((result) => {
@@ -412,14 +414,14 @@ exports.updateFotoPerfil = async (req, res) => {
 };
 
 exports.deleteFotoPerfil = async (req, res) => {
-    const oldRuta = "./media/profile/profile-" + req.params.id + ".png";
+    const oldRuta = "./media/profile/profile-" + req.params.userId + ".png";
     const newRuta = "/default/profile-default.png";
     Usuario.update(
         {
             foto_perfil: newRuta,
         },
         {
-            where: { id: req.params.id },
+            where: { id: req.params.userId },
         }
     )
         .then((result) => {
@@ -435,7 +437,8 @@ exports.deleteFotoPerfil = async (req, res) => {
                     } else {
                         res.status(200).json({
                             status: "success",
-                            message: "La foto de perfil se ha eliminado con éxito.",
+                            message:
+                                "La foto de perfil se ha eliminado con éxito.",
                             result: result,
                         });
                     }
@@ -479,7 +482,7 @@ exports.updateFotoPortada = async (req, res) => {
                     foto_portada: ruta,
                 },
                 {
-                    where: { id: req.params.id },
+                    where: { id: req.params.userId },
                 }
             )
                 .then((result) => {
@@ -512,14 +515,14 @@ exports.updateFotoPortada = async (req, res) => {
 };
 
 exports.deleteFotoPortada = async (req, res) => {
-    const oldRuta = "./media/banner/banner-" + req.params.id + ".png";
+    const oldRuta = "./media/banner/banner-" + req.params.userId + ".png";
     const newRuta = "/default/banner-default.png";
     Usuario.update(
         {
             foto_portada: newRuta,
         },
         {
-            where: { id: req.params.id },
+            where: { id: req.params.userId },
         }
     )
         .then((result) => {
@@ -535,7 +538,8 @@ exports.deleteFotoPortada = async (req, res) => {
                     } else {
                         res.status(200).json({
                             status: "success",
-                            message: "La foto de portada se ha eliminado con éxito.",
+                            message:
+                                "La foto de portada se ha eliminado con éxito.",
                             result: result,
                         });
                     }
@@ -559,10 +563,10 @@ exports.deleteFotoPortada = async (req, res) => {
 };
 
 exports.deleteUsuario = async (req, res) => {
-    const rutaPerfil = "./media/profile/profile-" + req.params.id + ".png";
-    const rutaPortada = "./media/banner/banner-" + req.params.id + ".png";
+    const rutaPerfil = "./media/profile/profile-" + req.params.userId + ".png";
+    const rutaPortada = "./media/banner/banner-" + req.params.userId + ".png";
     Usuario.destroy({
-        where: { id: req.params.id },
+        where: { id: req.params.userId },
     })
         .then((result) => {
             if (result == 1) {

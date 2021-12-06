@@ -8,7 +8,7 @@ require("dotenv").config();
 require("./database/associations");
 
 // Directorios
-const dirs = ['media/banner', 'media/profile'];
+const dirs = ['media/banner', 'media/profile', "media/product"];
 
 // Configuracion
 const PORT = process.env.DBPORT;
@@ -29,6 +29,7 @@ app.use(cors());
 // Rutas
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/usuario", require("./routes/Usuario.routes"));
+app.use("/api/publicacion", require("./routes/Publicacion.routes"));
 
 // Inicialización del servidor
 app.listen(PORT, function () {
