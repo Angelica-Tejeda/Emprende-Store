@@ -1,3 +1,8 @@
+:root {
+  --primary: rgb(174, 192, 228);
+  --secondary: rgb(36,70,157);
+  --darkSecondary: rgb(46,47,97);
+}
 * {
   font-family: "Exo", sans-serif;
   color: rgba(0, 0, 0, 0.8);

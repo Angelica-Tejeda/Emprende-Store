@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.google.com/share?selection.family=Exo:wght@400;700");
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+:root {
+  --primary: rgb(174, 192, 228);
+  --secondary: rgb(36,70,157);
+  --darkSecondary: rgb(46,47,97);
+}
 html {
   box-sizing: border-box;
 }
