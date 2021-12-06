@@ -12,6 +12,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
 import { DetallesProfileComponent } from './detalles-profile/detalles-profile.component';
+import { ProductComponent } from './product/product.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DetallesProfileComponent } from './detalles-profile/detalles-profile.co
     LoginComponent,
     NavbarComponent,
     PerfilUsuarioComponent,
-    DetallesProfileComponent
+    DetallesProfileComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,

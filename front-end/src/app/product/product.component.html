@@ -1,0 +1,30 @@
+<app-navbar></app-navbar>
+<div class="container">
+<div class="grid">
+    <div class="producto">
+        <img src="{{fotos[0]}}" alt="">
+    </div>
+    <div class="descripcion">
+        <h3>{{titulo}}</h3>
+        <p>{{descripcion}}</p>
+    </div>
+</div>
+<div class="detalles">
+<h3>Precio: {{precio}}</h3> 
+<p>Calificación: {{puntuacion}}</p>   
+<div class="btns-compra">
+    <a routerLink="/redirect" [queryParams]="{ url: 'https://angular.io'}" class="mt-4 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Contactar</a>
+    <a href="javascript:void(0)" class="mt-4 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Perfil Emprendedor</a>
+</div>
+<h2 class="text-center">Galería de fotos</h2>
+<div class="galeria">
+<div class="fotoContainer" *ngFor="let foto of fotos">
+    <img src="{{foto}}" alt="">
+</div>
+
+</div>
+<div class="comentarios">
+    <h3>Reseñas</h3>
+ </div>
+</div>
+</div>

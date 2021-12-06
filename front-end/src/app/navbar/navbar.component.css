@@ -1,6 +1,11 @@
+:root {
+  --primary: rgb(174, 192, 228);
+  --secondary: rgb(34,70,158);
+  --darkSecondary:rgb(45,47,96);
+}
 * {
     font-family: "Exo", sans-serif;
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 400;
     font-size: 20px;
     text-align: justify;
@@ -35,6 +40,9 @@
     font-size: 19px;
     text-decoration: none;
   }
+  a:hover{
+    color: var(--primary);
+  }
 .hamburguer {
   display: none;
 }
@@ -63,9 +71,9 @@
 }
 .navbar {
     justify-content: space-between;
-    background-color: rgb(255, 255, 255);
-    border-bottom: 4px solid black;
-    border-radius: 0 0 5% 5%;
+    background-color: var(--darkSecondary);
+    
+    
   }
   .navbar .nav-list {
     display: flex;
@@ -75,6 +83,7 @@
   }
   .logo-box:hover{
       cursor: pointer;
+
   }
   .logo {
     height: 65px;
@@ -95,6 +104,11 @@
   }
   .nav-item:hover {
     cursor: pointer;
-    text-decoration-line: underline;
+    text-decoration: none;
   }
+  .search{
+    width: 500px;
+    margin-right:450px!important;
+  }
+  
   

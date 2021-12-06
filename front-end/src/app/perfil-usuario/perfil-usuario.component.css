@@ -1,3 +1,9 @@
+:root {
+    --primary: rgb(174, 192, 228);
+    --secondary: rgb(34,70,158);
+    --darkSecondary:rgb(45,47,96);
+  
+  }
 body {
     background-color: #000000
 }
@@ -46,30 +52,12 @@ h3 {
     font-size: 21px
 }
 
-.btn-rounded.btn-md {
-    padding: 12px 35px;
-    font-size: 16px
-}
+
 
 html body .m-t-10 {
     margin-top: 10px
 }
 
-.btn-primary,
-.btn-primary.disabled {
-    background: #24469d;
-    border: 1px solid #24469d;
-    -webkit-box-shadow: 0 2px 2px 0 rgba(116, 96, 238, 0.14), 0 3px 1px -2px rgba(116, 96, 238, 0.2), 0 1px 5px 0 rgba(116, 96, 238, 0.12);
-    box-shadow: 0 2px 2px 0 rgba(116, 96, 238, 0.14), 0 3px 1px -2px rgba(116, 96, 238, 0.2), 0 1px 5px 0 rgba(116, 96, 238, 0.12);
-    -webkit-transition: 0.2s ease-in;
-    -o-transition: 0.2s ease-in;
-    transition: 0.2s ease-in
-}
-
-.btn-rounded {
-    border-radius: 60px;
-    padding: 7px 7px
-}
 
 .m-t-20 {
     margin-top: 20px
