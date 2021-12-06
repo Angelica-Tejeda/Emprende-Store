@@ -1,3 +1,5 @@
-.carousel{
-    
-}
+:root {
+    --primary: rgb(174, 192, 228);
+    --secondary: rgb(34,70,158);
+    --darkSecondary:rgb(45,47,96);
+  }

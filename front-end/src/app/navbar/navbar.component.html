@@ -1,21 +1,22 @@
 <!--Navbar-->
 <nav class="navbar sticky-top">
-    <div class="logo-box" (click)="redirect()"><img class="logo" src="../../assets/img/logoV1.png" alt="logo-store">
+    <div class="logo-box" (click)="redirect()"><img class="logo" src="../../assets/img/logo-darkBlue-resized.png" alt="logo-store">
     </div>
-    <div class="nav-content" *ngIf="router.url.includes('/landing') === true">
+    <div class="nav-content" *ngIf="router.url.includes('/login') === false">
         <ul class="nav-list">
-            <li class="nav-item"><a [routerLink]="['#start']">Inicio</a></li>
-            <li class="nav-item"><a [routerLink]="['#about']">Sobre Nosotros</a></li>
-            <li class="nav-item"><a [routerLink]="['#contacto']" routerLinkActive="router-link-active">Contacto</a></li>
-            <li class="nav-item"><a [routerLink]="['/store']">Tienda</a></li>
+            <li class="nav-item" *ngIf="router.url.includes('/landing-page') === true"><a [routerLink]="['#start']">Inicio</a></li>
+            <li class="nav-item" *ngIf="router.url.includes('/landing-page') === true"><a [routerLink]="['#about']">Sobre Nosotros</a></li>
+            <li class="nav-item" *ngIf="router.url.includes('/landing-page') === true"><a [routerLink]="['#contacto']">Contacto</a></li>
+            <form class="d-flex" *ngIf="router.url.includes('/landing-page') === false" >
+                <input class="form-control me-2 search" type="search" placeholder="Búsqueda" aria-label="Search">
+            </form>
+            <li class="nav-item" *ngIf="router.url.includes('/landing-page') === false"><a [routerLink]="['/store']">Tienda</a></li>
+            <li class="nav-item" *ngIf="router.url.includes('/landing-page') === false"><a [routerLink]="['/']">Categorias</a></li>
             <li class="nav-item"><a [routerLink]="['/login']">Soy Emprendedor</a></li>
         </ul>
     </div>
     <i class="bi bi-list hamburguer" (click)="toggleHamburguer()" *ngIf="router.url.includes('/login') === false"></i>
-    <form class="d-flex" *ngIf="router.url.includes('/store') === true" >
-        <input class="form-control me-2" type="search" placeholder="Búsqueda" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Buscar</button>
-    </form>
+  
 </nav>
 <div class="nav-content-mobile" id="nav-mobile">
     <ul class="nav-list-mobile">

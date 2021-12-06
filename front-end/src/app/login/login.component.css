@@ -1,3 +1,9 @@
+:root {
+  --primary: rgb(174, 192, 228);
+  --secondary: rgb(34,70,158);
+  --darkSecondary:rgb(45,47,96);
+
+}
 * {
   font-family: "Exo", sans-serif;
   color: rgba(0, 0, 0, 0.8);
@@ -28,7 +34,7 @@ a:focus {
 
 a:hover {
   text-decoration: none;
-  color: #57b846;
+  color: var(--secondary);
 }
 
 /*---------------------------------------------*/
@@ -186,7 +192,8 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background: hsla(168, 71%, 77%, 1);
+  background: var(--primary);
+ /* background: hsla(168, 71%, 77%, 1);
 
   background: linear-gradient(
     90deg,
@@ -205,6 +212,7 @@ iframe {
     hsla(168, 71%, 77%, 1) 0%,
     hsla(186, 100%, 69%, 1) 100%
   );
+  */
 
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#9BEEDE", endColorstr="#60EFFF", GradientType=1 );
 }
@@ -289,7 +297,7 @@ iframe {
   width: 100%;
   height: 100%;
   box-shadow: 0px 0px 0px 0px;
-  color: rgba(87, 184, 70, 0.8);
+  color: var(--secondary);
 }
 
 .input100:focus + .focus-input100 {
@@ -337,7 +345,7 @@ iframe {
 }
 
 .input100:focus + .focus-input100 + .symbol-input100 {
-  color: #57b846;
+  color: var(--secondary);
   padding-left: 28px;
 }
 
@@ -366,7 +374,7 @@ iframe {
   width: 100%;
   height: 50px;
   border-radius: 25px;
-  background: #57b846;
+  background:var(--secondary);
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -383,7 +391,7 @@ iframe {
 }
 
 .login100-form-btn:hover {
-  background: #333333;
+  background: var(--darkSecondary);
 }
 
 /*------------------------------------------------------------------
