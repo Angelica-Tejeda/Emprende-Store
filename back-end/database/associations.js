@@ -2,10 +2,10 @@ const Usuario = require('./models/Usuario');
 const Publicacion = require('./models/Publicacion');
 
 Publicacion.belongsTo(Usuario, {
-    foreignKey: 'emprendedor'
+    foreignKey: 'usuario_id'
 });
 Usuario.hasMany(Publicacion, {
-    foreignKey: 'emprendedor'
+    foreignKey: 'usuario_id'
 });
 
 /*

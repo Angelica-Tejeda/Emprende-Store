@@ -11,7 +11,7 @@ Publicacion.init(
             primaryKey: true,
             autoIncrement: true,
         },
-        emprendedor: {
+        usuario_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
@@ -22,15 +22,20 @@ Publicacion.init(
         titulo: {
             type: Sequelize.STRING(63),
             allowNull: true,
+            validate: {
+                len: [5,60],
+            }
         },
         descripcion: {
             type: Sequelize.TEXT,
             allowNull: true,
+            validate: {
+                len: [50,4000],
+            }
         },
         servicio: {
             type: Sequelize.BOOLEAN,
-            allowNull: false,
-            defaultValue: "0",
+            allowNull: true,
         },
         fotos: {
             type: Sequelize.ARRAY(Sequelize.STRING(127)),
@@ -68,6 +73,9 @@ Publicacion.init(
         precio: {
             type: Sequelize.DECIMAL(8, 2),
             allowNull: true,
+            validate: {
+                min: 0,
+            }
         },
         puntuacion: {
             type: Sequelize.DECIMAL(2, 1),

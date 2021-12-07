@@ -18,6 +18,7 @@ Usuario.init(
             validate: {
                 notEmpty: true,
                 isEmail: true,
+                len: [8,125],
             },
         },
         password: {
@@ -32,6 +33,7 @@ Usuario.init(
             allowNull: false,
             validate: {
                 notEmpty: true,
+                len: [2,30],
             },
         },
         apellido: {
@@ -39,6 +41,7 @@ Usuario.init(
             allowNull: false,
             validate: {
                 notEmpty: true,
+                len: [2,30],
             },
         },
         fecha_nacimiento: {
@@ -46,11 +49,16 @@ Usuario.init(
             allowNull: false,
             validate: {
                 notEmpty: true,
+                isDate: true
             },
         },
         negocio: {
             type: Sequelize.STRING(63),
             allowNull: true,
+            validate: {
+                notEmpty: true,
+                len: [4,60],
+            },
         },
         foto_perfil: {
             type: Sequelize.STRING(127),
@@ -65,6 +73,10 @@ Usuario.init(
         bio: {
             type: Sequelize.TEXT,
             allowNull: true,
+            validate: {
+                notEmpty: true,
+                len: [20,1500],
+            },
         },
         celular: {
             type: Sequelize.STRING(15),
@@ -72,27 +84,49 @@ Usuario.init(
             unique: true,
             validate: {
                 isNumeric: true,
+                notEmpty: true,
+                len: [12,12],
             },
         },
         facebook: {
             type: Sequelize.STRING(127),
             allowNull: true,
+            validate: {
+                notEmpty: true,
+                len: [5,125],
+            },
         },
         instagram: {
             type: Sequelize.STRING(127),
             allowNull: true,
+            validate: {
+                notEmpty: true,
+                len: [5,125],
+            },
         },
         twitter: {
             type: Sequelize.STRING(127),
             allowNull: true,
+            validate: {
+                notEmpty: true,
+                len: [5,125],
+            },
         },
         tiktok: {
             type: Sequelize.STRING(127),
             allowNull: true,
+            validate: {
+                notEmpty: true,
+                len: [5,125],
+            },
         },
         linkedin: {
             type: Sequelize.STRING(127),
             allowNull: true,
+            validate: {
+                notEmpty: true,
+                len: [5,125],
+            },
         },
         balance: {
             type: Sequelize.DECIMAL(8, 2),

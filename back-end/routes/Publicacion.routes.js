@@ -17,6 +17,7 @@ router.get("/:userId/:publId", auth, emprend, owned, controller.getPublicacionBy
 
 router.patch("/foto/:userId/:publId", auth, emprend, owned, controller.uploadFoto);
 router.patch("/fotoDel/:userId/:publId/:filename", auth, emprend, owned, controller.deleteFoto);
+router.patch("/act/:userId/:publId", auth, emprend, owned, controller.updateActivePublicacion);
 router.patch("/:userId/:publId", auth, emprend, owned, controller.updatePublicacion);
 
 router.delete("/:userId/:publId", auth, emprend, owned, controller.deletePublicacion);

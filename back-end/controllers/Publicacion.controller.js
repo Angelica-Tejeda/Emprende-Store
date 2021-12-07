@@ -5,7 +5,7 @@ const fs = require("fs");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "./media/product/");
+        cb(null, "./media/product/" + req.user.id + "/");
     },
     filename: (req, file, cb) => {
         cb(
@@ -41,7 +41,7 @@ const uploadImage = multer({
 
 exports.createPublicacion = async (req, res) => {
     Publicacion.create({
-        emprendedor: req.user.id,
+        usuario_id: req.user.id,
     })
         .then((publicacion) => {
             res.status(200).json({
@@ -61,8 +61,8 @@ exports.createPublicacion = async (req, res) => {
 };
 
 exports.getAllPublicaciones = async (req, res) => {
-    Publicacion.findAll({
-        attributes: { exclude: ["emprendedor"] },
+    Publicacion.findAndCountAll({
+        attributes: { exclude: ["usuario_id"] },
         include: [
             {
                 model: Usuario,
@@ -84,19 +84,16 @@ exports.getAllPublicaciones = async (req, res) => {
         ],
     })
         .then((publicaciones) => {
-            const nPubs = publicaciones.length;
-            if (nPubs > 0) {
+            if (publicaciones.count > 0) {
                 res.status(200).json({
                     status: "success",
                     message: "Publicaciones obtenidas con éxito.",
-                    quantity: nPubs,
                     result: publicaciones,
                 });
             } else {
                 res.status(404).json({
                     status: "error",
                     message: "Publicaciones no encontradas.",
-                    quantity: nPubs,
                     result: publicaciones,
                 });
             }
@@ -114,7 +111,7 @@ exports.getAllPublicaciones = async (req, res) => {
 exports.getAllActivePublicaciones = async (req, res) => {
     Publicacion.findAll({
         where: { activo: true },
-        attributes: { exclude: ["emprendedor"] },
+        attributes: { exclude: ["usuario_id"] },
         include: [
             {
                 model: Usuario,
@@ -138,7 +135,7 @@ exports.getAllActivePublicaciones = async (req, res) => {
         .then((publicaciones) => {
             let pubsFinal = [];
             publicaciones.forEach((e) => {
-                if (e.getDataValue("usuario").getDataValue("activo")) {
+                if (e.usuario.activo) {
                     pubsFinal.push(e);
                 }
             });
@@ -147,15 +144,19 @@ exports.getAllActivePublicaciones = async (req, res) => {
                 res.status(200).json({
                     status: "success",
                     message: "Publicaciones obtenidas con éxito.",
-                    quantity: nPubs,
-                    result: pubsFinal,
+                    result: {
+                        count: nPubs,
+                        rows: pubsFinal,
+                    }
                 });
             } else {
                 res.status(404).json({
                     status: "error",
                     message: "Publicaciones no encontradas.",
-                    quantity: nPubs,
-                    result: pubsFinal,
+                    result: {
+                        count: nPubs,
+                        rows: pubsFinal,
+                    }
                 });
             }
         })
@@ -170,9 +171,9 @@ exports.getAllActivePublicaciones = async (req, res) => {
 };
 
 exports.getPublicacionesByUser = async (req, res) => {
-    Publicacion.findAll({
-        where: { emprendedor: req.params.userId },
-        attributes: { exclude: ["emprendedor"] },
+    Publicacion.findAndCountAll({
+        where: { usuario_id: req.params.userId },
+        attributes: { exclude: ["usuario_id"] },
         include: [
             {
                 model: Usuario,
@@ -194,19 +195,16 @@ exports.getPublicacionesByUser = async (req, res) => {
         ],
     })
         .then((publicaciones) => {
-            const nPubs = publicaciones.length;
-            if (nPubs > 0) {
+            if (publicaciones.count > 0) {
                 res.status(200).json({
                     status: "success",
                     message: "Publicaciones obtenidas con éxito.",
-                    quantity: nPubs,
                     result: publicaciones,
                 });
             } else {
                 res.status(404).json({
                     status: "error",
                     message: "Publicaciones no encontradas.",
-                    quantity: nPubs,
                     result: publicaciones,
                 });
             }
@@ -222,9 +220,9 @@ exports.getPublicacionesByUser = async (req, res) => {
 };
 
 exports.getActivePublicacionesByUser = async (req, res) => {
-    Publicacion.findAll({
-        where: { emprendedor: req.params.userId, activo: true },
-        attributes: { exclude: ["emprendedor"] },
+    Publicacion.findAndCountAll({
+        where: { usuario_id: req.params.userId, activo: true },
+        attributes: { exclude: ["usuario_id"] },
         include: [
             {
                 model: Usuario,
@@ -246,19 +244,16 @@ exports.getActivePublicacionesByUser = async (req, res) => {
         ],
     })
         .then((publicaciones) => {
-            const nPubs = publicaciones.length;
-            if (nPubs > 0) {
+            if (publicaciones.count > 0) {
                 res.status(200).json({
                     status: "success",
                     message: "Publicaciones obtenidas con éxito.",
-                    quantity: nPubs,
                     result: publicaciones,
                 });
             } else {
                 res.status(404).json({
                     status: "error",
                     message: "Publicaciones no encontradas.",
-                    quantity: nPubs,
                     result: publicaciones,
                 });
             }
@@ -275,7 +270,7 @@ exports.getActivePublicacionesByUser = async (req, res) => {
 
 exports.getActivePublicacionById = async (req, res) => {
     Publicacion.findByPk(req.params.publId, {
-        attributes: { exclude: ["emprendedor"] },
+        attributes: { exclude: ["usuario_id"] },
         include: [
             {
                 model: Usuario,
@@ -299,8 +294,8 @@ exports.getActivePublicacionById = async (req, res) => {
         .then((publicacion) => {
             if (
                 publicacion &&
-                publicacion.getDataValue("activo") &&
-                publicacion.getDataValue("usuario").getDataValue("activo")
+                publicacion.activo &&
+                publicacion.usuario.activo
             ) {
                 res.status(200).json({
                     status: "success",
@@ -327,7 +322,7 @@ exports.getActivePublicacionById = async (req, res) => {
 
 exports.getPublicacionById = async (req, res) => {
     Publicacion.findByPk(req.params.publId, {
-        attributes: { exclude: ["emprendedor"] },
+        attributes: { exclude: ["usuario_id"] },
         include: [
             {
                 model: Usuario,
@@ -374,12 +369,16 @@ exports.getPublicacionById = async (req, res) => {
 };
 
 exports.uploadFoto = async (req, res) => {
+    dir = "media/product/" + req.user.id;
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir, { recursive: true });
+    }
     let rutas = [];
     Publicacion.findByPk(req.params.publId, {
         attributes: ["fotos"],
     })
         .then((publicacion) => {
-            publicacion.getDataValue("fotos").forEach((e) => {
+            publicacion.fotos.forEach((e) => {
                 if (e != "/default/product-default.png") {
                     rutas.push(e);
                 }
@@ -398,7 +397,7 @@ exports.uploadFoto = async (req, res) => {
                         message: "El archivo no es de un formato soportado.",
                     });
                 } else {
-                    const ruta = "/product/" + req.file.filename;
+                    const ruta = "/product/" + req.user.id + "/" + req.file.filename;
                     rutas.push(ruta);
                     Publicacion.update(
                         {
@@ -448,13 +447,13 @@ exports.uploadFoto = async (req, res) => {
 
 exports.deleteFoto = async (req, res) => {
     let rutas = [];
-    const oldFoto = "/product/" + req.params.filename;
+    const oldFoto = "/product/" + req.user.id + "/" + req.params.filename;
     const newFoto = ["/default/product-default.png"];
     Publicacion.findByPk(req.params.publId, {
         attributes: ["fotos"],
     })
         .then((publicacion) => {
-            if (publicacion.getDataValue("fotos").length <= 1) {
+            if (publicacion.fotos.length <= 1) {
                 Publicacion.update(
                     {
                         fotos: newFoto,
@@ -500,7 +499,7 @@ exports.deleteFoto = async (req, res) => {
                         });
                     });
             } else {
-                publicacion.getDataValue("fotos").forEach((e) => {
+                publicacion.fotos.forEach((e) => {
                     if (e != oldFoto) {
                         rutas.push(e);
                     }
@@ -624,6 +623,155 @@ exports.updatePublicacion = async (req, res) => {
         });
 };
 
+exports.updateActivePublicacion = async (req, res) => {
+    let rutas = [];
+    Publicacion.findByPk(req.params.publId, {
+        attributes: [
+            "titulo",
+            "descripcion",
+            "servicio",
+            "fotos",
+            "categoria",
+            "precio",
+            "activo",
+        ],
+    })
+        .then((publicacion) => {
+            if (publicacion) {
+                if (publicacion.activo) {
+                    Publicacion.update(
+                        {
+                            activo: false,
+                        },
+                        {
+                            where: { id: req.params.publId },
+                        }
+                    )
+                        .then((result) => {
+                            if (result == 1) {
+                                res.status(200).json({
+                                    status: "success",
+                                    message:
+                                        "La publicación ha sido desactivada con éxito.",
+                                    result: result,
+                                });
+                            } else {
+                                res.status(403).json({
+                                    status: "error",
+                                    message:
+                                        "La publicación no se ha podido desactivar o no existe.",
+                                    result: result,
+                                });
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            res.status(500).json({
+                                status: "error",
+                                message: "Ha ocurrido un error inesperado.",
+                                error: err,
+                            });
+                        });
+                } else {
+                    let titulo = publicacion.titulo;
+                    let descripcion = publicacion.descripcion;
+                    let servicio = publicacion.servicio;
+                    let fotos = publicacion.fotos;
+                    let categoria = publicacion.categoria;
+                    let precio = publicacion.precio;
+                    if (titulo === null) {
+                        res.status(403).json({
+                            status: "error",
+                            message:
+                                "La publicación no puede ser activada debido a que el título está vacío.",
+                        });
+                    } else if (descripcion === null) {
+                        res.status(403).json({
+                            status: "error",
+                            message:
+                                "La publicación no puede ser activada debido a que la descripcion está vacía.",
+                        });
+                    } else if (servicio === null) {
+                        res.status(403).json({
+                            status: "error",
+                            message:
+                                "La publicación no puede ser activada debido a que no se ha marcado como producto o servicio.",
+                        });
+                    } else if (
+                        fotos === [] ||
+                        fotos == ["/default/product-default.png"]
+                    ) {
+                        res.status(403).json({
+                            status: "error",
+                            message:
+                                "La publicación no puede ser activada debido a que no se ha agregado al menos una foto.",
+                        });
+                    } else if (categoria.length < 1) {
+                        res.status(403).json({
+                            status: "error",
+                            message:
+                                "La publicación no puede ser activada debido a que no se ha seleccionado al menos una categoría.",
+                        });
+                    } else if (precio == null) {
+                        res.status(403).json({
+                            status: "error",
+                            message:
+                                "La publicación no puede ser activada debido a que el precio esta vacío.",
+                        });
+                    } else {
+                        Publicacion.update(
+                            {
+                                activo: true,
+                            },
+                            {
+                                where: { id: req.params.publId },
+                            }
+                        )
+                            .then((result) => {
+                                if (result == 1) {
+                                    res.status(200).json({
+                                        status: "success",
+                                        message:
+                                            "La publicación ha sido activada con éxito.",
+                                        result: result,
+                                    });
+                                } else {
+                                    res.status(403).json({
+                                        status: "error",
+                                        message:
+                                            "La publicación no se ha podido activar o no existe.",
+                                        result: result,
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                                res.status(500).json({
+                                    status: "error",
+                                    message: "Ha ocurrido un error inesperado.",
+                                    error: err,
+                                });
+                            });
+                    }
+                }
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message:
+                        "La publicación no ha sido encontrada.",
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};
+
 exports.deletePublicacion = async (req, res) => {
     let rutas = [];
     Publicacion.findByPk(req.params.publId, {
@@ -631,7 +779,7 @@ exports.deletePublicacion = async (req, res) => {
     })
         .then((publicacion) => {
             if (publicacion) {
-                publicacion.getDataValue("fotos").forEach((e) => {
+                publicacion.fotos.forEach((e) => {
                     if (e != "/default/product-default.png") {
                         rutas.push(e);
                     }
@@ -670,8 +818,7 @@ exports.deletePublicacion = async (req, res) => {
             } else {
                 res.status(403).json({
                     status: "error",
-                    message:
-                        "La publicación no existe."
+                    message: "La publicación no existe.",
                 });
             }
         })

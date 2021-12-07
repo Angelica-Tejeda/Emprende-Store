@@ -30,23 +30,20 @@ const uploadImage = multer({
 });
 
 exports.getAllUsuarios = async (req, res) => {
-    Usuario.findAll({
+    Usuario.findAndCountAll({
         attributes: { exclude: ["password", "balance"] },
     })
         .then((usuarios) => {
-            const nUsers = usuarios.length;
-            if (nUsers > 0) {
+            if (usuarios.count > 0) {
                 res.status(200).json({
                     status: "success",
-                    message: "Usuarios obtenidos con éxito.",
-                    quantity: nUsers,
+                    message: "Publicaciones obtenidas con éxito.",
                     result: usuarios,
                 });
             } else {
                 res.status(404).json({
                     status: "error",
-                    message: "Usuarios no encontrados.",
-                    quantity: nUsers,
+                    message: "Publicaciones no encontradas.",
                     result: usuarios,
                 });
             }
@@ -150,24 +147,21 @@ exports.getFullUsuarioById = async (req, res) => {
 };*/
 
 exports.getUsuariosEmpr = async (req, res) => {
-    Usuario.findAll({
+    Usuario.findAndCountAll({
         where: { rol: false },
         attributes: { exclude: ["password", "balance"] },
     })
         .then((usuarios) => {
-            const nUsers = usuarios.length;
-            if (nUsers > 0) {
+            if (usuarios.count > 0) {
                 res.status(200).json({
                     status: "success",
-                    message: "Usuarios obtenidos con éxito.",
-                    quantity: nUsers,
+                    message: "Publicaciones obtenidas con éxito.",
                     result: usuarios,
                 });
             } else {
                 res.status(404).json({
                     status: "error",
-                    message: "Usuarios no encontrados.",
-                    quantity: nUsers,
+                    message: "Publicaciones no encontradas.",
                     result: usuarios,
                 });
             }
@@ -565,6 +559,8 @@ exports.deleteFotoPortada = async (req, res) => {
 exports.deleteUsuario = async (req, res) => {
     const rutaPerfil = "./media/profile/profile-" + req.params.userId + ".png";
     const rutaPortada = "./media/banner/banner-" + req.params.userId + ".png";
+    const rutaProductos = "./media/product/" + req.params.userId;
+
     Usuario.destroy({
         where: { id: req.params.userId },
     })
@@ -572,6 +568,7 @@ exports.deleteUsuario = async (req, res) => {
             if (result == 1) {
                 fs.unlink(rutaPerfil, (err) => {});
                 fs.unlink(rutaPortada, (err) => {});
+                fs.rmSync(rutaProductos, { recursive: true, force: true });
                 res.status(200).json({
                     status: "success",
                     message: "El usuario se ha eliminado con éxito.",
