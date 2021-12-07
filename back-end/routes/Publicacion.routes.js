@@ -8,6 +8,7 @@ const owned = require("../middlwares/owned")
 
 router.post('/', auth, emprend, controller.createPublicacion);
 
+router.get("/categ", controller.getCategorias);
 router.get("/", auth, admin, controller.getAllPublicaciones);
 router.get("/act", controller.getAllActivePublicaciones);
 router.get("/user/:userId", auth, emprend, owned, controller.getPublicacionesByUser);

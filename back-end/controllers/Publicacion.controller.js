@@ -368,6 +368,24 @@ exports.getPublicacionById = async (req, res) => {
         });
 };
 
+exports.getCategorias = async (req, res) => {
+    const categorias = Publicacion.rawAttributes.categoria.type.type.values;
+    if (categorias === null || categorias === undefined || categorias.length === 0) {
+        res.status(404).json({
+            status: "error",
+            message: "Categorias no encontradas.",
+            result: [],
+        });
+    } else {
+        res.status(200).json({
+            status: "success",
+            message: "Categorias obtenidas exitosametne.",
+            result: categorias,
+        });
+    }
+    console.log(categorias);
+}
+
 exports.uploadFoto = async (req, res) => {
     dir = "media/product/" + req.user.id;
     if (!fs.existsSync(dir)){
