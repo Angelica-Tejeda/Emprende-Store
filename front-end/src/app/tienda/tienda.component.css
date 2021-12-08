@@ -3,3 +3,7 @@
     --secondary: rgb(34,70,158);
     --darkSecondary:rgb(45,47,96);
   }
+
+.carousel-inner img {
+  height: 700px;
+}

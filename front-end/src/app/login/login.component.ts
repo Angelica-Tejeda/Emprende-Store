@@ -47,8 +47,8 @@ export class LoginComponent implements OnInit {
       this.http.post(`${_apiUrl}/auth/login`, payload).subscribe((r) => {
         //console.log(r);
         const respuesta = JSON.parse(JSON.stringify(r));
-        localStorage.setItem('status', respuesta.status);
-        localStorage.setItem('message', respuesta.message);
+        //localStorage.setItem('status', respuesta.status);
+        //localStorage.setItem('message', respuesta.message);
         localStorage.setItem('id_user', respuesta.usuario.id);
         localStorage.setItem('activo', respuesta.usuario.activo);
         //localStorage.setItem('rol', respuesta.usuario.rol);
@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
         } else if (respuesta.usuario.rol != 1) {
           this.router.navigate(['/homeescritor']);
         }*/
-        this.router.navigate(['/userProfile']);
+        this.router.navigate(['/userProfile', respuesta.usuario.id]);
       });
     } catch (error) {
       console.log(error);
