@@ -10,15 +10,25 @@ module.exports = (req, res, next) => {
         });
     } else {
         let token = req.headers.authorization.split(" ")[1];
-        jwt.verify(token, process.env.SECRET, (err, decoded) => {
+        jwt.verify(token, process.env.AUTHSECRET, (err, decoded) => {
             if (err) {
-                console.log(err);
-                res.status(403).json({
-                    status: "error",
-                    message:
-                        "Permisos insuficientes para realizar esta acción.",
-                    error: err,
-                });
+                if (err.name == "TokenExpiredError") {
+                    console.log(err);
+                    res.status(401).json({
+                        status: "error",
+                        message:
+                            "El Token de autenticación ha caducado.",
+                        error: err,
+                    });
+                } else {
+                    console.log(err);
+                    res.status(403).json({
+                        status: "error",
+                        message:
+                            "Permisos insuficientes para realizar esta acción.",
+                        error: err,
+                    });
+                }
             } else {
                 req.user = decoded.usuario;
                 next();

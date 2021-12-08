@@ -83,14 +83,14 @@ exports.iniciarSesion = async (req, res) => {
                     message:
                         "El email ingresado no corresponde con el de un usuario emprendedor.",
                 });
-            /*} else if (!usuario.activo) {
+                /*} else if (!usuario.activo) {
                 res.status(403).json({
                     status: "error",
                     message: "Este usuario ha sido deshabilitado.",
                 });*/
             } else {
                 if (bcrypt.compareSync(req.body.password, usuario.password)) {
-                    const token = jwt.sign(
+                    const accessToken = jwt.sign(
                         {
                             usuario: {
                                 id: usuario.id,
@@ -98,7 +98,18 @@ exports.iniciarSesion = async (req, res) => {
                                 activo: usuario.activo,
                             },
                         },
-                        process.env.SECRET,
+                        process.env.AUTHSECRET,
+                        { expiresIn: "10m" }
+                    );
+                    const refreshToken = jwt.sign(
+                        {
+                            usuario: {
+                                id: usuario.id,
+                                rol: usuario.rol,
+                                activo: usuario.activo,
+                            },
+                        },
+                        process.env.REFRESHSECRET,
                         { expiresIn: "7d" }
                     );
                     res.status(200).json({
@@ -109,10 +120,11 @@ exports.iniciarSesion = async (req, res) => {
                             rol: usuario.rol,
                             activo: usuario.activo,
                         },
-                        token: token,
+                        accessToken: accessToken,
+                        refreshToken: refreshToken,
                     });
                 } else {
-                    res.status(401).json({
+                    res.status(400).json({
                         status: "error",
                         message: "La contraseña ingresada no es correcta.",
                     });
@@ -147,14 +159,14 @@ exports.iniciarSesionAdmin = async (req, res) => {
                     message:
                         "El email ingresado no corresponde con el de un usuario administrador.",
                 });
-            /*} else if (!usuario.activo) {
+                /*} else if (!usuario.activo) {
                 res.status(403).json({
                     status: "error",
                     message: "Este usuario ha sido deshabilitado.",
                 });*/
             } else {
                 if (bcrypt.compareSync(req.body.password, usuario.password)) {
-                    const token = jwt.sign(
+                    const accessToken = jwt.sign(
                         {
                             usuario: {
                                 id: usuario.id,
@@ -162,7 +174,18 @@ exports.iniciarSesionAdmin = async (req, res) => {
                                 activo: usuario.activo,
                             },
                         },
-                        process.env.SECRET,
+                        process.env.AUTHSECRET,
+                        { expiresIn: "10m" }
+                    );
+                    const refreshToken = jwt.sign(
+                        {
+                            usuario: {
+                                id: usuario.id,
+                                rol: usuario.rol,
+                                activo: usuario.activo,
+                            },
+                        },
+                        process.env.REFRESHSECRET,
                         { expiresIn: "7d" }
                     );
                     res.status(200).json({
@@ -173,10 +196,11 @@ exports.iniciarSesionAdmin = async (req, res) => {
                             rol: usuario.rol,
                             activo: usuario.activo,
                         },
-                        token: token,
+                        accessToken: accessToken,
+                        refreshToken: refreshToken,
                     });
                 } else {
-                    res.status(401).json({
+                    res.status(400).json({
                         status: "error",
                         message: "La contraseña ingresada no es correcta.",
                     });
@@ -191,4 +215,65 @@ exports.iniciarSesionAdmin = async (req, res) => {
                 error: err,
             });
         });
+};
+
+exports.actualizarToken = async (req, res) => {
+    const refreshToken = req.body.token;
+    if (refreshToken === null) {
+        res.status(401).json({
+            status: "error",
+            message: "Acceso no autorizado.",
+        });
+    }
+    jwt.verify(refreshToken, process.env.REFRESHSECRET, (err, usuario) => {
+        if (err) {
+            if (err.name == "TokenExpiredError") {
+                console.log(err);
+                res.status(401).json({
+                    status: "error",
+                    message: "La sesión ha caducado.",
+                    error: err,
+                });
+            } else {
+                console.log(err);
+                res.status(403).json({
+                    status: "error",
+                    message:
+                        "Permisos insuficientes para realizar esta acción.",
+                    error: err,
+                });
+            }
+        } else {
+            if (jwt.decode(refreshToken).exp < Date.now()/1000 + 259200) {
+                refreshToken = jwt.sign(
+                    {
+                        usuario: {
+                            id: usuario.id,
+                            rol: usuario.rol,
+                            activo: usuario.activo,
+                        },
+                    },
+                    process.env.REFRESHSECRET,
+                    { expiresIn: "7d" }
+                );
+            };
+            const accessToken = jwt.sign(
+                {
+                    usuario: {
+                        id: usuario.id,
+                        rol: usuario.rol,
+                        activo: usuario.activo,
+                    },
+                },
+                process.env.AUTHSECRET,
+                { expiresIn: "10m" }
+            );
+            res.status(200).json({
+                status: "success",
+                message: "Los tokens se han actualizado con éxito.",
+                accessToken: accessToken,
+                refreshToken: refreshToken,
+            });
+        }
+    });
 };
