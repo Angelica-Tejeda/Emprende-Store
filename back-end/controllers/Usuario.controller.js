@@ -31,7 +31,7 @@ const uploadImage = multer({
 
 exports.getAllUsuarios = async (req, res) => {
     Usuario.findAndCountAll({
-        attributes: { exclude: ["password", "balance"] },
+        attributes: { exclude: ["password"] },
     })
         .then((usuarios) => {
             if (usuarios.count > 0) {
@@ -60,35 +60,6 @@ exports.getAllUsuarios = async (req, res) => {
 
 exports.getUsuarioById = async (req, res) => {
     Usuario.findByPk(req.params.userId, {
-        attributes: { exclude: ["password", "balance"] },
-    })
-        .then((usuario) => {
-            if (usuario) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Usuario obtenido con éxito.",
-                    result: usuario,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Usuario no encontrado.",
-                    result: usuario,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.getFullUsuarioById = async (req, res) => {
-    Usuario.findByPk(req.params.userId, {
         attributes: { exclude: ["password"] },
     })
         .then((usuario) => {
@@ -115,6 +86,95 @@ exports.getFullUsuarioById = async (req, res) => {
             });
         });
 };
+
+exports.getUsuariosEmpr = async (req, res) => {
+    Usuario.findAndCountAll({
+        where: { rol: false },
+        attributes: { exclude: ["password"] },
+    })
+        .then((usuarios) => {
+            if (usuarios.count > 0) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Publicaciones obtenidas con éxito.",
+                    result: usuarios,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Publicaciones no encontradas.",
+                    result: usuarios,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};
+
+exports.getUsuariosAdmin = async (req, res) => {
+    Usuario.findAndCountAll({
+        where: { rol: true },
+        attributes: { exclude: ["password"] },
+    })
+        .then((usuarios) => {
+            if (usuarios.count > 0) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Publicaciones obtenidas con éxito.",
+                    result: usuarios,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Publicaciones no encontradas.",
+                    result: usuarios,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};
+
+/*exports.getFullUsuarioById = async (req, res) => {
+    Usuario.findByPk(req.params.userId, {
+        attributes: { exclude: ["password"] },
+    })
+        .then((usuario) => {
+            if (usuario) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Usuario obtenido con éxito.",
+                    result: usuario,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Usuario no encontrado.",
+                    result: usuario,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};*/
 
 /*exports.getUsuarioByEmail = async (req, res) => {
     Usuario.findOne({
@@ -145,110 +205,6 @@ exports.getFullUsuarioById = async (req, res) => {
             });
         });
 };*/
-
-exports.getUsuariosEmpr = async (req, res) => {
-    Usuario.findAndCountAll({
-        where: { rol: false },
-        attributes: { exclude: ["password", "balance"] },
-    })
-        .then((usuarios) => {
-            if (usuarios.count > 0) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Publicaciones obtenidas con éxito.",
-                    result: usuarios,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Publicaciones no encontradas.",
-                    result: usuarios,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.updateUsuario = async (req, res) => {
-    Usuario.update(
-        {
-            email: req.body.email,
-            nombre: req.body.nombre,
-            apellido: req.body.apellido,
-            fecha_nacimiento: req.body.fecha_nacimiento,
-            negocio: req.body.negocio,
-            //foto_perfil: req.body.foto_perfil,
-            //foto_portada: req.body.foto_portada,
-            bio: req.body.bio,
-            celular: req.body.celular,
-            facebook: req.body.facebook,
-            instagram: req.body.instagram,
-            twitter: req.body.twitter,
-            tiktok: req.body.tiktok,
-            linkedin: req.body.linkedin,
-        },
-        {
-            where: { id: req.params.userId },
-        }
-    )
-        .then((result) => {
-            if (result == 1) {
-                res.status(200).json({
-                    status: "success",
-                    message: "El usuario se ha actualizado con éxito.",
-                    result: result,
-                });
-            } else {
-                res.status(403).json({
-                    status: "error",
-                    message:
-                        "El usuario no se ha podido actualizar o no existe.",
-                    result: result,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            if (err.name === "SequelizeUniqueConstraintError") {
-                res.status(403).json({
-                    status: "error",
-                    message:
-                        "El " +
-                        err.errors[0].path +
-                        " ingresado ya ha sido registrado.",
-                    error: err,
-                });
-            } else if (err.name === "SequelizeValidationError") {
-                res.status(400).json({
-                    status: "error",
-                    message:
-                        "El valor ingresado en el campo " +
-                        err.errors[0].path +
-                        " no es válido.",
-                    error: err,
-                });
-            } else if (err.name === "SequelizeDatabaseError") {
-                res.status(400).json({
-                    status: "error",
-                    message: "Uno de los valores ingresados no es válido.",
-                    error: err,
-                });
-            } else {
-                res.status(500).json({
-                    status: "error",
-                    message: "Ha ocurrido un error inesperado.",
-                    error: err,
-                });
-            }
-        });
-};
 
 exports.updateUsuarioAct = async (req, res) => {
     Usuario.update(
@@ -553,6 +509,81 @@ exports.deleteFotoPortada = async (req, res) => {
                 message: "Ha ocurrido un error inesperado.",
                 error: err,
             });
+        });
+};
+
+exports.updateUsuario = async (req, res) => {
+    Usuario.update(
+        {
+            email: req.body.email,
+            nombre: req.body.nombre,
+            apellido: req.body.apellido,
+            fecha_nacimiento: req.body.fecha_nacimiento,
+            negocio: req.body.negocio,
+            //foto_perfil: req.body.foto_perfil,
+            //foto_portada: req.body.foto_portada,
+            bio: req.body.bio,
+            celular: req.body.celular,
+            facebook: req.body.facebook,
+            instagram: req.body.instagram,
+            twitter: req.body.twitter,
+            tiktok: req.body.tiktok,
+            linkedin: req.body.linkedin,
+            fecha_inicio: req.body.fecha_inicio,
+        },
+        {
+            where: { id: req.params.userId },
+        }
+    )
+        .then((result) => {
+            if (result == 1) {
+                res.status(200).json({
+                    status: "success",
+                    message: "El usuario se ha actualizado con éxito.",
+                    result: result,
+                });
+            } else {
+                res.status(403).json({
+                    status: "error",
+                    message:
+                        "El usuario no se ha podido actualizar o no existe.",
+                    result: result,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            if (err.name === "SequelizeUniqueConstraintError") {
+                res.status(403).json({
+                    status: "error",
+                    message:
+                        "El " +
+                        err.errors[0].path +
+                        " ingresado ya ha sido registrado.",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeValidationError") {
+                res.status(400).json({
+                    status: "error",
+                    message:
+                        "El valor ingresado en el campo " +
+                        err.errors[0].path +
+                        " no es válido.",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeDatabaseError") {
+                res.status(400).json({
+                    status: "error",
+                    message: "Uno de los valores ingresados no es válido.",
+                    error: err,
+                });
+            } else {
+                res.status(500).json({
+                    status: "error",
+                    message: "Ha ocurrido un error inesperado.",
+                    error: err,
+                });
+            }
         });
 };
 

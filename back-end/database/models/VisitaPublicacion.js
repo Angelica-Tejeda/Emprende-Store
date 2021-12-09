@@ -31,6 +31,11 @@ VisitaPublicacion.init(
             type: Sequelize.STRING(15),
             allowNull: true,
         },
+        contacto: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        },
         fecha: {
             type: Sequelize.DATE,
             allowNull: false,

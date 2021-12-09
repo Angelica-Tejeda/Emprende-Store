@@ -128,9 +128,10 @@ Usuario.init(
                 len: [5,125],
             },
         },
-        balance: {
-            type: Sequelize.DECIMAL(8, 2),
-            allowNull: true,
+        fecha_inicio: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            defaultValue: sequelize.literal("CURRENT_DATE"),
         },
         puntuacion: {
             type: Sequelize.DECIMAL(2, 1),

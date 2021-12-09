@@ -11,6 +11,7 @@ router.post('/', auth, emprend, controller.createPublicacion);
 router.get("/categ", controller.getCategorias);
 router.get("/", auth, admin, controller.getAllPublicaciones);
 router.get("/act", controller.getAllActivePublicaciones);
+router.get("/descuento", controller.getAllDiscountPublicaciones);
 router.get("/user/:userId", auth, emprend, owned, controller.getPublicacionesByUser);
 router.get("/act/user/:userId", controller.getActivePublicacionesByUser);
 router.get("/:publId", controller.getActivePublicacionById);

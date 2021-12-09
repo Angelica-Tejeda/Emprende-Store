@@ -147,7 +147,7 @@ exports.getAllActivePublicaciones = async (req, res) => {
                     result: {
                         count: nPubs,
                         rows: pubsFinal,
-                    }
+                    },
                 });
             } else {
                 res.status(404).json({
@@ -156,7 +156,74 @@ exports.getAllActivePublicaciones = async (req, res) => {
                     result: {
                         count: nPubs,
                         rows: pubsFinal,
-                    }
+                    },
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};
+
+exports.getAllDiscountPublicaciones = async (req, res) => {
+    Publicacion.findAll({
+        where: {
+            activo: true,
+            descuento: {
+                [Op.gt]: 0,
+            },
+        },
+        attributes: { exclude: ["usuario_id"] },
+        include: [
+            {
+                model: Usuario,
+                attributes: [
+                    "id",
+                    "nombre",
+                    "apellido",
+                    "negocio",
+                    "foto_perfil",
+                    "celular",
+                    "facebook",
+                    "instagram",
+                    "twitter",
+                    "tiktok",
+                    "linkedin",
+                    "activo",
+                ],
+            },
+        ],
+    })
+        .then((publicaciones) => {
+            let pubsFinal = [];
+            publicaciones.forEach((e) => {
+                if (e.usuario.activo) {
+                    pubsFinal.push(e);
+                }
+            });
+            const nPubs = pubsFinal.length;
+            if (nPubs > 0) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Publicaciones obtenidas con éxito.",
+                    result: {
+                        count: nPubs,
+                        rows: pubsFinal,
+                    },
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Publicaciones no encontradas.",
+                    result: {
+                        count: nPubs,
+                        rows: pubsFinal,
+                    },
                 });
             }
         })
@@ -370,7 +437,11 @@ exports.getPublicacionById = async (req, res) => {
 
 exports.getCategorias = async (req, res) => {
     const categorias = Publicacion.rawAttributes.categoria.type.type.values;
-    if (categorias === null || categorias === undefined || categorias.length === 0) {
+    if (
+        categorias === null ||
+        categorias === undefined ||
+        categorias.length === 0
+    ) {
         res.status(404).json({
             status: "error",
             message: "Categorias no encontradas.",
@@ -384,11 +455,11 @@ exports.getCategorias = async (req, res) => {
         });
     }
     console.log(categorias);
-}
+};
 
 exports.uploadFoto = async (req, res) => {
     dir = "media/product/" + req.user.id;
-    if (!fs.existsSync(dir)){
+    if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
     let rutas = [];
@@ -415,7 +486,8 @@ exports.uploadFoto = async (req, res) => {
                         message: "El archivo no es de un formato soportado.",
                     });
                 } else {
-                    const ruta = "/product/" + req.user.id + "/" + req.file.filename;
+                    const ruta =
+                        "/product/" + req.user.id + "/" + req.file.filename;
                     rutas.push(ruta);
                     Publicacion.update(
                         {
@@ -578,69 +650,6 @@ exports.deleteFoto = async (req, res) => {
         });
 };
 
-exports.updatePublicacion = async (req, res) => {
-    Publicacion.update(
-        {
-            titulo: req.body.titulo,
-            descripcion: req.body.descripcion,
-            servicio: req.body.servicio,
-            categoria: req.body.categoria,
-            precio: req.body.precio,
-        },
-        {
-            where: { id: req.params.publId },
-        }
-    )
-        .then((result) => {
-            if (result == 1) {
-                res.status(200).json({
-                    status: "success",
-                    message: "La publicación se ha actualizado con éxito.",
-                    result: result,
-                });
-            } else {
-                res.status(403).json({
-                    status: "error",
-                    message:
-                        "La publicación no se ha podido actualizar o no existe.",
-                    result: result,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            if (err.name === "SequelizeUniqueConstraintError") {
-                res.status(403).json({
-                    status: "error",
-                    message:
-                        "El usuario ya tiene una publicación con éste título.",
-                    error: err,
-                });
-            } else if (err.name === "SequelizeValidationError") {
-                res.status(400).json({
-                    status: "error",
-                    message:
-                        "El valor ingresado en el campo " +
-                        err.errors[0].path +
-                        " no es válido.",
-                    error: err,
-                });
-            } else if (err.name === "SequelizeDatabaseError") {
-                res.status(400).json({
-                    status: "error",
-                    message: "Uno de los valores ingresados no es válido.",
-                    error: err,
-                });
-            } else {
-                res.status(500).json({
-                    status: "error",
-                    message: "Ha ocurrido un error inesperado.",
-                    error: err,
-                });
-            }
-        });
-};
-
 exports.updateActivePublicacion = async (req, res) => {
     let rutas = [];
     Publicacion.findByPk(req.params.publId, {
@@ -775,8 +784,7 @@ exports.updateActivePublicacion = async (req, res) => {
             } else {
                 res.status(404).json({
                     status: "error",
-                    message:
-                        "La publicación no ha sido encontrada.",
+                    message: "La publicación no ha sido encontrada.",
                 });
             }
         })
@@ -787,6 +795,70 @@ exports.updateActivePublicacion = async (req, res) => {
                 message: "Ha ocurrido un error inesperado.",
                 error: err,
             });
+        });
+};
+
+exports.updatePublicacion = async (req, res) => {
+    Publicacion.update(
+        {
+            titulo: req.body.titulo,
+            descripcion: req.body.descripcion,
+            servicio: req.body.servicio,
+            categoria: req.body.categoria,
+            precio: req.body.precio,
+            descuento: req.body.descuento,
+        },
+        {
+            where: { id: req.params.publId },
+        }
+    )
+        .then((result) => {
+            if (result == 1) {
+                res.status(200).json({
+                    status: "success",
+                    message: "La publicación se ha actualizado con éxito.",
+                    result: result,
+                });
+            } else {
+                res.status(403).json({
+                    status: "error",
+                    message:
+                        "La publicación no se ha podido actualizar o no existe.",
+                    result: result,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            if (err.name === "SequelizeUniqueConstraintError") {
+                res.status(403).json({
+                    status: "error",
+                    message:
+                        "El usuario ya tiene una publicación con éste título.",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeValidationError") {
+                res.status(400).json({
+                    status: "error",
+                    message:
+                        "El valor ingresado en el campo " +
+                        err.errors[0].path +
+                        " no es válido.",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeDatabaseError") {
+                res.status(400).json({
+                    status: "error",
+                    message: "Uno de los valores ingresados no es válido.",
+                    error: err,
+                });
+            } else {
+                res.status(500).json({
+                    status: "error",
+                    message: "Ha ocurrido un error inesperado.",
+                    error: err,
+                });
+            }
         });
 };
 

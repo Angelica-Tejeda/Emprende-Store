@@ -81,10 +81,19 @@ Publicacion.init(
             type: Sequelize.DECIMAL(2, 1),
             allowNull: true,
         },
+        descuento: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+            validate: {
+                min: 0,
+                max: 100,
+            }
+        },
         activo: {
             type: Sequelize.BOOLEAN,
             allowNull: false,
-            defaultValue: "0",
+            defaultValue: false,
         },
         creado: {
             type: Sequelize.DATE,

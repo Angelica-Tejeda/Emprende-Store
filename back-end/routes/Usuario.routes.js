@@ -7,16 +7,17 @@ const admin = require("../middlwares/admin")
 
 router.get("/", auth, admin, controller.getAllUsuarios);
 router.get("/empr", controller.getUsuariosEmpr);
-router.get("/full/:userId", auth, owned, controller.getFullUsuarioById);
+router.get("/admin", auth, admin, controller.getUsuariosAdmin);
 router.get("/:userId", controller.getUsuarioById);
+//router.get("/full/:userId", auth, owned, controller.getFullUsuarioById);
 //router.get("/email/:email", auth, controller.getUsuarioByEmail);
 
+router.patch("/act/:userId", auth, admin, controller.updateUsuarioAct);
 router.patch("/password/:userId", auth, owned, controller.updatePassword);
 router.patch("/fotoPerfil/:type/:userId", auth, owned, controller.updateFotoPerfil);
 router.patch("/fotoPerfilDel/:userId", auth, owned, controller.deleteFotoPerfil);
 router.patch("/fotoPortada/:type/:userId", auth, owned, controller.updateFotoPortada);
 router.patch("/fotoPortadaDel/:userId", auth, owned, controller.deleteFotoPortada);
-router.patch("/act/:userId", auth, admin, controller.updateUsuarioAct);
 router.patch("/:userId", auth, owned, controller.updateUsuario);
 
 router.delete("/:userId", auth, owned, controller.deleteUsuario);
