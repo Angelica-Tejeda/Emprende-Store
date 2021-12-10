@@ -16,7 +16,8 @@ const fileFilter = (req, file, cb) => {
     if (
         file.mimetype == "image/png" ||
         file.mimetype == "image/jpg" ||
-        file.mimetype == "image/jpeg"
+        file.mimetype == "image/jpeg" ||
+        file.mimetype == "image/webp"
     ) {
         cb(null, true);
     } else {
@@ -37,13 +38,103 @@ exports.getAllUsuarios = async (req, res) => {
             if (usuarios.count > 0) {
                 res.status(200).json({
                     status: "success",
-                    message: "Publicaciones obtenidas con éxito.",
+                    message: "Usuarios obtenidos con éxito.",
                     result: usuarios,
                 });
             } else {
                 res.status(404).json({
                     status: "error",
-                    message: "Publicaciones no encontradas.",
+                    message: "Usuarios no encontrados.",
+                    result: usuarios,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};
+
+exports.getUsuariosEmpr = async (req, res) => {
+    Usuario.findAndCountAll({
+        where: { rol: false },
+        attributes: { exclude: ["password"] },
+    })
+        .then((usuarios) => {
+            if (usuarios.count > 0) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Usuarios obtenidos con éxito.",
+                    result: usuarios,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Usuarios no encontrados.",
+                    result: usuarios,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};
+
+exports.getUsuarioEmprById = async (req, res) => {
+    Usuario.findOne({
+        where: { id: req.params.userId, rol: false, activo: true },
+        attributes: { exclude: ["password"] },
+    })
+        .then((usuario) => {
+            if (usuario) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Usuario obtenido con éxito.",
+                    result: usuario,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Usuario no encontrado.",
+                    result: usuario,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado.",
+                error: err,
+            });
+        });
+};
+
+exports.getUsuariosAdmin = async (req, res) => {
+    Usuario.findAndCountAll({
+        where: { rol: true },
+        attributes: { exclude: ["password"] },
+    })
+        .then((usuarios) => {
+            if (usuarios.count > 0) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Usuarios obtenidos con éxito.",
+                    result: usuarios,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Usuarios no encontrados.",
                     result: usuarios,
                 });
             }
@@ -74,66 +165,6 @@ exports.getUsuarioById = async (req, res) => {
                     status: "error",
                     message: "Usuario no encontrado.",
                     result: usuario,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.getUsuariosEmpr = async (req, res) => {
-    Usuario.findAndCountAll({
-        where: { rol: false },
-        attributes: { exclude: ["password"] },
-    })
-        .then((usuarios) => {
-            if (usuarios.count > 0) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Publicaciones obtenidas con éxito.",
-                    result: usuarios,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Publicaciones no encontradas.",
-                    result: usuarios,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.getUsuariosAdmin = async (req, res) => {
-    Usuario.findAndCountAll({
-        where: { rol: true },
-        attributes: { exclude: ["password"] },
-    })
-        .then((usuarios) => {
-            if (usuarios.count > 0) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Publicaciones obtenidas con éxito.",
-                    result: usuarios,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Publicaciones no encontradas.",
-                    result: usuarios,
                 });
             }
         })

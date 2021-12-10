@@ -7,8 +7,9 @@ const admin = require("../middlwares/admin")
 
 router.get("/", auth, admin, controller.getAllUsuarios);
 router.get("/empr", controller.getUsuariosEmpr);
+router.get("/empr/:userId", controller.getUsuarioEmprById);
 router.get("/admin", auth, admin, controller.getUsuariosAdmin);
-router.get("/:userId", controller.getUsuarioById);
+router.get("/:userId", auth, owned, controller.getUsuarioById);
 //router.get("/full/:userId", auth, owned, controller.getFullUsuarioById);
 //router.get("/email/:email", auth, controller.getUsuarioByEmail);
 

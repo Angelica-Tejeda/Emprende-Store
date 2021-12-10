@@ -26,7 +26,8 @@ const fileFilter = (req, file, cb) => {
     if (
         file.mimetype == "image/png" ||
         file.mimetype == "image/jpg" ||
-        file.mimetype == "image/jpeg"
+        file.mimetype == "image/jpeg" ||
+        file.mimetype == "image/webp"
     ) {
         cb(null, true);
     } else {
@@ -726,7 +727,7 @@ exports.updateActivePublicacion = async (req, res) => {
                         });
                     } else if (
                         fotos === [] ||
-                        fotos == ["/default/product-default.png"]
+                        fotos[0] == "/default/product-default.png"
                     ) {
                         res.status(403).json({
                             status: "error",
