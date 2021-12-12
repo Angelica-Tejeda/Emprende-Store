@@ -11,7 +11,7 @@ exports.createVisitaPerfil = async (req, res) => {
         .then((visita) => {
             res.status(200).json({
                 status: "success",
-                message: "La visita al perfil se ha registrado.",
+                message: "La visita al perfil se ha registrado con éxito.",
                 result: visita,
             });
         })
@@ -35,7 +35,7 @@ exports.createVisitaPublicacion = async (req, res) => {
         .then((visita) => {
             res.status(200).json({
                 status: "success",
-                message: "La visita a la publicación se ha registrado.",
+                message: "La visita a la publicación se ha registrado con éxito.",
                 result: visita,
             });
         })
@@ -59,7 +59,7 @@ exports.createContactoPublicacion = async (req, res) => {
         .then((visita) => {
             res.status(200).json({
                 status: "success",
-                message: "El contacto con el vendedor de la publicación se ha registrado.",
+                message: "El contacto con el vendedor de la publicación se ha registrado con éxito.",
                 result: visita,
             });
         })
@@ -93,7 +93,7 @@ exports.getVisitaPerfilByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -120,7 +120,7 @@ exports.getVisitaPerfilDistinctByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -147,7 +147,7 @@ exports.getVisitaPublicacionByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -175,7 +175,7 @@ exports.getVisitaPublicacionDistinctByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -202,7 +202,7 @@ exports.getVisitaPublicacionByPubl = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -230,7 +230,7 @@ exports.getVisitaPublicacionDistinctByPubl = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -257,7 +257,7 @@ exports.getContactoPublicacionByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -285,7 +285,7 @@ exports.getContactoPublicacionDistinctByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -312,7 +312,7 @@ exports.getContactoPublicacionByPubl = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -340,7 +340,7 @@ exports.getContactoPublicacionDistinctByPubl = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });

@@ -55,10 +55,32 @@ exports.createPublicacion = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
+};
+
+exports.getCategorias = async (req, res) => {
+    const categorias = Publicacion.rawAttributes.categoria.type.type.values;
+    if (
+        categorias === null ||
+        categorias === undefined ||
+        categorias.length === 0
+    ) {
+        res.status(404).json({
+            status: "error",
+            message: "Categorias no encontradas.",
+            result: [],
+        });
+    } else {
+        res.status(200).json({
+            status: "success",
+            message: "Categorias obtenidas exitosametne.",
+            result: categorias,
+        });
+    }
+    console.log(categorias);
 };
 
 exports.getAllPublicaciones = async (req, res) => {
@@ -103,15 +125,15 @@ exports.getAllPublicaciones = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getAllActivePublicaciones = async (req, res) => {
-    Publicacion.findAll({
-        where: { activo: true },
+exports.getOwnPublicacionesByUsuario = async (req, res) => {
+    Publicacion.findAndCountAll({
+        where: { usuario_id: req.params.userId },
         attributes: { exclude: ["usuario_id"] },
         include: [
             {
@@ -134,30 +156,17 @@ exports.getAllActivePublicaciones = async (req, res) => {
         ],
     })
         .then((publicaciones) => {
-            let pubsFinal = [];
-            publicaciones.forEach((e) => {
-                if (e.usuario.activo) {
-                    pubsFinal.push(e);
-                }
-            });
-            const nPubs = pubsFinal.length;
-            if (nPubs > 0) {
+            if (publicaciones.count > 0) {
                 res.status(200).json({
                     status: "success",
                     message: "Publicaciones obtenidas con éxito.",
-                    result: {
-                        count: nPubs,
-                        rows: pubsFinal,
-                    },
+                    result: publicaciones,
                 });
             } else {
                 res.status(404).json({
                     status: "error",
                     message: "Publicaciones no encontradas.",
-                    result: {
-                        count: nPubs,
-                        rows: pubsFinal,
-                    },
+                    result: publicaciones,
                 });
             }
         })
@@ -165,13 +174,61 @@ exports.getAllActivePublicaciones = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getAllDiscountPublicaciones = async (req, res) => {
+exports.getOwnPublicacionById = async (req, res) => {
+    Publicacion.findByPk(req.params.publId, {
+        attributes: { exclude: ["usuario_id"] },
+        include: [
+            {
+                model: Usuario,
+                attributes: [
+                    "id",
+                    "nombre",
+                    "apellido",
+                    "negocio",
+                    "foto_perfil",
+                    "celular",
+                    "facebook",
+                    "instagram",
+                    "twitter",
+                    "tiktok",
+                    "linkedin",
+                    "activo",
+                ],
+            },
+        ],
+    })
+        .then((publicacion) => {
+            if (publicacion) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Publicación obtenida con éxito.",
+                    result: publicacion,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Publicación no encontrada.",
+                    result: null,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
+            });
+        });
+};
+
+exports.getDiscountPublicaciones = async (req, res) => {
     Publicacion.findAll({
         where: {
             activo: true,
@@ -232,62 +289,13 @@ exports.getAllDiscountPublicaciones = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
 exports.getPublicacionesByUsuario = async (req, res) => {
-    Publicacion.findAndCountAll({
-        where: { usuario_id: req.params.userId },
-        attributes: { exclude: ["usuario_id"] },
-        include: [
-            {
-                model: Usuario,
-                attributes: [
-                    "id",
-                    "nombre",
-                    "apellido",
-                    "negocio",
-                    "foto_perfil",
-                    "celular",
-                    "facebook",
-                    "instagram",
-                    "twitter",
-                    "tiktok",
-                    "linkedin",
-                    "activo",
-                ],
-            },
-        ],
-    })
-        .then((publicaciones) => {
-            if (publicaciones.count > 0) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Publicaciones obtenidas con éxito.",
-                    result: publicaciones,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Publicaciones no encontradas.",
-                    result: publicaciones,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.getActivePublicacionesByUsuario = async (req, res) => {
     Publicacion.findAndCountAll({
         where: { usuario_id: req.params.userId, activo: true },
         attributes: { exclude: ["usuario_id"] },
@@ -330,13 +338,13 @@ exports.getActivePublicacionesByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getActivePublicacionById = async (req, res) => {
+exports.getPublicacionById = async (req, res) => {
     Publicacion.findByPk(req.params.publId, {
         attributes: { exclude: ["usuario_id"] },
         include: [
@@ -382,14 +390,15 @@ exports.getActivePublicacionById = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getPublicacionById = async (req, res) => {
-    Publicacion.findByPk(req.params.publId, {
+exports.getPublicaciones = async (req, res) => {
+    Publicacion.findAll({
+        where: { activo: true },
         attributes: { exclude: ["usuario_id"] },
         include: [
             {
@@ -411,18 +420,31 @@ exports.getPublicacionById = async (req, res) => {
             },
         ],
     })
-        .then((publicacion) => {
-            if (publicacion) {
+        .then((publicaciones) => {
+            let pubsFinal = [];
+            publicaciones.forEach((e) => {
+                if (e.usuario.activo) {
+                    pubsFinal.push(e);
+                }
+            });
+            const nPubs = pubsFinal.length;
+            if (nPubs > 0) {
                 res.status(200).json({
                     status: "success",
-                    message: "Publicación obtenida con éxito.",
-                    result: publicacion,
+                    message: "Publicaciones obtenidas con éxito.",
+                    result: {
+                        count: nPubs,
+                        rows: pubsFinal,
+                    },
                 });
             } else {
                 res.status(404).json({
                     status: "error",
-                    message: "Publicación no encontrada.",
-                    result: null,
+                    message: "Publicaciones no encontradas.",
+                    result: {
+                        count: nPubs,
+                        rows: pubsFinal,
+                    },
                 });
             }
         })
@@ -430,35 +452,13 @@ exports.getPublicacionById = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getCategorias = async (req, res) => {
-    const categorias = Publicacion.rawAttributes.categoria.type.type.values;
-    if (
-        categorias === null ||
-        categorias === undefined ||
-        categorias.length === 0
-    ) {
-        res.status(404).json({
-            status: "error",
-            message: "Categorias no encontradas.",
-            result: [],
-        });
-    } else {
-        res.status(200).json({
-            status: "success",
-            message: "Categorias obtenidas exitosametne.",
-            result: categorias,
-        });
-    }
-    console.log(categorias);
-};
-
-exports.uploadFoto = async (req, res) => {
+exports.updatePublicacionFoto = async (req, res) => {
     dir = "media/product/" + req.user.id;
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -519,7 +519,7 @@ exports.uploadFoto = async (req, res) => {
                             console.log(err);
                             res.status(500).json({
                                 status: "error",
-                                message: "Ha ocurrido un error inesperado.",
+                                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                                 error: err,
                             });
                         });
@@ -530,128 +530,13 @@ exports.uploadFoto = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.deleteFoto = async (req, res) => {
-    let rutas = [];
-    const oldFoto = "/product/" + req.user.id + "/" + req.params.filename;
-    const newFoto = ["/default/product-default.png"];
-    Publicacion.findByPk(req.params.publId, {
-        attributes: ["fotos"],
-    })
-        .then((publicacion) => {
-            if (publicacion.fotos.length <= 1) {
-                Publicacion.update(
-                    {
-                        fotos: newFoto,
-                    },
-                    {
-                        where: { id: req.params.publId },
-                    }
-                )
-                    .then((result) => {
-                        if (result == 1) {
-                            fs.unlink("./media" + oldFoto, (err) => {
-                                if (err) {
-                                    console.error(err);
-                                    res.status(403).json({
-                                        status: "error",
-                                        message: "Esta foto no existe.",
-                                        result: result,
-                                    });
-                                } else {
-                                    res.status(200).json({
-                                        status: "success",
-                                        message:
-                                            "La foto del producto se ha eliminado con éxito.",
-                                        result: result,
-                                    });
-                                }
-                            });
-                        } else {
-                            res.status(403).json({
-                                status: "error",
-                                message:
-                                    "La foto del producto no se ha podido eliminar.",
-                                result: result,
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        res.status(500).json({
-                            status: "error",
-                            message: "Ha ocurrido un error inesperado.",
-                            error: err,
-                        });
-                    });
-            } else {
-                publicacion.fotos.forEach((e) => {
-                    if (e != oldFoto) {
-                        rutas.push(e);
-                    }
-                });
-                Publicacion.update(
-                    {
-                        fotos: rutas,
-                    },
-                    {
-                        where: { id: req.params.publId },
-                    }
-                )
-                    .then((result) => {
-                        if (result == 1) {
-                            fs.unlink("./media" + oldFoto, (err) => {
-                                if (err) {
-                                    console.error(err);
-                                    res.status(403).json({
-                                        status: "error",
-                                        message: "Esta foto no existe.",
-                                        result: result,
-                                    });
-                                } else {
-                                    res.status(200).json({
-                                        status: "success",
-                                        message:
-                                            "La foto del producto se ha eliminado con éxito.",
-                                        result: result,
-                                    });
-                                }
-                            });
-                        } else {
-                            res.status(403).json({
-                                status: "error",
-                                message:
-                                    "La foto del producto no se ha podido eliminar.",
-                                result: result,
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        res.status(500).json({
-                            status: "error",
-                            message: "Ha ocurrido un error inesperado.",
-                            error: err,
-                        });
-                    });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.updateActivePublicacion = async (req, res) => {
+exports.updatePublicacionActivo = async (req, res) => {
     let rutas = [];
     Publicacion.findByPk(req.params.publId, {
         attributes: [
@@ -696,7 +581,7 @@ exports.updateActivePublicacion = async (req, res) => {
                             console.log(err);
                             res.status(500).json({
                                 status: "error",
-                                message: "Ha ocurrido un error inesperado.",
+                                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                                 error: err,
                             });
                         });
@@ -776,7 +661,7 @@ exports.updateActivePublicacion = async (req, res) => {
                                 console.log(err);
                                 res.status(500).json({
                                     status: "error",
-                                    message: "Ha ocurrido un error inesperado.",
+                                    message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                                     error: err,
                                 });
                             });
@@ -793,7 +678,7 @@ exports.updateActivePublicacion = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -856,10 +741,125 @@ exports.updatePublicacion = async (req, res) => {
             } else {
                 res.status(500).json({
                     status: "error",
-                    message: "Ha ocurrido un error inesperado.",
+                    message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                     error: err,
                 });
             }
+        });
+};
+
+exports.deletePublicacionFoto = async (req, res) => {
+    let rutas = [];
+    const oldFoto = "/product/" + req.user.id + "/" + req.params.filename;
+    const newFoto = ["/default/product-default.png"];
+    Publicacion.findByPk(req.params.publId, {
+        attributes: ["fotos"],
+    })
+        .then((publicacion) => {
+            if (publicacion.fotos.length <= 1) {
+                Publicacion.update(
+                    {
+                        fotos: newFoto,
+                    },
+                    {
+                        where: { id: req.params.publId },
+                    }
+                )
+                    .then((result) => {
+                        if (result == 1) {
+                            fs.unlink("./media" + oldFoto, (err) => {
+                                if (err) {
+                                    console.error(err);
+                                    res.status(403).json({
+                                        status: "error",
+                                        message: "Esta foto no existe.",
+                                        result: result,
+                                    });
+                                } else {
+                                    res.status(200).json({
+                                        status: "success",
+                                        message:
+                                            "La foto del producto se ha eliminado con éxito.",
+                                        result: result,
+                                    });
+                                }
+                            });
+                        } else {
+                            res.status(403).json({
+                                status: "error",
+                                message:
+                                    "La foto del producto no se ha podido eliminar.",
+                                result: result,
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        res.status(500).json({
+                            status: "error",
+                            message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                            error: err,
+                        });
+                    });
+            } else {
+                publicacion.fotos.forEach((e) => {
+                    if (e != oldFoto) {
+                        rutas.push(e);
+                    }
+                });
+                Publicacion.update(
+                    {
+                        fotos: rutas,
+                    },
+                    {
+                        where: { id: req.params.publId },
+                    }
+                )
+                    .then((result) => {
+                        if (result == 1) {
+                            fs.unlink("./media" + oldFoto, (err) => {
+                                if (err) {
+                                    console.error(err);
+                                    res.status(403).json({
+                                        status: "error",
+                                        message: "Esta foto no existe.",
+                                        result: result,
+                                    });
+                                } else {
+                                    res.status(200).json({
+                                        status: "success",
+                                        message:
+                                            "La foto del producto se ha eliminado con éxito.",
+                                        result: result,
+                                    });
+                                }
+                            });
+                        } else {
+                            res.status(403).json({
+                                status: "error",
+                                message:
+                                    "La foto del producto no se ha podido eliminar.",
+                                result: result,
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        res.status(500).json({
+                            status: "error",
+                            message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                            error: err,
+                        });
+                    });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
+            });
         });
 };
 
@@ -902,7 +902,7 @@ exports.deletePublicacion = async (req, res) => {
                         console.log(err);
                         res.status(500).json({
                             status: "error",
-                            message: "Ha ocurrido un error inesperado.",
+                            message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                             error: err,
                         });
                     });
@@ -917,7 +917,7 @@ exports.deletePublicacion = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });

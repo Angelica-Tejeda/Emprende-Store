@@ -1,4 +1,5 @@
 const Comentario = require("../database/models/Comentario");
+const Publicacion = require("../database/models/Publicacion");
 
 exports.createComentario = async (req, res) => {
     Comentario.create({
@@ -24,30 +25,71 @@ exports.createComentario = async (req, res) => {
                     message:
                         "El valor ingresado en el campo " +
                         err.errors[0].path +
-                        " no es válido.",
+                        " no es válido. Ingrese un valor válido e inténtelo nuevamente.",
                     error: err,
                 });
             } else if (err.name === "SequelizeDatabaseError") {
                 res.status(400).json({
                     status: "error",
-                    message: "Uno de los valores ingresados no es válido.",
+                    message:
+                        "Uno de los valores ingresados no es válido. Revise los valores ingresados e intentelo nuevamente.",
                     error: err,
                 });
             } else {
                 res.status(500).json({
                     status: "error",
-                    message: "Ha ocurrido un error inesperado.",
+                    message:
+                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                     error: err,
                 });
             }
         });
 };
 
+exports.getAllComentariosByUsuario = async (req, res) => {
+    Comentario.findAndCountAll({
+        order: [["id", "DESC"]],
+        where: {
+            usuario_id: req.params.userId,
+        },
+        include: [
+            {
+                model: Publicacion,
+                attributes: ["id", "titulo", "fotos", "precio", "activo"],
+            },
+        ],
+    })
+        .then((comentarios) => {
+            if (comentarios.count > 0) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Comentarios obtenidos con éxito.",
+                    result: comentarios,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Comentarios no encontrados.",
+                    result: comentarios,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
+            });
+        });
+};
+
 exports.getComentariosByUsuario = async (req, res) => {
     Comentario.findAndCountAll({
-        order: "creado DESC",
+        order: [["id", "DESC"]],
         where: {
-            usuario_id: req.params.user_id,
+            usuario_id: req.params.userId,
             oculto: false,
         },
     })
@@ -70,17 +112,19 @@ exports.getComentariosByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getAllComentariosByUsuario = async (req, res) => {
+exports.getOwnComentariosByNullPublicacion = async (req, res) => {
     Comentario.findAndCountAll({
-        order: "creado DESC",
+        order: [["id", "DESC"]],
         where: {
-            usuario_id: req.params.user_id,
+            usuario_id: req.params.userId,
+            publicacion_id: null,
         },
     })
         .then((comentarios) => {
@@ -102,7 +146,42 @@ exports.getAllComentariosByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
+            });
+        });
+};
+
+exports.getOwnComentariosByPublicacion = async (req, res) => {
+    Comentario.findAndCountAll({
+        order: [["id", "DESC"]],
+        where: {
+            usuario_id: req.params.userId,
+            publicacion_id: req.params.publId,
+        },
+    })
+        .then((comentarios) => {
+            if (comentarios.count > 0) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Comentarios obtenidos con éxito.",
+                    result: comentarios,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Comentarios no encontrados.",
+                    result: comentarios,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -110,10 +189,10 @@ exports.getAllComentariosByUsuario = async (req, res) => {
 
 exports.getComentariosByPublicacion = async (req, res) => {
     Comentario.findAndCountAll({
-        order: "creado DESC",
+        order: [["id", "DESC"]],
         where: {
-            usuario_id: req.params.user_id,
-            publicacion_id: req.params.publicacion_id,
+            usuario_id: req.params.userId,
+            publicacion_id: req.params.publId,
             oculto: false,
         },
     })
@@ -136,65 +215,40 @@ exports.getComentariosByPublicacion = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getAllComentariosByPublicacion = async (req, res) => {
-    Comentario.findAndCountAll({
-        order: "creado DESC",
-        where: {
-            usuario_id: req.params.user_id,
-            publicacion_id: req.params.publicacion_id,
-        },
-    })
-        .then((comentarios) => {
-            if (comentarios.count > 0) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Comentarios obtenidos con éxito.",
-                    result: comentarios,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Comentarios no encontrados.",
-                    result: comentarios,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.updateOcultarComentario = async (req, res) => {
+exports.updateComentarioOculto = async (req, res) => {
     Comentario.update(
         {
-            oculto: true,
+            oculto: req.body.oculto,
         },
         {
             where: { id: req.params.comentId },
         }
     )
         .then((result) => {
+            let texto = "desocutado";
+            if (req.body.oculto) {
+                texto = "ocultado";
+            }
             if (result == 1) {
                 res.status(200).json({
                     status: "success",
-                    message: "El comentario ha sido ocultado",
+                    message: "El comentario ha sido " + texto + " con éxito.",
                     result: result,
                 });
             } else {
                 res.status(403).json({
                     status: "error",
-                    message: "EL comentario no ha podido ser ocultado.",
+                    message:
+                        "El comentario no ha podido ser " +
+                        texto +
+                        " o no existe.",
                     result: result,
                 });
             }
@@ -203,41 +257,8 @@ exports.updateOcultarComentario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.updateMostrarComentario = async (req, res) => {
-    Comentario.update(
-        {
-            oculto: false,
-        },
-        {
-            where: { id: req.params.comentId },
-        }
-    )
-        .then((result) => {
-            if (result == 1) {
-                res.status(200).json({
-                    status: "success",
-                    message: "El comentario ha sido ocultado",
-                    result: result,
-                });
-            } else {
-                res.status(403).json({
-                    status: "error",
-                    message: "EL comentario no ha podido ser ocultado.",
-                    result: result,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -251,7 +272,7 @@ exports.deleteComentario = async (req, res) => {
             if (result == 1) {
                 res.status(200).json({
                     status: "success",
-                    message: "El comentario ha sido eliminado",
+                    message: "El comentario ha sido eliminado con éxito.",
                     result: result,
                 });
             } else {
@@ -266,7 +287,8 @@ exports.deleteComentario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });

@@ -13,6 +13,14 @@ Comentario.init(
         },
         publicacion_id: {
             type: Sequelize.INTEGER,
+            allowNull: true,
+            references: {
+                model: "publicacion",
+                key: "id",
+            },
+        },
+        usuario_id: {
+            type: Sequelize.INTEGER,
             allowNull: false,
             references: {
                 model: "usuario",

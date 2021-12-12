@@ -57,7 +57,7 @@ exports.registrarUsuario = async (req, res) => {
                 } else {
                     res.status(500).json({
                         status: "error",
-                        message: "Ha ocurrido un error inesperado.",
+                        message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                         error: err,
                     });
                 }
@@ -65,7 +65,7 @@ exports.registrarUsuario = async (req, res) => {
     }
 };
 
-exports.iniciarSesion = async (req, res) => {
+exports.iniciarSesionEmpr = async (req, res) => {
     Usuario.findOne({
         where: { email: req.body.email },
         attributes: ["id", "password", "rol", "activo"],
@@ -135,7 +135,7 @@ exports.iniciarSesion = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -211,7 +211,7 @@ exports.iniciarSesionAdmin = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
