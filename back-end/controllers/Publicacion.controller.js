@@ -238,7 +238,7 @@ exports.getAllDiscountPublicaciones = async (req, res) => {
         });
 };
 
-exports.getPublicacionesByUser = async (req, res) => {
+exports.getPublicacionesByUsuario = async (req, res) => {
     Publicacion.findAndCountAll({
         where: { usuario_id: req.params.userId },
         attributes: { exclude: ["usuario_id"] },
@@ -287,7 +287,7 @@ exports.getPublicacionesByUser = async (req, res) => {
         });
 };
 
-exports.getActivePublicacionesByUser = async (req, res) => {
+exports.getActivePublicacionesByUsuario = async (req, res) => {
     Publicacion.findAndCountAll({
         where: { usuario_id: req.params.userId, activo: true },
         attributes: { exclude: ["usuario_id"] },

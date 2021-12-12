@@ -22,6 +22,9 @@ VisitaPerfil.init(
         ip: {
             type: Sequelize.STRING(15),
             allowNull: true,
+            validate: {
+                isIP: true,
+            },
         },
         fecha: {
             type: Sequelize.DATE,

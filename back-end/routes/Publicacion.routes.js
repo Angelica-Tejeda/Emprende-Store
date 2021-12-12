@@ -12,8 +12,8 @@ router.get("/categ", controller.getCategorias);
 router.get("/", auth, admin, controller.getAllPublicaciones);
 router.get("/act", controller.getAllActivePublicaciones);
 router.get("/descuento", controller.getAllDiscountPublicaciones);
-router.get("/user/:userId", auth, emprend, owned, controller.getPublicacionesByUser);
-router.get("/act/user/:userId", controller.getActivePublicacionesByUser);
+router.get("/user/:userId", auth, emprend, owned, controller.getPublicacionesByUsuario);
+router.get("/act/user/:userId", controller.getActivePublicacionesByUsuario);
 router.get("/:publId", controller.getActivePublicacionById);
 router.get("/:userId/:publId", auth, emprend, owned, controller.getPublicacionById);
 

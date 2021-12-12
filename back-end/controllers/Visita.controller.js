@@ -73,7 +73,7 @@ exports.createContactoPublicacion = async (req, res) => {
         });
 };
 
-exports.getVisitaPerfilByUser = async (req, res) => {
+exports.getVisitaPerfilByUsuario = async (req, res) => {
     VisitaPerfil.count({
         where: {
             usuario_id: req.params.userId,
@@ -99,7 +99,7 @@ exports.getVisitaPerfilByUser = async (req, res) => {
         });
 };
 
-exports.getVisitaPerfilDistinctByUser = async (req, res) => {
+exports.getVisitaPerfilDistinctByUsuario = async (req, res) => {
     VisitaPerfil.findAll({
         attributes: [[sequelize.fn('DISTINCT', sequelize.col('ip')), 'ip']],
         where: {
@@ -126,7 +126,7 @@ exports.getVisitaPerfilDistinctByUser = async (req, res) => {
         });
 };
 
-exports.getVisitaPublicacionByUser = async (req, res) => {
+exports.getVisitaPublicacionByUsuario = async (req, res) => {
     VisitaPublicacion.count({
         where: {
             usuario_id: req.params.userId,
@@ -153,7 +153,7 @@ exports.getVisitaPublicacionByUser = async (req, res) => {
         });
 };
 
-exports.getVisitaPublicacionDistinctByUser = async (req, res) => {
+exports.getVisitaPublicacionDistinctByUsuario = async (req, res) => {
     VisitaPublicacion.findAll({
         attributes: [[sequelize.fn('DISTINCT', sequelize.col('ip')), 'ip']],
         where: {
@@ -236,7 +236,7 @@ exports.getVisitaPublicacionDistinctByPubl = async (req, res) => {
         });
 };
 
-exports.getContactoPublicacionByUser = async (req, res) => {
+exports.getContactoPublicacionByUsuario = async (req, res) => {
     VisitaPublicacion.count({
         where: {
             usuario_id: req.params.userId,
@@ -263,7 +263,7 @@ exports.getContactoPublicacionByUser = async (req, res) => {
         });
 };
 
-exports.getContactoPublicacionDistinctByUser = async (req, res) => {
+exports.getContactoPublicacionDistinctByUsuario = async (req, res) => {
     VisitaPublicacion.findAll({
         attributes: [[sequelize.fn('DISTINCT', sequelize.col('ip')), 'ip']],
         where: {
