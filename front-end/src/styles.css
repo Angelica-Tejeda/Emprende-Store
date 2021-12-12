@@ -57,6 +57,10 @@ body {
   a {
     font-weight: 700;
     font-size: 19px;
+    text-decoration: none;
+  }
+  a:hover{
+    cursor: pointer;
   }
   .container{
     display: flex;
@@ -83,8 +87,21 @@ body {
     -o-transition: 0.2s ease-in;
     transition: 0.2s ease-in
 }
-
+.btn-primary:hover{
+  cursor: pointer;
+}
 .btn-rounded {
     border-radius: 60px;
     padding: 7px 7px
+}
+.v-flex{
+  display: flex;
+  flex-direction: column;
+}
+.center{
+  display: flex;
+  justify-content: center;
+}
+.bold{
+  font-weight: bold;
 }

@@ -7,43 +7,99 @@ img {
   max-width: 100%;
   max-height: 100%;
   height: 100%;
+  min-height: 100%;
+  min-width: 100%;
 }
 h3{
     font-weight: bold;
 }
+h2{
+    margin: 0;
+}
+.info-producto{
+    margin: 0 0 3em 0;
+}
 .grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 80px;
   margin-top: 100px;
   margin-bottom: 50px;
-  justify-content: space-between;
-  align-items: center!important;
 }
-.producto {
-  flex-basis: calc(45% - 20px);
+.v-container-1, .v-container-2{
+    display: flex;
+    flex-direction: column;
 }
-.descripcion {
-  flex-basis: calc(55% - 20px);
+.descripcion{
+    margin-top: 2em;
+    margin-bottom: 1.5em;
 }
-.btns-compra{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 30px;
-    
+.card{
+    padding: 1.5em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
 }
-.text-center{
-    margin-top: 70px;
+.info{
+    display: flex;
+    justify-content: space-between;
+}
+.comment-text{
+    margin-top: 0.6em;
+}
+.vendedor{
+    display: block;
+    font-weight:400;
+    font-style: italic;
+    font-size: 1.2rem;
+    margin-bottom: 0.3em!important;
+    color: var(--secondary);
+}
+.vendedor:hover{
+    text-decoration: underline;
+}
+.nombre-product{
+    margin-bottom: 0.2em;
+}
+.rating{
+    display: flex;
+    margin-bottom: 1.5em;
+}
+.puntuacion{
+    margin-right: 0.8em;
+    font-size: larger;
+}
+.icon{
+    font-size: larger;
+}
+.bi-whatsapp{
+    color: white;
+    margin-left: 0.4em;
+}
+.precio{
+    font-weight: 600;
+}
+.btn-primary{
+    width: 45%;
+    font-weight: bold;
+    font-size: large;
 }
 .galeria{
     margin-top: 45px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-template-rows: auto;
     grid-gap: 10px;
 }
-.fotoContainer{
-    padding: 10px;
+.card.relacionados{
     transition: box-shadow .3s;
 }
-.fotoContainer:hover{
+.card.relacionados:hover{
     box-shadow: 0 0 11px var(--secondary); 
+    cursor: pointer;
+}
+.foto-rel{
+    margin-bottom: 1em;
+}
+.bold{
+    font-size: larger;
 }

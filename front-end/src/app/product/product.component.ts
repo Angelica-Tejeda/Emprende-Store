@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css']
+  styleUrls: ['./product.component.css'],
+  providers: [NgbCarouselConfig]
 })
 
 export class ProductComponent implements OnInit {
-
+  url="http://localhost:3000"
   id: number = 0;
   titulo: string = "Queso 250 gr";
   descripcion: string = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae venenatis ex. Nulla odio tortor, mattis ac odio ut, varius gravida dui. Aliquam in nisl vitae orci commodo semper ac quis elit. Quisque volutpat dui et cursus eleifend. Aliquam laoreet, elit in pharetra ultrices, sapien magna ultrices diam, non porta tellus odio tempor nisi.";
@@ -23,7 +24,7 @@ export class ProductComponent implements OnInit {
   modificado: any;
   owner: any;
 
-  constructor(private route: ActivatedRoute, private router:Router) { }
+  constructor(private route: ActivatedRoute, private router:Router,config: NgbCarouselConfig) { }
 
   ngOnInit(): void {
   }
