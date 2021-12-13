@@ -3,73 +3,51 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from './../environments/environment';
 
-const _apiUrl = environment.apiURL;
+const _apiUrl = environment.apiURL + '/usuario';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
-
   constructor(private http: HttpClient) {}
 
-  getUsuariosEmpr(): Observable<any> {
-    return this.http.get(
-      `${_apiUrl}/usuario/empr`
-    );
+  getOwnUsuarioById(userId: number, httpOp: any): Observable<any> {
+    return this.http.get(`${_apiUrl}/own/${userId}`, httpOp);
   }
 
-  getFullUsuarioById(): Observable<any> {
-    return this.http.get(
-      `${_apiUrl}/usuario/full/${localStorage.getItem('id_user')}`
-    );
+  getUsuarioById(userId: number): Observable<any> {
+    return this.http.get(`${_apiUrl}/${userId}`);
   }
 
-  getUsuarioById(id: number): Observable<any> {
-    return this.http.get(
-      `${_apiUrl}/usuario/${id}`
-    );
+  getUsuarios(): Observable<any> {
+    return this.http.get(`${_apiUrl}/`);
   }
 
-  updatePassword(data: any): Observable<any> {
-    return this.http.patch(
-      `${_apiUrl}/usuario/password/${localStorage.getItem('id_user')}`, data
-    );
+  updateUsuarioPassword(userId: number, data: any, httpOp: any): Observable<any> {
+    return this.http.patch(`${_apiUrl}/password/${userId}`, data, httpOp);
   }
 
-  updateFotoPerfil(data: any, type: string): Observable<any> {
-    return this.http.patch(
-      `${_apiUrl}/usuario/fotoPerfil/${type}/${localStorage.getItem('id_user')}`, data
-    );
+  updateUsuarioFotoPerfil(userId: number, data: any, httpOp: any): Observable<any> {
+    return this.http.patch(`${_apiUrl}/fotoPerfil/${userId}`, data, httpOp);
   }
 
-  deleteFotoPerfil(data: any): Observable<any> {
-    return this.http.patch(
-      `${_apiUrl}/usuario/fotoPerfilDel/${localStorage.getItem('id_user')}`, data
-    );
+  updateUsuarioFotoPortada(userId: number, data: any, httpOp: any): Observable<any> {
+    return this.http.patch(`${_apiUrl}/fotoPortada/${userId}`, data, httpOp);
   }
 
-  updateFotoPortada(data: any, type: string): Observable<any> {
-    return this.http.patch(
-      `${_apiUrl}/usuario/fotoPortada/${type}/${localStorage.getItem('id_user')}`, data
-    );
+  updateUsuario(userId: number, data: any, httpOp: any): Observable<any> {
+    return this.http.patch(`${_apiUrl}/${userId}`, data, httpOp);
   }
 
-  deleteFotoPortada(data: any): Observable<any> {
-    return this.http.patch(
-      `${_apiUrl}/usuario/fotoPortadaDel/${localStorage.getItem('id_user')}`, data
-    );
+  deleteUsuarioFotoPerfil(userId: number, httpOp: any): Observable<any> {
+    return this.http.delete(`${_apiUrl}/fotoPerfil/${userId}`, httpOp);
   }
 
-  updateUsuario(data: any): Observable<any> {
-    return this.http.patch(
-      `${_apiUrl}/usuario/${localStorage.getItem('id_user')}`, data
-    );
+  deleteUsuarioFotoPortada(userId: number, httpOp: any): Observable<any> {
+    return this.http.delete(`${_apiUrl}/fotoPortada/${userId}`, httpOp);
   }
 
-  deleteUsuario(): Observable<any> {
-    return this.http.delete(
-      `${_apiUrl}/usuario/${localStorage.getItem('id_user')}`
-    );
+  deleteUsuario(userId: number, httpOp: any): Observable<any> {
+    return this.http.delete(`${_apiUrl}/${userId}`, httpOp);
   }
-
 }

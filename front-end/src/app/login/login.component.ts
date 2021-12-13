@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarComponent } from '../navbar/navbar.component';
-import { LoginService } from '../../services/login.service';
+import { AuthService } from '../../services/auth.service';
+import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import {
   FormControl,
@@ -12,60 +12,49 @@ import {
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { User } from '../../interfaces/user';
-const _apiUrl = environment.apiURL;
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-
   loginForm = new FormGroup({
     email: new FormControl(
       '',
-      Validators.compose([
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
-      ])
+      Validators.compose([Validators.required, Validators.email])
     ),
     password: new FormControl('', Validators.required),
   });
-  constructor(private login: LoginService,
+  constructor(
+    private auth: AuthService,
     private http: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    private cookieService: CookieService
+  ) {}
 
   onLogin() {
     const { email, password } = this.loginForm.value;
     const payload = {
-      correo: email,
-      contrasena: password,
+      email: email,
+      password: password,
     };
-    //console.log(payload);
     try {
-      this.http.post(`${_apiUrl}/auth/login`, payload).subscribe((r) => {
-        //console.log(r);
-        const respuesta = JSON.parse(JSON.stringify(r));
-        //localStorage.setItem('status', respuesta.status);
-        //localStorage.setItem('message', respuesta.message);
-        localStorage.setItem('id_user', respuesta.usuario.id);
-        localStorage.setItem('activo', respuesta.usuario.activo);
-        //localStorage.setItem('rol', respuesta.usuario.rol);
-        /*if (respuesta.usuario.activo == 0) {
-          this.router.navigate(['/bloqueado']);
-        } else if (respuesta.usuario.rol == 1) {
-          this.router.navigate(['/homelector']);
-        } else if (respuesta.usuario.rol != 1) {
-          this.router.navigate(['/homeescritor']);
-        }*/
-        this.router.navigate(['/userProfile', respuesta.usuario.id]);
+      this.auth.iniciarSesionEmpr(payload).subscribe((res) => {
+        if (res.status == 'success') {
+          this.cookieService.set('usuario_id', res.usuario.id);
+          this.cookieService.set('usuario_rol', res.usuario.rol);
+          this.cookieService.set('usuario_activo', res.usuario.activo);
+          this.cookieService.set('accessToken', res.accessToken);
+          this.cookieService.set('refreshToken', res.refreshToken);
+          this.router.navigate(['/userProfile', res.usuario.id]);
+        } else {
+          //TODO: Agregar mensajes de inicio de sesion fallido
+        }
       });
     } catch (error) {
       console.log(error);
     }
   }
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

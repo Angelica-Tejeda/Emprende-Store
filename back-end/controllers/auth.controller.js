@@ -99,7 +99,7 @@ exports.iniciarSesionEmpr = async (req, res) => {
                             },
                         },
                         process.env.AUTHSECRET,
-                        { expiresIn: "10m" }
+                        { expiresIn: "1h" }
                     );
                     const refreshToken = jwt.sign(
                         {
@@ -175,7 +175,7 @@ exports.iniciarSesionAdmin = async (req, res) => {
                             },
                         },
                         process.env.AUTHSECRET,
-                        { expiresIn: "10m" }
+                        { expiresIn: "1h" }
                     );
                     const refreshToken = jwt.sign(
                         {
