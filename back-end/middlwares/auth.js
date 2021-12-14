@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     if (!req.headers.authorization) {
         res.status(401).json({
             status: "error",
-            message: "Acceso no autorizado.",
+            message: "Acceso no autorizado. Por favor inicie sesión.",
         });
     } else {
         let token = req.headers.authorization.split(" ")[1];

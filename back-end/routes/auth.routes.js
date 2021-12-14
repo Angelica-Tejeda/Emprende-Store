@@ -6,7 +6,7 @@ const auth = require("../middlwares/auth")
 const admin = require("../middlwares/admin")
 
 router.post("/signup", auth, admin, controller.registrarUsuario);
-router.post("/login", controller.iniciarSesion);
+router.post("/loginEmpr", controller.iniciarSesionEmpr);
 router.post("/loginAdmin", controller.iniciarSesionAdmin);
 router.post("/refresh" , controller.actualizarToken);
 

@@ -5,10 +5,10 @@ const fs = require("fs");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "./media/" + req.params.type + "/");
+        cb(null, "./media/" + req.body.type + "/");
     },
     filename: (req, file, cb) => {
-        cb(null, req.params.type + "-" + req.params.userId + ".png");
+        cb(null, req.body.type + "-" + req.params.userId + ".png");
     },
 });
 
@@ -32,35 +32,6 @@ const uploadImage = multer({
 
 exports.getAllUsuarios = async (req, res) => {
     Usuario.findAndCountAll({
-        attributes: { exclude: ["password"] },
-    })
-        .then((usuarios) => {
-            if (usuarios.count > 0) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Usuarios obtenidos con éxito.",
-                    result: usuarios,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Usuarios no encontrados.",
-                    result: usuarios,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.getUsuariosEmpr = async (req, res) => {
-    Usuario.findAndCountAll({
         where: { rol: false },
         attributes: { exclude: ["password"] },
     })
@@ -83,37 +54,8 @@ exports.getUsuariosEmpr = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};
-
-exports.getUsuarioEmprById = async (req, res) => {
-    Usuario.findOne({
-        where: { id: req.params.userId, rol: false, activo: true },
-        attributes: { exclude: ["password"] },
-    })
-        .then((usuario) => {
-            if (usuario) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Usuario obtenido con éxito.",
-                    result: usuario,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Usuario no encontrado.",
-                    result: usuario,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -143,14 +85,46 @@ exports.getUsuariosAdmin = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
+            });
+        });
+};
+
+exports.getOwnUsuarioById = async (req, res) => {
+    Usuario.findByPk(req.params.userId, {
+        attributes: { exclude: ["password"] },
+    })
+        .then((usuario) => {
+            if (usuario) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Usuario obtenido con éxito.",
+                    result: usuario,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Usuario no encontrado.",
+                    result: usuario,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
 exports.getUsuarioById = async (req, res) => {
-    Usuario.findByPk(req.params.userId, {
+    Usuario.findOne({
+        where: { id: req.params.userId, rol: false, activo: true },
         attributes: { exclude: ["password"] },
     })
         .then((usuario) => {
@@ -172,28 +146,30 @@ exports.getUsuarioById = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-/*exports.getFullUsuarioById = async (req, res) => {
-    Usuario.findByPk(req.params.userId, {
+exports.getUsuarios = async (req, res) => {
+    Usuario.findAndCountAll({
+        where: { rol: false, activo: true },
         attributes: { exclude: ["password"] },
     })
-        .then((usuario) => {
-            if (usuario) {
+        .then((usuarios) => {
+            if (usuarios.count > 0) {
                 res.status(200).json({
                     status: "success",
-                    message: "Usuario obtenido con éxito.",
-                    result: usuario,
+                    message: "Usuarios obtenidos con éxito.",
+                    result: usuarios,
                 });
             } else {
                 res.status(404).json({
                     status: "error",
-                    message: "Usuario no encontrado.",
-                    result: usuario,
+                    message: "Usuarios no encontrados.",
+                    result: usuarios,
                 });
             }
         })
@@ -201,43 +177,14 @@ exports.getUsuarioById = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
-};*/
+};
 
-/*exports.getUsuarioByEmail = async (req, res) => {
-    Usuario.findOne({
-        where: { email: req.params.email },
-        attributes: { exclude: ["password", "balance"] },
-    })
-        .then((usuario) => {
-            if (usuario) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Usuario obtenido con éxito.",
-                    result: usuario,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Usuario no encontrado.",
-                    result: usuario,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message: "Ha ocurrido un error inesperado.",
-                error: err,
-            });
-        });
-};*/
-
-exports.updateUsuarioAct = async (req, res) => {
+exports.updateUsuarioActivo = async (req, res) => {
     Usuario.update(
         {
             activo: req.body.activo,
@@ -247,17 +194,23 @@ exports.updateUsuarioAct = async (req, res) => {
         }
     )
         .then((result) => {
+            let texto = "desactivado";
+            if (req.body.activo) {
+                texto = "activado";
+            }
             if (result == 1) {
                 res.status(200).json({
                     status: "success",
-                    message: "El usuario se ha actualizado con éxito.",
+                    message: "El usuario se ha " + texto + " con éxito.",
                     result: result,
                 });
             } else {
                 res.status(403).json({
                     status: "error",
                     message:
-                        "El usuario no se ha podido actualizar o no existe.",
+                        "El usuario no ha podido ser " +
+                        texto +
+                        ". Inténtenlo nuevamente después de un momento.",
                     result: result,
                 });
             }
@@ -291,14 +244,15 @@ exports.updateUsuarioAct = async (req, res) => {
             } else {
                 res.status(500).json({
                     status: "error",
-                    message: "Ha ocurrido un error inesperado.",
+                    message:
+                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                     error: err,
                 });
             }
         });
 };
 
-exports.updatePassword = async (req, res) => {
+exports.updateUsuarioPassword = async (req, res) => {
     const prepass = req.body.password;
     if (prepass == null || prepass.length < 8) {
         res.status(400).json({
@@ -325,7 +279,8 @@ exports.updatePassword = async (req, res) => {
                 } else {
                     res.status(403).json({
                         status: "error",
-                        message: "La contraseña no se ha podido actualizar.",
+                        message:
+                            "La contraseña no se ha podido actualizar. Inténtenlo nuevamente después de un momento.",
                         result: result,
                     });
                 }
@@ -334,20 +289,22 @@ exports.updatePassword = async (req, res) => {
                 console.log(err);
                 res.status(500).json({
                     status: "error",
-                    message: "Ha ocurrido un error inesperado.",
+                    message:
+                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                     error: err,
                 });
             });
     }
 };
 
-exports.updateFotoPerfil = async (req, res) => {
+exports.updateUsuarioFotoPerfil = async (req, res) => {
     uploadImage.single("foto_perfil")(req, res, (err) => {
         const file = req.file;
         if (err) {
             res.status(400).json({
                 status: "error",
-                message: "El archivo no ha podido ser cargado.",
+                message:
+                    "El archivo no ha podido ser cargado. Es posible que sea muy pesado.",
                 error: err,
             });
         } else if (file == null) {
@@ -377,7 +334,7 @@ exports.updateFotoPerfil = async (req, res) => {
                         res.status(403).json({
                             status: "error",
                             message:
-                                "La foto de perfil no se ha podido actualizar.",
+                                "La foto de perfil no se ha podido actualizar. Inténtenlo nuevamente después de un momento.",
                             result: result,
                         });
                     }
@@ -386,7 +343,8 @@ exports.updateFotoPerfil = async (req, res) => {
                     console.log(err);
                     res.status(500).json({
                         status: "error",
-                        message: "Ha ocurrido un error inesperado.",
+                        message:
+                            "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                         error: err,
                     });
                 });
@@ -394,7 +352,137 @@ exports.updateFotoPerfil = async (req, res) => {
     });
 };
 
-exports.deleteFotoPerfil = async (req, res) => {
+exports.updateUsuarioFotoPortada = async (req, res) => {
+    uploadImage.single("foto_portada")(req, res, (err) => {
+        const file = req.file;
+        if (err) {
+            res.status(400).json({
+                status: "error",
+                message:
+                    "El archivo no ha podido ser cargado. Es posible que sea muy pesado.",
+                error: err,
+            });
+        } else if (file == null) {
+            res.status(415).json({
+                status: "error",
+                message: "El archivo no es de un formato soportado.",
+            });
+        } else {
+            const ruta = "/banner/" + req.file.filename;
+            Usuario.update(
+                {
+                    foto_portada: ruta,
+                },
+                {
+                    where: { id: req.params.userId },
+                }
+            )
+                .then((result) => {
+                    if (result == 1) {
+                        res.status(200).json({
+                            status: "success",
+                            message:
+                                "La foto de portada se ha actualizado con éxito.",
+                            result: result,
+                        });
+                    } else {
+                        res.status(403).json({
+                            status: "error",
+                            message:
+                                "La foto de portada no se ha podido actualizar. Inténtenlo nuevamente después de un momento.",
+                            result: result,
+                        });
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    res.status(500).json({
+                        status: "error",
+                        message:
+                            "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                        error: err,
+                    });
+                });
+        }
+    });
+};
+
+exports.updateUsuario = async (req, res) => {
+    Usuario.update(
+        {
+            email: req.body.email,
+            nombre: req.body.nombre,
+            apellido: req.body.apellido,
+            fecha_nacimiento: req.body.fecha_nacimiento,
+            negocio: req.body.negocio,
+            bio: req.body.bio,
+            celular: req.body.celular,
+            facebook: req.body.facebook,
+            instagram: req.body.instagram,
+            twitter: req.body.twitter,
+            tiktok: req.body.tiktok,
+            linkedin: req.body.linkedin,
+            fecha_inicio: req.body.fecha_inicio,
+        },
+        {
+            where: { id: req.params.userId },
+        }
+    )
+        .then((result) => {
+            if (result == 1) {
+                res.status(200).json({
+                    status: "success",
+                    message: "El usuario se ha actualizado con éxito.",
+                    result: result,
+                });
+            } else {
+                res.status(403).json({
+                    status: "error",
+                    message:
+                        "El usuario no se ha podido actualizar. Inténtenlo nuevamente después de un momento.",
+                    result: result,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            if (err.name === "SequelizeUniqueConstraintError") {
+                res.status(403).json({
+                    status: "error",
+                    message:
+                        "El " +
+                        err.errors[0].path +
+                        " ingresado ya ha sido registrado. ",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeValidationError") {
+                res.status(400).json({
+                    status: "error",
+                    message:
+                        "El valor ingresado en el campo " +
+                        err.errors[0].path +
+                        " no es válido. Ingrese un valor válido e inténtelo nuevamente.",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeDatabaseError") {
+                res.status(400).json({
+                    status: "error",
+                    message:
+                        "Uno de los valores ingresados no es válido. Revise los valores ingresados e intentelo nuevamente.",
+                    error: err,
+                });
+            } else {
+                res.status(500).json({
+                    status: "error",
+                    message:
+                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                    error: err,
+                });
+            }
+        });
+};
+
+exports.deleteUsuarioFotoPerfil = async (req, res) => {
     const oldRuta = "./media/profile/profile-" + req.params.userId + ".png";
     const newRuta = "/default/profile-default.png";
     Usuario.update(
@@ -427,7 +515,8 @@ exports.deleteFotoPerfil = async (req, res) => {
             } else {
                 res.status(403).json({
                     status: "error",
-                    message: "La foto de perfil no se ha podido eliminar.",
+                    message:
+                        "La foto de perfil no se ha podido eliminar. Inténtelo nuevamente.",
                     result: result,
                 });
             }
@@ -436,66 +525,14 @@ exports.deleteFotoPerfil = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.updateFotoPortada = async (req, res) => {
-    uploadImage.single("foto_portada")(req, res, (err) => {
-        const file = req.file;
-        if (err) {
-            res.status(400).json({
-                status: "error",
-                message: "El archivo no ha podido ser cargado.",
-                error: err,
-            });
-        } else if (file == null) {
-            res.status(415).json({
-                status: "error",
-                message: "El archivo no es de un formato soportado.",
-            });
-        } else {
-            const ruta = "/banner/" + req.file.filename;
-            Usuario.update(
-                {
-                    foto_portada: ruta,
-                },
-                {
-                    where: { id: req.params.userId },
-                }
-            )
-                .then((result) => {
-                    if (result == 1) {
-                        res.status(200).json({
-                            status: "success",
-                            message:
-                                "La foto de portada se ha actualizado con éxito.",
-                            result: result,
-                        });
-                    } else {
-                        res.status(403).json({
-                            status: "error",
-                            message:
-                                "La foto de portada no se ha podido actualizar.",
-                            result: result,
-                        });
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                    res.status(500).json({
-                        status: "error",
-                        message: "Ha ocurrido un error inesperado.",
-                        error: err,
-                    });
-                });
-        }
-    });
-};
-
-exports.deleteFotoPortada = async (req, res) => {
+exports.deleteUsuarioFotoPortada = async (req, res) => {
     const oldRuta = "./media/banner/banner-" + req.params.userId + ".png";
     const newRuta = "/default/banner-default.png";
     Usuario.update(
@@ -528,7 +565,8 @@ exports.deleteFotoPortada = async (req, res) => {
             } else {
                 res.status(403).json({
                     status: "error",
-                    message: "La foto de portada no se ha podido eliminar.",
+                    message:
+                        "La foto de portada no se ha podido eliminar. Intentelo nuevamente.",
                     result: result,
                 });
             }
@@ -537,84 +575,10 @@ exports.deleteFotoPortada = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
-        });
-};
-
-exports.updateUsuario = async (req, res) => {
-    Usuario.update(
-        {
-            email: req.body.email,
-            nombre: req.body.nombre,
-            apellido: req.body.apellido,
-            fecha_nacimiento: req.body.fecha_nacimiento,
-            negocio: req.body.negocio,
-            //foto_perfil: req.body.foto_perfil,
-            //foto_portada: req.body.foto_portada,
-            bio: req.body.bio,
-            celular: req.body.celular,
-            facebook: req.body.facebook,
-            instagram: req.body.instagram,
-            twitter: req.body.twitter,
-            tiktok: req.body.tiktok,
-            linkedin: req.body.linkedin,
-            fecha_inicio: req.body.fecha_inicio,
-        },
-        {
-            where: { id: req.params.userId },
-        }
-    )
-        .then((result) => {
-            if (result == 1) {
-                res.status(200).json({
-                    status: "success",
-                    message: "El usuario se ha actualizado con éxito.",
-                    result: result,
-                });
-            } else {
-                res.status(403).json({
-                    status: "error",
-                    message:
-                        "El usuario no se ha podido actualizar o no existe.",
-                    result: result,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            if (err.name === "SequelizeUniqueConstraintError") {
-                res.status(403).json({
-                    status: "error",
-                    message:
-                        "El " +
-                        err.errors[0].path +
-                        " ingresado ya ha sido registrado.",
-                    error: err,
-                });
-            } else if (err.name === "SequelizeValidationError") {
-                res.status(400).json({
-                    status: "error",
-                    message:
-                        "El valor ingresado en el campo " +
-                        err.errors[0].path +
-                        " no es válido.",
-                    error: err,
-                });
-            } else if (err.name === "SequelizeDatabaseError") {
-                res.status(400).json({
-                    status: "error",
-                    message: "Uno de los valores ingresados no es válido.",
-                    error: err,
-                });
-            } else {
-                res.status(500).json({
-                    status: "error",
-                    message: "Ha ocurrido un error inesperado.",
-                    error: err,
-                });
-            }
         });
 };
 
@@ -639,7 +603,8 @@ exports.deleteUsuario = async (req, res) => {
             } else {
                 res.status(403).json({
                     status: "error",
-                    message: "El usuario no se ha podido eliminar o no existe.",
+                    message:
+                        "El usuario no se ha podido eliminar. Inténtenlo nuevamente después de un momento.",
                     result: result,
                 });
             }
@@ -648,7 +613,8 @@ exports.deleteUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });

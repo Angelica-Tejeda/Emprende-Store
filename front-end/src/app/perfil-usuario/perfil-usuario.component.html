@@ -2,14 +2,16 @@
 <div class="padding">
     <div class="col-md-12">
         <!-- Column -->
-        <div class="card"> <img class="card-img-top" src="http://localhost:3000{{ usuario.foto_portada }}" alt="Card image cap">
+        <div class="card"> <img class="card-img-top" src="{{ mediaUrl }}{{ usuario.foto_portada }}" alt="Card image cap">
             <div class="card-body little-profile text-center">
-                <div class="pro-img"><img src="http://localhost:3000{{ usuario.foto_perfil }}" alt="user"></div>
+                <div class="pro-img"><img src="{{ mediaUrl }}{{ usuario.foto_perfil }}" alt="user"></div>
                 <h3 class="m-b-0">{{ usuario.nombre }} {{ usuario.apellido }}</h3>
                 <p>{{ usuario.bio }}</p> <a [routerLink]="['/detallesProfile']" routerLinkActive="router-link-active"  class="mt-4 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Más detalles</a>
                 <div class="row text-center m-t-20">
                     <div class="col-lg-4 col-md-4 m-t-20 text-center">
-                        <h3 class="m-b-0 font-light text-center">25</h3><small>Artículos en venta</small>
+                        <h3 class="m-b-0 font-light text-center">25</h3><small>
+                            
+                        </small>
                     </div>
                     <div class="col-lg-4 col-md-4 m-t-20 text-center">
                         <h3 class="m-b-0 font-light text-center">434K</h3><small>Calificaciones</small>

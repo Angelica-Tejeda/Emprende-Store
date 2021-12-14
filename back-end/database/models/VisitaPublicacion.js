@@ -30,6 +30,9 @@ VisitaPublicacion.init(
         ip: {
             type: Sequelize.STRING(15),
             allowNull: true,
+            validate: {
+                isIP: true,
+            },
         },
         contacto: {
             type: Sequelize.BOOLEAN,

@@ -11,7 +11,7 @@ exports.createVisitaPerfil = async (req, res) => {
         .then((visita) => {
             res.status(200).json({
                 status: "success",
-                message: "La visita al perfil se ha registrado.",
+                message: "La visita al perfil se ha registrado con éxito.",
                 result: visita,
             });
         })
@@ -35,7 +35,7 @@ exports.createVisitaPublicacion = async (req, res) => {
         .then((visita) => {
             res.status(200).json({
                 status: "success",
-                message: "La visita a la publicación se ha registrado.",
+                message: "La visita a la publicación se ha registrado con éxito.",
                 result: visita,
             });
         })
@@ -59,7 +59,7 @@ exports.createContactoPublicacion = async (req, res) => {
         .then((visita) => {
             res.status(200).json({
                 status: "success",
-                message: "El contacto con el vendedor de la publicación se ha registrado.",
+                message: "El contacto con el vendedor de la publicación se ha registrado con éxito.",
                 result: visita,
             });
         })
@@ -73,7 +73,7 @@ exports.createContactoPublicacion = async (req, res) => {
         });
 };
 
-exports.getVisitaPerfilByUser = async (req, res) => {
+exports.getVisitaPerfilByUsuario = async (req, res) => {
     VisitaPerfil.count({
         where: {
             usuario_id: req.params.userId,
@@ -93,13 +93,13 @@ exports.getVisitaPerfilByUser = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getVisitaPerfilDistinctByUser = async (req, res) => {
+exports.getVisitaPerfilDistinctByUsuario = async (req, res) => {
     VisitaPerfil.findAll({
         attributes: [[sequelize.fn('DISTINCT', sequelize.col('ip')), 'ip']],
         where: {
@@ -120,13 +120,13 @@ exports.getVisitaPerfilDistinctByUser = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getVisitaPublicacionByUser = async (req, res) => {
+exports.getVisitaPublicacionByUsuario = async (req, res) => {
     VisitaPublicacion.count({
         where: {
             usuario_id: req.params.userId,
@@ -147,13 +147,13 @@ exports.getVisitaPublicacionByUser = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getVisitaPublicacionDistinctByUser = async (req, res) => {
+exports.getVisitaPublicacionDistinctByUsuario = async (req, res) => {
     VisitaPublicacion.findAll({
         attributes: [[sequelize.fn('DISTINCT', sequelize.col('ip')), 'ip']],
         where: {
@@ -175,7 +175,7 @@ exports.getVisitaPublicacionDistinctByUser = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -202,7 +202,7 @@ exports.getVisitaPublicacionByPubl = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -230,13 +230,13 @@ exports.getVisitaPublicacionDistinctByPubl = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getContactoPublicacionByUser = async (req, res) => {
+exports.getContactoPublicacionByUsuario = async (req, res) => {
     VisitaPublicacion.count({
         where: {
             usuario_id: req.params.userId,
@@ -257,13 +257,13 @@ exports.getContactoPublicacionByUser = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.getContactoPublicacionDistinctByUser = async (req, res) => {
+exports.getContactoPublicacionDistinctByUsuario = async (req, res) => {
     VisitaPublicacion.findAll({
         attributes: [[sequelize.fn('DISTINCT', sequelize.col('ip')), 'ip']],
         where: {
@@ -285,7 +285,7 @@ exports.getContactoPublicacionDistinctByUser = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -312,7 +312,7 @@ exports.getContactoPublicacionByPubl = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -340,7 +340,7 @@ exports.getContactoPublicacionDistinctByPubl = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado.",
+                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
