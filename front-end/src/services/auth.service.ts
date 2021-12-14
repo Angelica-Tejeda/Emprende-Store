@@ -12,10 +12,14 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   iniciarSesionEmpr(data: any): Observable<any> {
-    return this.http.post(`${_apiUrl}/loginEmpr`, data);
+    return this.http.post(`${_apiUrl}/loginEmpr`, data, {
+      withCredentials: true,
+    });
   }
 
   actualizarToken(data: any): Observable<any> {
-    return this.http.post(`${_apiUrl}/refresh`, data);
+    return this.http.post(`${_apiUrl}/refresh`, data, {
+      withCredentials: true,
+    });
   }
 }

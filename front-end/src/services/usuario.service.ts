@@ -11,8 +11,8 @@ const _apiUrl = environment.apiURL + '/usuario';
 export class UsuarioService {
   constructor(private http: HttpClient) {}
 
-  getOwnUsuarioById(userId: number, httpOp: any): Observable<any> {
-    return this.http.get(`${_apiUrl}/own/${userId}`, httpOp);
+  getOwnUsuarioById(userId: number): Observable<any> {
+    return this.http.get(`${_apiUrl}/own/${userId}`, {withCredentials: true,});
   }
 
   getUsuarioById(userId: number): Observable<any> {
@@ -23,31 +23,31 @@ export class UsuarioService {
     return this.http.get(`${_apiUrl}/`);
   }
 
-  updateUsuarioPassword(userId: number, data: any, httpOp: any): Observable<any> {
-    return this.http.patch(`${_apiUrl}/password/${userId}`, data, httpOp);
+  updateUsuarioPassword(userId: number, data: any): Observable<any> {
+    return this.http.patch(`${_apiUrl}/password/${userId}`, data);
   }
 
-  updateUsuarioFotoPerfil(userId: number, data: any, httpOp: any): Observable<any> {
-    return this.http.patch(`${_apiUrl}/fotoPerfil/${userId}`, data, httpOp);
+  updateUsuarioFotoPerfil(userId: number, data: any): Observable<any> {
+    return this.http.patch(`${_apiUrl}/fotoPerfil/${userId}`, data);
   }
 
-  updateUsuarioFotoPortada(userId: number, data: any, httpOp: any): Observable<any> {
-    return this.http.patch(`${_apiUrl}/fotoPortada/${userId}`, data, httpOp);
+  updateUsuarioFotoPortada(userId: number, data: any): Observable<any> {
+    return this.http.patch(`${_apiUrl}/fotoPortada/${userId}`, data);
   }
 
-  updateUsuario(userId: number, data: any, httpOp: any): Observable<any> {
-    return this.http.patch(`${_apiUrl}/${userId}`, data, httpOp);
+  updateUsuario(userId: number, data: any): Observable<any> {
+    return this.http.patch(`${_apiUrl}/${userId}`, data);
   }
 
-  deleteUsuarioFotoPerfil(userId: number, httpOp: any): Observable<any> {
-    return this.http.delete(`${_apiUrl}/fotoPerfil/${userId}`, httpOp);
+  deleteUsuarioFotoPerfil(userId: number): Observable<any> {
+    return this.http.delete(`${_apiUrl}/fotoPerfil/${userId}`);
   }
 
-  deleteUsuarioFotoPortada(userId: number, httpOp: any): Observable<any> {
-    return this.http.delete(`${_apiUrl}/fotoPortada/${userId}`, httpOp);
+  deleteUsuarioFotoPortada(userId: number): Observable<any> {
+    return this.http.delete(`${_apiUrl}/fotoPortada/${userId}`);
   }
 
-  deleteUsuario(userId: number, httpOp: any): Observable<any> {
-    return this.http.delete(`${_apiUrl}/${userId}`, httpOp);
+  deleteUsuario(userId: number): Observable<any> {
+    return this.http.delete(`${_apiUrl}/${userId}`);
   }
 }

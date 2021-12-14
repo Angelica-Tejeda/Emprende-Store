@@ -1,6 +1,7 @@
 const Usuario = require("../database/models/Usuario");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+//const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 exports.registrarUsuario = async (req, res) => {
@@ -57,7 +58,8 @@ exports.registrarUsuario = async (req, res) => {
                 } else {
                     res.status(500).json({
                         status: "error",
-                        message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                        message:
+                            "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                         error: err,
                     });
                 }
@@ -112,17 +114,29 @@ exports.iniciarSesionEmpr = async (req, res) => {
                         process.env.REFRESHSECRET,
                         { expiresIn: "7d" }
                     );
-                    res.status(200).json({
-                        status: "success",
-                        message: "El usuario ha sido identificado con éxito.",
-                        usuario: {
-                            id: usuario.id,
-                            rol: usuario.rol,
-                            activo: usuario.activo,
-                        },
-                        accessToken: accessToken,
-                        refreshToken: refreshToken,
-                    });
+                    res.cookie("accessToken", accessToken, {
+                        signed: true,
+                        httpOnly: true,
+                        secure: false,
+                        maxAge: 900000*4
+                    }).cookie("refreshToken", refreshToken, {
+                        signed: true,
+                        httpOnly: true,
+                        secure: false,
+                        maxAge: 900000*4*24*7
+                    })
+                        .status(200)
+                        .json({
+                            status: "success",
+                            message:
+                                "El usuario ha sido identificado con éxito.",
+                            usuario: {
+                                id: usuario.id,
+                                rol: usuario.rol,
+                                activo: usuario.activo,
+                            },
+                            refreshToken: refreshToken,
+                        });
                 } else {
                     res.status(400).json({
                         status: "error",
@@ -135,7 +149,8 @@ exports.iniciarSesionEmpr = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -188,17 +203,29 @@ exports.iniciarSesionAdmin = async (req, res) => {
                         process.env.REFRESHSECRET,
                         { expiresIn: "7d" }
                     );
-                    res.status(200).json({
-                        status: "success",
-                        message: "El usuario ha sido identificado con éxito.",
-                        usuario: {
-                            id: usuario.id,
-                            rol: usuario.rol,
-                            activo: usuario.activo,
-                        },
-                        accessToken: accessToken,
-                        refreshToken: refreshToken,
-                    });
+                    res.cookie("accessToken", accessToken, {
+                        signed: true,
+                        httpOnly: true,
+                        secure: false,
+                        maxAge: 900000*4
+                    }).cookie("refreshToken", refreshToken, {
+                        signed: true,
+                        httpOnly: true,
+                        secure: false,
+                        maxAge: 900000*4*24*7
+                    })
+                        .status(200)
+                        .json({
+                            status: "success",
+                            message:
+                                "El usuario ha sido identificado con éxito.",
+                            usuario: {
+                                id: usuario.id,
+                                rol: usuario.rol,
+                                activo: usuario.activo,
+                            },
+                            refreshToken: refreshToken,
+                        });
                 } else {
                     res.status(400).json({
                         status: "error",
@@ -211,13 +238,14 @@ exports.iniciarSesionAdmin = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
-exports.actualizarToken = async (req, res) => {
+exports.actualizarToken = async (req, res) => { //TODO: Rehacer la funcion con la implementacion de HTTPOnly Cookies
     const refreshToken = req.body.token;
     if (refreshToken === null) {
         res.status(401).json({
@@ -244,7 +272,7 @@ exports.actualizarToken = async (req, res) => {
                 });
             }
         } else {
-            if (jwt.decode(refreshToken).exp < Date.now()/1000 + 259200) {
+            if (jwt.decode(refreshToken).exp < Date.now() / 1000 + 259200) {
                 refreshToken = jwt.sign(
                     {
                         usuario: {
@@ -256,7 +284,7 @@ exports.actualizarToken = async (req, res) => {
                     process.env.REFRESHSECRET,
                     { expiresIn: "7d" }
                 );
-            };
+            }
             const accessToken = jwt.sign(
                 {
                     usuario: {

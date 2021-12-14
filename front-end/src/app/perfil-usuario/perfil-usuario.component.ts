@@ -11,7 +11,8 @@ import { HttpHeaders } from '@angular/common/http';
   styleUrls: ['./perfil-usuario.component.css'],
 })
 export class PerfilUsuarioComponent implements OnInit {
-  mediaUrl: string = "http://localhost:3000";
+  mediaUrl: string = environment.mediaURL;
+  usuario_own: any;
   usuario: any;
 
   constructor(
@@ -21,14 +22,15 @@ export class PerfilUsuarioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.cookieService.check('accessToken')) {
-      const httpOptions = {
+    this.usuario_own = window.localStorage.getItem('usuario_id');
+    if (this.usuario_own != null) {
+      /*const httpOptions = {
         headers: new HttpHeaders({
-          Authorization: "Bearer " + this.cookieService.get('accessToken'),
+          Authorization: 'Bearer ' + this.cookieService.get('accessToken'),
         }),
-      };
+      };*/
       this.usuarioService
-        .getOwnUsuarioById(+this.cookieService.get('usuario_id'), httpOptions)
+        .getOwnUsuarioById(this.usuario_own)
         .subscribe((data) => {
           this.usuario = data.result;
         });
