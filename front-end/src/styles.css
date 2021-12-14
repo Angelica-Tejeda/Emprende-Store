@@ -105,3 +105,6 @@ body {
 .bold{
   font-weight: bold;
 }
+.grid{
+  display: grid;
+}

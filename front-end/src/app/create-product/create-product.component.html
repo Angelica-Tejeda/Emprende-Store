@@ -1,23 +1,50 @@
 <app-navbar></app-navbar>
-<div class="container">
-    <form [formGroup]="createProduct" (ngSubmit)="onSubmit()">
-        <div class="input-group">
+<div class="container card">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <div class="input-group grid">
             <div class="input">
                 <label for="tipo">Tipo: </label>
-                <select id="tipo" name="tipo">
+                <select id="tipo" name="tipo" formControlName="tipo">
                     <option selected disabled>Seleccione una opción</option>
-                    <option value="saab">Producto</option>
-                    <option value="fiat">Servicio</option>
-                  </select>
+                    <option value="false">Producto</option>
+                    <option value="true">Servicio</option>
+                </select>
             </div>
             <div class="input">
                 <label for="titulo">Título del producto o servicio: </label>
                 <input type="text" name="titulo" id="titulo" formControlName="titulo">
             </div>
-            <div class="input">
+            <div class="input two">
                 <label for="descripcion">Ingrese una descripción: </label>
-                <input type="text" name="descripcion" id="descripcion" formControlName="titulo">
+                <input type="textarea" name="descripcion" id="descripcion" formControlName="descripcion"
+                    maxlength="500">
             </div>
+            <div class="three">
+                <p class="bold">Elija las categorías del producto o servicio:</p>
+                <div class="grid categoriaCont">
+                <div *ngFor="let categoria of categorias" class="inputCont">
+                    <div class="input inputCat">
+                        <input class="checkbox" type="checkbox" name="cats" [value]="categoria"
+                            formControlName="categorias">
+                        <label for="categoria" class="light">{{categoria}}</label>
+
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="input">
+                <label for="precio">Precio: </label>
+                <input type="number" name="precio" id="precio" formControlName="precio">
+            </div>
+            <div class="input">
+                <label for="descuento">Descuento: </label>
+                <input type="number" name="descuento" id="descuento" formControlName="descuento">
+            </div>
+            <div class="input">
+                <label for="foto">Subir una foto: </label>
+                <input type="file" id="foto" name="foto" accept="image/png, image/jpeg, image/webp, image/jpg">
+            </div>
+
 
         </div>
     </form>
