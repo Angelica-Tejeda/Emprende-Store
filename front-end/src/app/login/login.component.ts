@@ -11,7 +11,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -42,11 +41,9 @@ export class LoginComponent implements OnInit {
     try {
       this.auth.iniciarSesionEmpr(payload).subscribe((res) => {
         if (res.status == 'success') {
-          this.cookieService.set('usuario_id', res.usuario.id);
-          this.cookieService.set('usuario_rol', res.usuario.rol);
-          this.cookieService.set('usuario_activo', res.usuario.activo);
-          this.cookieService.set('accessToken', res.accessToken);
-          this.cookieService.set('refreshToken', res.refreshToken);
+          window.localStorage.setItem('usuario_id', res.usuario.id);
+          window.localStorage.setItem('usuario_rol', res.usuario.rol);
+          window.localStorage.setItem('usuario_activo', res.usuario.activo);
           this.router.navigate(['/userProfile', res.usuario.id]);
         } else {
           //TODO: Agregar mensajes de inicio de sesion fallido
