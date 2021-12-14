@@ -1,0 +1,15 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <form [formGroup]="createProduct" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+            <div class="input">
+                <label for="titulo">Usuario</label>
+                <input type="text" name="titulo" id="titulo" formControlName="titulo">
+            </div>
+
+        </div>
+        <div class="input-foto">
+
+        </div>
+    </form>
+</div>

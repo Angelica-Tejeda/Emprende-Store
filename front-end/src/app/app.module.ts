@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
 import { DetallesProfileComponent } from './detalles-profile/detalles-profile.component';
 import { ProductComponent } from './product/product.component';
+import { CreateProductComponent } from './create-product/create-product.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ProductComponent } from './product/product.component';
     NavbarComponent,
     PerfilUsuarioComponent,
     DetallesProfileComponent,
-    ProductComponent
+    ProductComponent,
+    CreateProductComponent
   ],
   imports: [
     BrowserModule,
