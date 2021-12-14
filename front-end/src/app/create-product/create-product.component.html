@@ -3,12 +3,21 @@
     <form [formGroup]="createProduct" (ngSubmit)="onSubmit()">
         <div class="input-group">
             <div class="input">
-                <label for="titulo">Usuario</label>
+                <label for="tipo">Tipo: </label>
+                <select id="tipo" name="tipo">
+                    <option selected disabled>Seleccione una opción</option>
+                    <option value="saab">Producto</option>
+                    <option value="fiat">Servicio</option>
+                  </select>
+            </div>
+            <div class="input">
+                <label for="titulo">Título del producto o servicio: </label>
                 <input type="text" name="titulo" id="titulo" formControlName="titulo">
             </div>
-
-        </div>
-        <div class="input-foto">
+            <div class="input">
+                <label for="descripcion">Ingrese una descripción: </label>
+                <input type="text" name="descripcion" id="descripcion" formControlName="titulo">
+            </div>
 
         </div>
     </form>
