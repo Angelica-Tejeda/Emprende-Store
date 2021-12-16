@@ -72,8 +72,6 @@
 .navbar {
     justify-content: space-between;
     background-color: var(--darkSecondary);
-    
-    
   }
   .navbar .nav-list {
     display: flex;
@@ -110,5 +108,12 @@
     width: 500px;
     margin-right:450px!important;
   }
-  
-  
+  .bi-person-circle{
+    font-size:2em;
+  }
+  .nav-link{
+    padding: 0;
+  }
+.nav-item.dropdown{
+  margin-right: 1em;
+}

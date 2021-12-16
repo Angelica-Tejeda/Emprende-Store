@@ -13,13 +13,17 @@
             <li class="nav-item" *ngIf="router.url.includes('/landing-page') === false"><a [routerLink]="['/store']">Tienda</a></li>
             <li class="nav-item" *ngIf="router.url.includes('/landing-page') === false"><a [routerLink]="['/']">Categorias</a></li>
             <li class="nav-item"><a [routerLink]="['/login']">Soy Emprendedor</a></li>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
-              </div>
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-start" aria-labelledby="navbarDarkDropdownMenuLink">
+                  <li><a class="dropdown-item" href="#">Mi perfil</a></li>
+                  <li><a class="dropdown-item" href="#">Mi emprendimiento</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                </ul>
+              </li>
         </ul>
     </div>
     <i class="bi bi-list hamburguer" (click)="toggleHamburguer()" *ngIf="router.url.includes('/login') === false"></i>
