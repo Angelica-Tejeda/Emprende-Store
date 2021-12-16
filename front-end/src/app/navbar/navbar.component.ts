@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   
   signal:any=0;
+  logged:boolean=false;
   constructor( public router: Router) { 
     
     this.signal=0;
