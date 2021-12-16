@@ -1,7 +1,6 @@
 const Usuario = require("../database/models/Usuario");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-//const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 exports.registrarUsuario = async (req, res) => {
@@ -135,7 +134,6 @@ exports.iniciarSesionEmpr = async (req, res) => {
                                 rol: usuario.rol,
                                 activo: usuario.activo,
                             },
-                            refreshToken: refreshToken,
                         });
                 } else {
                     res.status(400).json({
@@ -224,7 +222,6 @@ exports.iniciarSesionAdmin = async (req, res) => {
                                 rol: usuario.rol,
                                 activo: usuario.activo,
                             },
-                            refreshToken: refreshToken,
                         });
                 } else {
                     res.status(400).json({

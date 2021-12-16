@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 // Cross Origin
 app.use(
     cors({
-        origin: "http://localhost:4200",
+        //origin: "http://localhost:4200",
         credentials: true,
     })
 );
