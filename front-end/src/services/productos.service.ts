@@ -3,21 +3,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from '../environments/environment';
 
+const _apiUrl = environment.apiURL + '/publicacion';
 
-const _apiUrl = environment.apiURL;
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class ProductosService {
+  constructor(private http: HttpClient) {}
 
+  getOwnPublicacionesByUsuario(userId: number): Observable<any> {
+    return this.http.get(`${_apiUrl}/own/user/${userId}`);
+  }
 
-  constructor(private http: HttpClient) { }
+  getOwnPublicacionById(userId: number, publId: number): Observable<any> {
+    return this.http.get(`${_apiUrl}/own/${userId}/${publId}`);
+  }
 
-  getProductosPopulares() {
-    /*return this.http.get(
-      `${_apiUrl}/something/${localStorage.getItem('productosPopulares')}`
-    ); */
+  getPublicacionesByUsuario(userId: number): Observable<any> {
+    return this.http.get(`${_apiUrl}/user/${userId}`);
+  }
+
+  getPublicacionById(publId: number): Observable<any> {
+    return this.http.get(`${_apiUrl}/${publId}`);
   }
 }
-

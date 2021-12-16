@@ -78,7 +78,7 @@ exports.getVisitaPerfilByUsuario = async (req, res) => {
         where: {
             usuario_id: req.params.userId,
             fecha: {
-                [Op.between]: [req.body.inicio, req.body.final],
+                [Op.between]: [req.params.inicio, req.params.final],
             },
         },
     })
@@ -105,7 +105,7 @@ exports.getVisitaPerfilDistinctByUsuario = async (req, res) => {
         where: {
             usuario_id: req.params.userId,
             fecha: {
-                [Op.between]: [req.body.inicio, req.body.final],
+                [Op.between]: [req.params.inicio, req.params.final],
             },
         },
     })
@@ -132,7 +132,7 @@ exports.getVisitaPublicacionByUsuario = async (req, res) => {
             usuario_id: req.params.userId,
             contacto: false,
             fecha: {
-                [Op.between]: [req.body.inicio, req.body.final],
+                [Op.between]: [req.params.inicio, req.params.final],
             },
         },
     })
@@ -160,7 +160,7 @@ exports.getVisitaPublicacionDistinctByUsuario = async (req, res) => {
             usuario_id: req.params.userId,
             contacto: false,
             fecha: {
-                [Op.between]: [req.body.inicio, req.body.final],
+                [Op.between]: [req.params.inicio, req.params.final],
             },
         },
     })
@@ -187,7 +187,7 @@ exports.getVisitaPublicacionByPubl = async (req, res) => {
             publicacion_id: req.params.publId,
             contacto: false,
             fecha: {
-                [Op.between]: [req.body.inicio, req.body.final],
+                [Op.between]: [req.params.inicio, req.params.final],
             },
         },
     })
@@ -215,7 +215,7 @@ exports.getVisitaPublicacionDistinctByPubl = async (req, res) => {
             publicacion_id: req.params.publId,
             contacto: false,
             fecha: {
-                [Op.between]: [req.body.inicio, req.body.final],
+                [Op.between]: [req.params.inicio, req.params.final],
             },
         },
     })
@@ -242,7 +242,7 @@ exports.getContactoPublicacionByUsuario = async (req, res) => {
             usuario_id: req.params.userId,
             contacto: true,
             fecha: {
-                [Op.between]: [req.body.inicio, req.body.final],
+                [Op.between]: [req.params.inicio, req.params.final],
             },
         },
     })
@@ -270,7 +270,7 @@ exports.getContactoPublicacionDistinctByUsuario = async (req, res) => {
             usuario_id: req.params.userId,
             contacto: true,
             fecha: {
-                [Op.between]: [req.body.inicio, req.body.final],
+                [Op.between]: [req.params.inicio, req.params.final],
             },
         },
     })
@@ -297,7 +297,7 @@ exports.getContactoPublicacionByPubl = async (req, res) => {
             publicacion_id: req.params.publId,
             contacto: true,
             fecha: {
-                [Op.between]: [req.body.inicio, req.body.final],
+                [Op.between]: [req.params.inicio, req.params.final],
             },
         },
     })
@@ -325,7 +325,7 @@ exports.getContactoPublicacionDistinctByPubl = async (req, res) => {
             publicacion_id: req.params.publId,
             contacto: true,
             fecha: {
-                [Op.between]: [req.body.inicio, req.body.final],
+                [Op.between]: [req.params.inicio, req.params.final],
             },
         },
     })

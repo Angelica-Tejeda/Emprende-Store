@@ -1,22 +1,111 @@
+const Usuario = require("../database/models/Usuario");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 module.exports = (req, res, next) => {
-    const token = req.signedCookies.accessToken;
-    if (!token) {
+    let accessToken = req.signedCookies.accessToken;
+    let refreshToken = req.signedCookies.refreshToken;
+    const user_id = req.cookies.usuario_id;
+    if (!refreshToken && !user_id) {
         res.status(401).json({
             status: "error",
             message: "Acceso no autorizado. Por favor inicie sesión.",
         });
+    } else if (!accessToken) {
+        Usuario.findByPk(user_id, {
+            attributes: ["id", "rol", "activo"],
+        })
+            .then((usuario) => {
+                if (!usuario) {
+                    res.status(404).json({
+                        status: "error",
+                        message: "El usuario no ha sido encontrado.",
+                    });
+                } else {
+                    const decoded = jwt.decode(refreshToken);
+                    if (decoded.usuario.id == usuario.id) {
+                        if (decoded.exp < (Date.now() / 1000) + 259200) {
+                            refreshToken = jwt.sign(
+                                {
+                                    usuario: {
+                                        id: usuario.id,
+                                        rol: usuario.rol,
+                                        activo: usuario.activo,
+                                    },
+                                },
+                                process.env.REFRESHSECRET,
+                                { expiresIn: "7d" }
+                            );
+                        }
+                        const accessToken = jwt.sign(
+                            {
+                                usuario: {
+                                    id: usuario.id,
+                                    rol: usuario.rol,
+                                    activo: usuario.activo,
+                                },
+                            },
+                            process.env.AUTHSECRET,
+                            { expiresIn: "1h" }
+                        );
+                        res.cookie("accessToken", accessToken, {
+                            signed: true,
+                            httpOnly: true,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60,
+                        })
+                            .cookie("refreshToken", refreshToken, {
+                                signed: true,
+                                httpOnly: true,
+                                secure: process.env.SECURECOOKIE,
+                                maxAge: 1000 * 60 * 60 * 24 * 7,
+                            })
+                            .cookie("usuario_id", usuario.id, {
+                                signed: false,
+                                httpOnly: false,
+                                secure: process.env.SECURECOOKIE,
+                                maxAge: 1000 * 60 * 60 * 24 * 7,
+                            })
+                            .cookie("usuario_rol", usuario.rol, {
+                                signed: false,
+                                httpOnly: false,
+                                secure: process.env.SECURECOOKIE,
+                                maxAge: 1000 * 60 * 60 * 24 * 7,
+                            })
+                            .cookie("usuario_act", usuario.activo, {
+                                signed: false,
+                                httpOnly: false,
+                                secure: process.env.SECURECOOKIE,
+                                maxAge: 1000 * 60 * 60 * 24 * 7,
+                            });
+                        req.user = usuario;
+                        next();
+                    } else {
+                        res.status(403).json({
+                            status: "error",
+                            message: "El usuario no ha podido ser validado.",
+                        });
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json({
+                    status: "error",
+                    message:
+                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                    error: err,
+                });
+            });
+        console.log(user_id);
     } else {
-        jwt.verify(token, process.env.AUTHSECRET, (err, decoded) => {
+        jwt.verify(accessToken, process.env.AUTHSECRET, (err, decoded) => {
             if (err) {
                 if (err.name == "TokenExpiredError") {
                     console.log(err);
                     res.status(401).json({
                         status: "error",
-                        message:
-                            "El Token de autenticación ha caducado.",
+                        message: "El Token de autenticación ha caducado.",
                         error: err,
                     });
                 } else {
@@ -30,7 +119,6 @@ module.exports = (req, res, next) => {
                 }
             } else {
                 req.user = decoded.usuario;
-                console.log(req.user);
                 next();
             }
         });

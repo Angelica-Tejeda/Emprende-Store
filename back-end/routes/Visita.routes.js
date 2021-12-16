@@ -6,17 +6,17 @@ router.post('/perfil', controller.createVisitaPerfil);
 router.post('/publ', controller.createVisitaPublicacion);
 router.post('/contacto', controller.createContactoPublicacion);
 
-router.get("/perfil/user/:userId/", controller.getVisitaPerfilByUsuario);
-router.get("/perfil/user/dist/:userId/", controller.getVisitaPerfilDistinctByUsuario);
+router.get("/perfil/user/:userId/:inicio/:final", controller.getVisitaPerfilByUsuario);
+router.get("/perfil/user/dist/:userId/:inicio/:final", controller.getVisitaPerfilDistinctByUsuario);
 
-router.get("/publ/user/:userId/", controller.getVisitaPublicacionByUsuario);
-router.get("/publ/user/dist/:userId/", controller.getVisitaPublicacionDistinctByUsuario);
-router.get("/publ/publ/:publId/", controller.getVisitaPublicacionByPubl);
-router.get("/publ/publ/dist/:publId/", controller.getVisitaPublicacionDistinctByPubl);
+router.get("/publ/user/:userId/:inicio/:final", controller.getVisitaPublicacionByUsuario);
+router.get("/publ/user/dist/:userId/:inicio/:final", controller.getVisitaPublicacionDistinctByUsuario);
+router.get("/publ/publ/:publId/:inicio/:final", controller.getVisitaPublicacionByPubl);
+router.get("/publ/publ/dist/:publId/:inicio/:final", controller.getVisitaPublicacionDistinctByPubl);
 
-router.get("/contacto/user/:userId/", controller.getContactoPublicacionByUsuario);
-router.get("/contacto/user/dist/:userId/", controller.getContactoPublicacionDistinctByUsuario);
-router.get("/contacto/publ/:publId/", controller.getContactoPublicacionByPubl);
-router.get("/contacto/publ/dist/:publId/", controller.getContactoPublicacionDistinctByPubl);
+router.get("/contacto/user/:userId/:inicio/:final", controller.getContactoPublicacionByUsuario);
+router.get("/contacto/user/dist/:userId/:inicio/:final", controller.getContactoPublicacionDistinctByUsuario);
+router.get("/contacto/publ/:publId/:inicio/:final", controller.getContactoPublicacionByPubl);
+router.get("/contacto/publ/dist/:publId/:inicio/:final", controller.getContactoPublicacionDistinctByPubl);
 
 module.exports = router;

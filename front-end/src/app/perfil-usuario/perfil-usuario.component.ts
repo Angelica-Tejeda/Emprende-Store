@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { UsuarioService } from 'src/services/usuario.service';
+import { ProductosService } from 'src/services/productos.service';
 import { environment } from '../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 
@@ -12,33 +13,41 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class PerfilUsuarioComponent implements OnInit {
   mediaUrl: string = environment.mediaURL;
-  usuario_own: any;
+  id: any;
+  usuario_own: boolean = false;
   usuario: any;
+  nProductos: any;
+  productos: any;
+  tiempo: any;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private cookieService: CookieService,
-    private usuarioService: UsuarioService
-  ) {}
+    private usuarioService: UsuarioService,
+    private productoService: ProductosService
+  ) {
+    this.route.params.subscribe(({ id }) => {
+      this.id = id;
+    });
+  }
 
   ngOnInit(): void {
-    this.usuario_own = window.localStorage.getItem('usuario_id');
-    if (this.usuario_own != null) {
-      /*const httpOptions = {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + this.cookieService.get('accessToken'),
-        }),
-      };*/
-      this.usuarioService
-        .getOwnUsuarioById(this.usuario_own)
-        .subscribe((data) => {
-          this.usuario = data.result;
-        });
-    } else {
-      this.router.navigate(['/login']);
+    if (this.cookieService.check("usuario_id") && this.cookieService.get("usuario_id") == this.id) {
+      this.usuario_own = true;
     }
-    /*this.usuarioService.getOwnUsuarioById().subscribe((data) => {
-      this.usuario = data.result;
-    });*/
+    if (this.usuario_own) {
+      this.usuarioService.getOwnUsuarioById(this.id).subscribe((data) => {
+        this.usuario = data.result;
+      })
+    } else {
+      this.usuarioService.getUsuarioById(this.id).subscribe((data) => {
+        this.usuario = data.result;
+      })
+    }
+    this.productoService.getPublicacionesByUsuario(this.id).subscribe((data) => {
+      this.nProductos = data.result.count;
+      this.productos = data.result.rows;
+    })
   }
 }

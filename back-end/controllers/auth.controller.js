@@ -116,14 +116,33 @@ exports.iniciarSesionEmpr = async (req, res) => {
                     res.cookie("accessToken", accessToken, {
                         signed: true,
                         httpOnly: true,
-                        secure: false,
-                        maxAge: 900000*4
-                    }).cookie("refreshToken", refreshToken, {
-                        signed: true,
-                        httpOnly: true,
-                        secure: false,
-                        maxAge: 900000*4*24*7
+                        secure: process.env.SECURECOOKIE,
+                        maxAge: 1000 * 60 * 60
                     })
+                        .cookie("refreshToken", refreshToken, {
+                            signed: true,
+                            httpOnly: true,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                        })
+                        .cookie("usuario_id", usuario.id, {
+                            signed: false,
+                            httpOnly: false,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                        })
+                        .cookie("usuario_rol", usuario.rol, {
+                            signed: false,
+                            httpOnly: false,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                        })
+                        .cookie("usuario_act", usuario.activo, {
+                            signed: false,
+                            httpOnly: false,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                        })
                         .status(200)
                         .json({
                             status: "success",
@@ -204,14 +223,33 @@ exports.iniciarSesionAdmin = async (req, res) => {
                     res.cookie("accessToken", accessToken, {
                         signed: true,
                         httpOnly: true,
-                        secure: false,
-                        maxAge: 900000*4
-                    }).cookie("refreshToken", refreshToken, {
-                        signed: true,
-                        httpOnly: true,
-                        secure: false,
-                        maxAge: 900000*4*24*7
+                        secure: process.env.SECURECOOKIE,
+                        maxAge: 1000 * 60 * 60,
                     })
+                        .cookie("refreshToken", refreshToken, {
+                            signed: true,
+                            httpOnly: true,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                        })
+                        .cookie("usuario_id", usuario.id, {
+                            signed: false,
+                            httpOnly: false,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                        })
+                        .cookie("usuario_rol", usuario.rol, {
+                            signed: false,
+                            httpOnly: false,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                        })
+                        .cookie("usuario_act", usuario.activo, {
+                            signed: false,
+                            httpOnly: false,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                        })
                         .status(200)
                         .json({
                             status: "success",
@@ -242,63 +280,40 @@ exports.iniciarSesionAdmin = async (req, res) => {
         });
 };
 
-exports.actualizarToken = async (req, res) => { //TODO: Rehacer la funcion con la implementacion de HTTPOnly Cookies
-    const refreshToken = req.body.token;
-    if (refreshToken === null) {
-        res.status(401).json({
-            status: "error",
-            message: "Acceso no autorizado.",
+exports.cerrarSesion = async (req, res) => {
+    res.cookie("accessToken", null, {
+        signed: true,
+        httpOnly: true,
+        secure: process.env.SECURECOOKIE,
+        maxAge: 1000,
+    })
+        .cookie("refreshToken", null, {
+            signed: true,
+            httpOnly: true,
+            secure: process.env.SECURECOOKIE,
+            maxAge: 1000,
+        })
+        .cookie("usuario_id", null, {
+            signed: false,
+            httpOnly: false,
+            secure: process.env.SECURECOOKIE,
+            maxAge: 1000,
+        })
+        .cookie("usuario_rol", null, {
+            signed: false,
+            httpOnly: false,
+            secure: process.env.SECURECOOKIE,
+            maxAge: 1000,
+        })
+        .cookie("usuario_act", null, {
+            signed: false,
+            httpOnly: false,
+            secure: process.env.SECURECOOKIE,
+            maxAge: 1000,
+        })
+        .status(200)
+        .json({
+            status: "success",
+            message: "La sesión se ha cerrado con éxito.",
         });
-    }
-    jwt.verify(refreshToken, process.env.REFRESHSECRET, (err, usuario) => {
-        if (err) {
-            if (err.name == "TokenExpiredError") {
-                console.log(err);
-                res.status(401).json({
-                    status: "error",
-                    message: "La sesión ha caducado.",
-                    error: err,
-                });
-            } else {
-                console.log(err);
-                res.status(403).json({
-                    status: "error",
-                    message:
-                        "Permisos insuficientes para realizar esta acción.",
-                    error: err,
-                });
-            }
-        } else {
-            if (jwt.decode(refreshToken).exp < Date.now() / 1000 + 259200) {
-                refreshToken = jwt.sign(
-                    {
-                        usuario: {
-                            id: usuario.id,
-                            rol: usuario.rol,
-                            activo: usuario.activo,
-                        },
-                    },
-                    process.env.REFRESHSECRET,
-                    { expiresIn: "7d" }
-                );
-            }
-            const accessToken = jwt.sign(
-                {
-                    usuario: {
-                        id: usuario.id,
-                        rol: usuario.rol,
-                        activo: usuario.activo,
-                    },
-                },
-                process.env.AUTHSECRET,
-                { expiresIn: "10m" }
-            );
-            res.status(200).json({
-                status: "success",
-                message: "Los tokens se han actualizado con éxito.",
-                accessToken: accessToken,
-                refreshToken: refreshToken,
-            });
-        }
-    });
 };

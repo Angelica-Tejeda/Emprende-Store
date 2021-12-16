@@ -8,6 +8,6 @@ const admin = require("../middlwares/admin")
 router.post("/signup", auth, admin, controller.registrarUsuario);
 router.post("/loginEmpr", controller.iniciarSesionEmpr);
 router.post("/loginAdmin", controller.iniciarSesionAdmin);
-router.post("/refresh" , controller.actualizarToken);
+router.post("/logout", controller.cerrarSesion);
 
 module.exports = router;

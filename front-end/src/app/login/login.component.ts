@@ -41,10 +41,7 @@ export class LoginComponent implements OnInit {
     try {
       this.auth.iniciarSesionEmpr(payload).subscribe((res) => {
         if (res.status == 'success') {
-          window.localStorage.setItem('usuario_id', res.usuario.id);
-          window.localStorage.setItem('usuario_rol', res.usuario.rol);
-          window.localStorage.setItem('usuario_activo', res.usuario.activo);
-          this.router.navigate(['/userProfile', res.usuario.id]);
+          this.router.navigate(['/detallesProfile']);
         } else {
           //TODO: Agregar mensajes de inicio de sesion fallido
         }

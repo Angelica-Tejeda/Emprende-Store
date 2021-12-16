@@ -17,8 +17,8 @@ export class AuthService {
     });
   }
 
-  actualizarToken(data: any): Observable<any> {
-    return this.http.post(`${_apiUrl}/refresh`, data, {
+  cerrarSesion(): Observable<any> {
+    return this.http.post(`${_apiUrl}/logout`, null, {
       withCredentials: true,
     });
   }
