@@ -13,6 +13,13 @@
             <li class="nav-item" *ngIf="router.url.includes('/landing-page') === false"><a [routerLink]="['/store']">Tienda</a></li>
             <li class="nav-item" *ngIf="router.url.includes('/landing-page') === false"><a [routerLink]="['/']">Categorias</a></li>
             <li class="nav-item"><a [routerLink]="['/login']">Soy Emprendedor</a></li>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+              </div>
         </ul>
     </div>
     <i class="bi bi-list hamburguer" (click)="toggleHamburguer()" *ngIf="router.url.includes('/login') === false"></i>
