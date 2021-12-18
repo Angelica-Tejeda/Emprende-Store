@@ -1,10 +1,11 @@
 <app-navbar></app-navbar>
 <div class="container card">
+    <H3 class="title">Crear nuevo producto o servicio</H3>
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
         <div class="input-group grid">
             <div class="input">
                 <label for="tipo">Tipo: </label>
-                <select id="tipo" name="tipo" formControlName="tipo">
+                <select id="tipo" name="tipo" formControlName="tipo" (change)="onChange()">
                     <option selected disabled>Seleccione una opción</option>
                     <option value="false">Producto</option>
                     <option value="true">Servicio</option>
@@ -15,22 +16,35 @@
                 <input type="text" name="titulo" id="titulo" formControlName="titulo">
             </div>
             <div class="input two">
-                <label for="descripcion">Ingrese una descripción: </label>
-                <input type="textarea" name="descripcion" id="descripcion" formControlName="descripcion"
-                    maxlength="500">
+                    <label for="descripcion" class="mb-2">Ingrese una descripción: </label>
+                    <textarea type="textarea" name="descripcion" id="descripcion" formControlName="descripcion"
+                    maxlength="500" class="descripcion" placeholder="Ej: Queso fresco elaborado directamente de nuestras granjas con leche de cabra 100% natural">  </textarea>
             </div>
-            <div class="three">
-                <p class="bold">Elija las categorías del producto o servicio:</p>
+            <div class="three productoCats">
+                <p class="bold">Elija las categorías del producto:</p>
                 <div class="grid categoriaCont">
-                <div *ngFor="let categoria of categorias" class="inputCont">
-                    <div class="input inputCat">
-                        <input class="checkbox" type="checkbox" name="cats" [value]="categoria"
-                            formControlName="categorias">
-                        <label for="categoria" class="light">{{categoria}}</label>
+                    <div *ngFor="let categoria of categorias" class="inputCont">
+                        <div class="input inputCat">
+                            <input class="checkbox" type="checkbox" name="cats" [value]="categoria"
+                                formControlName="categorias">
+                            <label for="categoria" class="light">{{categoria}}</label>
 
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="three servicioCats">
+                <p class="bold">Elija las categorías del servicio:</p>
+                <div class="grid categoriaCont">
+                    <div *ngFor="let categoria of categorias" class="inputCont">
+                        <div class="input inputCat">
+                            <input class="checkbox" type="checkbox" name="cats" [value]="categoria"
+                                formControlName="categorias">
+                            <label for="categoria" class="light">{{categoria}}</label>
+
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="input">
                 <label for="precio">Precio: </label>
@@ -40,11 +54,19 @@
                 <label for="descuento">Descuento: </label>
                 <input type="number" name="descuento" id="descuento" formControlName="descuento">
             </div>
-            <div class="input">
+            <div class="input four">
                 <label for="foto">Subir una foto: </label>
                 <input type="file" id="foto" name="foto" accept="image/png, image/jpeg, image/webp, image/jpg">
             </div>
-
+            <div class="fotosSeccion card">
+                <h3>Fotos del producto</h3>
+                <div cdkDropList cdkDropListOrientation="horizontal" class="drag-list" (cdkDropListDropped)="drop($event)">
+                    <div class="example-box card" *ngFor="let foto of fotos" cdkDrag>
+                        <img class="image" [src]="foto" alt="">
+                    </div>
+                  </div>
+            </div>
+           
 
         </div>
     </form>

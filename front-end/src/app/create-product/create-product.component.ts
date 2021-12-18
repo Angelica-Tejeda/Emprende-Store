@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-create-product',
   templateUrl: './create-product.component.html',
@@ -34,6 +35,7 @@ export class CreateProductComponent implements OnInit {
     "Vegetales",
     "Mascotas"
   ];
+  fotos: Array<string> = ["https://www.publicdomainpictures.net/pictures/200000/nahled/cheese-1476708601kxS.jpg", "https://www.tecnical.com/imagecache/uploads_images_entradas_tecnical-publica-el-seu-primer-blog-sobre-formatges_626x414_c_manchego-bodegon.jpg","http://www.asturiasmundial.com/noticias/fotos/119622_1_thumb.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt9ZjkYuQ9PBi6MH0NuE5ZcfPG_Iud_YnNHA&usqp=CAU","https://www.eltiempo.com/files/article_main/uploads/2018/11/22/5bf761de00118.jpeg",];
   productForm = new FormGroup({
     tipo: new FormControl('', Validators.required),
     titulo: new FormControl('', Validators.required),
@@ -46,7 +48,23 @@ export class CreateProductComponent implements OnInit {
 
   onSubmit() { }
 
+  onChange() {
+    var option = $("#tipo").val();
+    if (option == "true") {
+      $(".servicioCats").removeClass("activate");
+      $(".productoCats").removeClass("activate");
+      $(".servicioCats").addClass("activate");
+    } else {
+      $(".servicioCats").removeClass("activate");
+      $(".productoCats").removeClass("activate");
+      $(".productoCats").addClass("activate");
+    }
+  }
+
   ngOnInit(): void {
   }
 
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.fotos, event.previousIndex, event.currentIndex);
+  }
 }

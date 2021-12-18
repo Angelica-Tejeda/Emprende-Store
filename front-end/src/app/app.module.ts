@@ -14,6 +14,7 @@ import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.componen
 import { DetallesProfileComponent } from './detalles-profile/detalles-profile.component';
 import { ProductComponent } from './product/product.component';
 import { CreateProductComponent } from './create-product/create-product.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CreateProductComponent } from './create-product/create-product.componen
     NgbModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent],
