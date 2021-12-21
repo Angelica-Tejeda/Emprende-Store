@@ -16,9 +16,10 @@
                 <input type="text" name="titulo" id="titulo" formControlName="titulo">
             </div>
             <div class="input two">
-                    <label for="descripcion" class="mb-2">Ingrese una descripción: </label>
-                    <textarea type="textarea" name="descripcion" id="descripcion" formControlName="descripcion"
-                    maxlength="500" class="descripcion" placeholder="Ej: Queso fresco elaborado directamente de nuestras granjas con leche de cabra 100% natural">  </textarea>
+                <label for="descripcion" class="mb-2">Ingrese una descripción: </label>
+                <textarea type="textarea" name="descripcion" id="descripcion" formControlName="descripcion"
+                    maxlength="500" class="descripcion"
+                    placeholder="Ej: Queso fresco elaborado directamente de nuestras granjas con leche de cabra 100% natural">  </textarea>
             </div>
             <div class="three productoCats">
                 <p class="bold">Elija las categorías del producto:</p>
@@ -57,17 +58,27 @@
             <div class="input four">
                 <label for="foto">Subir una foto: </label>
                 <input type="file" id="foto" name="foto" accept="image/png, image/jpeg, image/webp, image/jpg">
+                <button class="btn-primary" (click)="subirFoto()"> Subir foto</button>
             </div>
             <div class="fotosSeccion card">
                 <h3>Fotos del producto</h3>
-                <div cdkDropList cdkDropListOrientation="horizontal" class="drag-list" (cdkDropListDropped)="drop($event)">
-                    <div class="example-box card" *ngFor="let foto of fotos" cdkDrag>
+                <div cdkDropList cdkDropListOrientation="horizontal" class="drag-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="example-box card" *ngFor="let foto of fotos;index as i" cdkDrag>
+                        <i [id]="i" class="bi bi-x-circle delete" (click)="removePhoto(i)"></i>
                         <img class="image" [src]="foto" alt="">
                     </div>
-                  </div>
+                </div>
             </div>
-           
-
         </div>
+        <div class="contBtns">
+            <button type="submit" class="btn-primary btn-rounded submit">
+                Guardar
+            </button>
+            <button class="btn-primary btn-rounded submit" (click)="publicar()">
+                Publicar
+            </button>
+        </div>
+
     </form>
 </div>
