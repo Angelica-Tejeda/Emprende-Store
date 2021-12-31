@@ -1,0 +1,25 @@
+h4.login-title {
+  font-weight: 700;
+}
+
+.container-height {
+  min-height: calc(100vh - 9.125rem);
+}
+
+.forgot-password {
+  font-size: small;
+  color: #495057;
+}
+
+.forgot-password:hover {
+  color: #22469e;
+}
+
+.p-button.login-button {
+  margin-top: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.login-container {
+    width: 21rem;
+}

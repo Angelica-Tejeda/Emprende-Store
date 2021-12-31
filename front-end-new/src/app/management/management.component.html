@@ -1,0 +1,76 @@
+<app-navbar></app-navbar>
+
+<div class="padding">
+    <div class="col-md-12">
+        <!-- Column -->
+        <div class="card">
+            <div class="card-body little-profile text-center">
+                <div class="underline-title">
+                    <h3 class="fs-2">Buen día, {{ usuario.nombre }}</h3>
+                </div>
+                <div>
+                    <h4>Estas son tus estadísticas de los últimos 30 días:</h4>
+                </div>
+                <div class="row text-center mt-5">
+                    <div class="col-lg-6 col-md-6 m-t-20 text-center estadistica">
+                        <small class="fw-bold fs-4">Total de de visitas al perfil</small>
+                        <h3 class="mt-4 m-b-0 font-light fs-1 text-center">{{ visitasPerfil }}</h3>
+                    </div>
+                    <div class="col-lg-6 col-md-6 m-t-20 text-center estadistica">
+                        <small class="fw-bold fs-4">Promedio de Calificaciones</small>
+                        <h3 class="mt-4 m-b-0 font-light fs-1 text-center">{{ usuario.puntuacion }}</h3>
+                    </div>
+                    <div class="col-lg-6 col-md-6 m-t-20 text-center estadistica">
+                        <small class="fw-bold fs-4">Total de visitas a productos/servicios</small>
+                        <h3 class="mt-4 m-b-0 font-light fs-1 text-center">{{ visitasProductos }}</h3>
+                    </div>
+                    <div class="col-lg-6 col-md-6 m-t-20 text-center estadistica">
+                        <small class="fw-bold fs-4">Total de veces contactado</small>
+                        <h3 class="mt-4 m-b-0 font-light fs-1 text-center">{{ visitasContacto }}</h3>
+                    </div>
+
+                    <div>
+                        <h4>Últimos comentarios en tus productos:</h4>
+                        <div class="card">
+                            <div class="wrapper info">
+                                <span>Anonimo</span>
+                                <span>11/12/2021</span>
+                            </div>
+                            <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae
+                                venenatis ex. Nulla odio tortor, mattis ac odio ut, varius gravida dui. Aliquam in nisl
+                                vitae orci commodo semper ac quis elit. Quisque volutpat dui et cursus eleifend. Aliquam
+                                laoreet, elit in pharetra ultrices, sapien magna ultrices diam, non porta tellus odio
+                                tempor nisi.</p>
+                        </div>
+                        <div class="card">
+                            <div class="wrapper info">
+                                <span>Anonimo</span>
+                                <span>11/12/2021</span>
+                            </div>
+                            <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae
+                                venenatis ex. Nulla odio tortor, mattis ac odio ut, varius gravida dui. Aliquam in nisl
+                                vitae orci commodo semper ac quis elit. Quisque volutpat dui et cursus eleifend. Aliquam
+                                laoreet, elit in pharetra ultrices, sapien magna ultrices diam, non porta tellus odio
+                                tempor nisi.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Actividad reciente en el foro:</h4>
+                    </div>
+                    <div>
+                        <h4>Mis Publicaciones:</h4>
+                        <div *ngFor="let producto of productos"; class="card relacionados">
+                            <img class="foto-rel" src="{{producto.fotos[0]}}" alt="">
+                            <span class="bold">{{producto.titulo}}</span>
+                            <span>${{producto.precio}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footbar></app-footbar>

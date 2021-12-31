@@ -1,0 +1,76 @@
+h2 {
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    font-size: 45px;
+    margin-top: 50px;
+  }
+  li {
+    list-style: none;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  video {
+    max-height: 100%;
+    width: 100%;
+    background-position: center;
+  }
+  i {
+    font-size: 80px;
+    min-height: 50px;
+    min-width: 50px;
+    align-self: center;
+  }
+  a {
+    font-weight: 700;
+    font-size: 19px;
+  }
+  @media only screen and (max-width: 1216px) {
+      h2 {
+        text-align: center;
+      }
+      .contact-icons {
+        display: flex;
+        flex-direction: column !important;
+      }
+    }
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0;
+  }
+  .text-content {
+    margin: 30px 0 40px 0;
+    padding: 0px 28%;
+  }
+  .banner {
+    max-height: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+  /** CONTACTO**/
+  .contacto {
+    min-height: min-content;
+  }
+  .contact-icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    margin-top: 20px;
+  }
+  .icon {
+    min-height: 50px;
+    min-width: 50px;
+    margin: 20px;
+    height: 40%;
+    flex-basis: calc(33% - 10rem);
+    display: flex;
+    justify-content: center;
+  }
+  

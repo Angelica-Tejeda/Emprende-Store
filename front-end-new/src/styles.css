@@ -1,0 +1,73 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: normal;
+}
+body {
+  margin: 0;
+  padding-top: 4.125rem;
+}
+
+.bg-primary {
+  background-color: #22469e !important;
+}
+.bg-primary-hover:hover {
+  background-color: #1d3c87 !important;
+}
+.bg-darker {
+  background-color: #2d2f60 !important;
+}
+.bg-darker-hover:hover {
+  background-color: #25264f !important;
+}
+.bg-lighter {
+  background-color: #aec0e4 !important;
+}
+
+.no-label > .p-button-label {
+  display: none;
+}
+
+.no-icon > .p-button-icon {
+  display: none;
+}
+
+.p-toast.p-toast-bottom-center {
+  width: calc(100vw - 2rem);
+  bottom: 0;
+}
+
+.p-dialog .p-dialog-footer button {
+  width: 100%;
+  margin: 0;
+}
+
+.button-dialog-container {
+  height: 7rem;
+}
+
+@media (min-width: 576px) {
+  .p-toast.p-toast-bottom-center {
+    width: 25rem;
+    right: 1rem;
+    left: auto;
+    transform: none;
+  }
+
+  .p-dialog .p-dialog-footer button {
+    margin: 0 0 0 0.5rem;
+    width: 9rem;
+  }
+
+  .button-dialog-container {
+    height: auto;
+  }
+}
+
+.c-pointer {
+  cursor: pointer;
+}
