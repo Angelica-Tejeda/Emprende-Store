@@ -254,7 +254,7 @@ exports.updateUsuarioActivo = async (req, res) => {
 
 exports.updateUsuarioPassword = async (req, res) => {
     const prepass = req.body.password;
-    if (prepass == null || prepass.length < 8) {
+    if (prepass === null || prepass.length < 8) {
         res.status(400).json({
             status: "error",
             message: "El valor ingresado en el campo contraseña no es válido.",
@@ -307,7 +307,7 @@ exports.updateUsuarioFotoPerfil = async (req, res) => {
                     "El archivo no ha podido ser cargado. Es posible que sea muy pesado.",
                 error: err,
             });
-        } else if (file == null) {
+        } else if (file === null) {
             res.status(415).json({
                 status: "error",
                 message: "El archivo no es de un formato soportado.",
@@ -362,7 +362,7 @@ exports.updateUsuarioFotoPortada = async (req, res) => {
                     "El archivo no ha podido ser cargado. Es posible que sea muy pesado.",
                 error: err,
             });
-        } else if (file == null) {
+        } else if (file === null) {
             res.status(415).json({
                 status: "error",
                 message: "El archivo no es de un formato soportado.",

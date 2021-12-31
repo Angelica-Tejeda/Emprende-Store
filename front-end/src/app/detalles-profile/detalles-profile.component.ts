@@ -52,6 +52,9 @@ export class DetallesProfileComponent implements OnInit {
       this.visitaService.getContactoPublicacionByUsuario(this.id, this.inicio, this.final).subscribe((data) => {
         this.visitasContacto = data.result;
       });
+      this.comentarioService.getAllComentariosByUsuario(this.id).subscribe((data) => {
+        this.visitasContacto = data.result.rows;
+      });
     } else {
       this.router.navigate(['/landing-page']);
     }

@@ -5,7 +5,7 @@ require("dotenv").config();
 
 exports.registrarUsuario = async (req, res) => {
     const prepass = req.body.password;
-    if (prepass == null || prepass.length < 8) {
+    if (prepass === null || prepass.length < 8) {
         res.status(400).json({
             status: "error",
             message: "El valor ingresado en el campo contraseña no es válido.",
@@ -135,13 +135,13 @@ exports.iniciarSesionEmpr = async (req, res) => {
                             signed: false,
                             httpOnly: false,
                             secure: process.env.SECURECOOKIE,
-                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                            maxAge: 1000 * 60 * 60
                         })
                         .cookie("usuario_act", usuario.activo, {
                             signed: false,
                             httpOnly: false,
                             secure: process.env.SECURECOOKIE,
-                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                            maxAge: 1000 * 60 * 60
                         })
                         .status(200)
                         .json({
@@ -242,13 +242,13 @@ exports.iniciarSesionAdmin = async (req, res) => {
                             signed: false,
                             httpOnly: false,
                             secure: process.env.SECURECOOKIE,
-                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                            maxAge: 1000 * 60 * 60
                         })
                         .cookie("usuario_act", usuario.activo, {
                             signed: false,
                             httpOnly: false,
                             secure: process.env.SECURECOOKIE,
-                            maxAge: 1000 * 60 * 60 * 24 * 7,
+                            maxAge: 1000 * 60 * 60
                         })
                         .status(200)
                         .json({
@@ -285,31 +285,13 @@ exports.cerrarSesion = async (req, res) => {
         signed: true,
         httpOnly: true,
         secure: process.env.SECURECOOKIE,
-        maxAge: 1000,
+        maxAge: 1,
     })
         .cookie("refreshToken", null, {
             signed: true,
             httpOnly: true,
             secure: process.env.SECURECOOKIE,
-            maxAge: 1000,
-        })
-        .cookie("usuario_id", null, {
-            signed: false,
-            httpOnly: false,
-            secure: process.env.SECURECOOKIE,
-            maxAge: 1000,
-        })
-        .cookie("usuario_rol", null, {
-            signed: false,
-            httpOnly: false,
-            secure: process.env.SECURECOOKIE,
-            maxAge: 1000,
-        })
-        .cookie("usuario_act", null, {
-            signed: false,
-            httpOnly: false,
-            secure: process.env.SECURECOOKIE,
-            maxAge: 1000,
+            maxAge: 1,
         })
         .status(200)
         .json({

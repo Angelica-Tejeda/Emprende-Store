@@ -55,18 +55,31 @@ exports.createPublicacion = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
 exports.getCategorias = async (req, res) => {
-    const categorias = Publicacion.rawAttributes.categoria.type.type.values;
+    const preResultado = Publicacion.rawAttributes.categoria.type.type.values;
+    let categoriasProductos = [];
+    let categoriasServicios = [];
+    for (cat of preResultado) {
+        if (cat.split(".")[0] == "p") {
+            categoriasProductos.push(cat.split(".")[1]);
+        } else {
+            categoriasServicios.push(cat.split(".")[1]);
+        }
+    }
     if (
-        categorias === null ||
-        categorias === undefined ||
-        categorias.length === 0
+        categoriasProductos === null ||
+        categoriasServicios === null ||
+        categoriasProductos === undefined ||
+        categoriasServicios === undefined ||
+        categoriasProductos.length === 0 ||
+        categoriasServicios.length === 0
     ) {
         res.status(404).json({
             status: "error",
@@ -77,10 +90,12 @@ exports.getCategorias = async (req, res) => {
         res.status(200).json({
             status: "success",
             message: "Categorias obtenidas exitosametne.",
-            result: categorias,
+            result: {
+                categoriasProductos: categoriasProductos,
+                categoriasServicios: categoriasServicios,
+            },
         });
     }
-    console.log(categorias);
 };
 
 exports.getAllPublicaciones = async (req, res) => {
@@ -108,6 +123,13 @@ exports.getAllPublicaciones = async (req, res) => {
     })
         .then((publicaciones) => {
             if (publicaciones.count > 0) {
+                for (publicacion of publicaciones.rows) {
+                    let categ = [];
+                    for (cat of publicacion.categoria) {
+                        categ.push(cat.split("-")[1]);
+                    }
+                    pub.categoria = categ;
+                }
                 res.status(200).json({
                     status: "success",
                     message: "Publicaciones obtenidas con éxito.",
@@ -125,7 +147,8 @@ exports.getAllPublicaciones = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -174,7 +197,8 @@ exports.getOwnPublicacionesByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -222,7 +246,8 @@ exports.getOwnPublicacionById = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -289,7 +314,8 @@ exports.getDiscountPublicaciones = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -338,7 +364,8 @@ exports.getPublicacionesByUsuario = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -390,7 +417,8 @@ exports.getPublicacionById = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -452,7 +480,8 @@ exports.getPublicaciones = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -481,7 +510,7 @@ exports.updatePublicacionFoto = async (req, res) => {
                         message: "El archivo no ha podido ser cargado.",
                         error: err,
                     });
-                } else if (file == null) {
+                } else if (file === null) {
                     res.status(415).json({
                         status: "error",
                         message: "El archivo no es de un formato soportado.",
@@ -519,7 +548,8 @@ exports.updatePublicacionFoto = async (req, res) => {
                             console.log(err);
                             res.status(500).json({
                                 status: "error",
-                                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                                message:
+                                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                                 error: err,
                             });
                         });
@@ -530,7 +560,8 @@ exports.updatePublicacionFoto = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -581,7 +612,8 @@ exports.updatePublicacionActivo = async (req, res) => {
                             console.log(err);
                             res.status(500).json({
                                 status: "error",
-                                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                                message:
+                                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                                 error: err,
                             });
                         });
@@ -625,7 +657,7 @@ exports.updatePublicacionActivo = async (req, res) => {
                             message:
                                 "La publicación no puede ser activada debido a que no se ha seleccionado al menos una categoría.",
                         });
-                    } else if (precio == null) {
+                    } else if (precio === null) {
                         res.status(403).json({
                             status: "error",
                             message:
@@ -661,7 +693,8 @@ exports.updatePublicacionActivo = async (req, res) => {
                                 console.log(err);
                                 res.status(500).json({
                                     status: "error",
-                                    message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                                    message:
+                                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                                     error: err,
                                 });
                             });
@@ -678,21 +711,42 @@ exports.updatePublicacionActivo = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
 };
 
 exports.updatePublicacion = async (req, res) => {
+    let categ = [];
+    let active = req.body.activo;
+    let activeChange = false;
+    let message = "La publicación se ha actualizado con éxito.";
+    if (req.body.titulo === null || req.body.descripcion === null || req.body.servicio === null || req.body.categoria === null || req.body.categoria === [] || req.body.fotos === [] || req.body.precio === null) {
+        if (active) {
+            activeChange = true;
+            message = "La publicación se ha actualizado con éxito pero ha sido marcada como desactivada debido a los cambios realizados. Para poder activarla nuevamente debe llenar los campos requeridos.";
+
+        }
+    } else if (req.body.servicio) {
+        for (cat of req.body.categoria) {
+            categ.push("s." + cat);
+        }
+    } else {
+        for (cat of req.body.categoria) {
+            categ.push("p." + cat);
+        }
+    }
     Publicacion.update(
         {
             titulo: req.body.titulo,
             descripcion: req.body.descripcion,
             servicio: req.body.servicio,
-            categoria: req.body.categoria,
+            categoria: categ,
             precio: req.body.precio,
             descuento: req.body.descuento,
+            activo: active,
         },
         {
             where: { id: req.params.publId },
@@ -702,7 +756,8 @@ exports.updatePublicacion = async (req, res) => {
             if (result == 1) {
                 res.status(200).json({
                     status: "success",
-                    message: "La publicación se ha actualizado con éxito.",
+                    message: message,
+                    activeChange: activeChange,
                     result: result,
                 });
             } else {
@@ -741,7 +796,8 @@ exports.updatePublicacion = async (req, res) => {
             } else {
                 res.status(500).json({
                     status: "error",
-                    message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                    message:
+                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                     error: err,
                 });
             }
@@ -797,7 +853,8 @@ exports.deletePublicacionFoto = async (req, res) => {
                         console.log(err);
                         res.status(500).json({
                             status: "error",
-                            message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                            message:
+                                "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                             error: err,
                         });
                     });
@@ -847,7 +904,8 @@ exports.deletePublicacionFoto = async (req, res) => {
                         console.log(err);
                         res.status(500).json({
                             status: "error",
-                            message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                            message:
+                                "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                             error: err,
                         });
                     });
@@ -857,7 +915,8 @@ exports.deletePublicacionFoto = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });
@@ -902,7 +961,8 @@ exports.deletePublicacion = async (req, res) => {
                         console.log(err);
                         res.status(500).json({
                             status: "error",
-                            message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                            message:
+                                "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                             error: err,
                         });
                     });
@@ -917,7 +977,8 @@ exports.deletePublicacion = async (req, res) => {
             console.log(err);
             res.status(500).json({
                 status: "error",
-                message: "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
                 error: err,
             });
         });

@@ -58,6 +58,14 @@
                     <div>
                         <h4>Actividad reciente en el foro:</h4>
                     </div>
+                    <div>
+                        <h4>Mis Publicaciones:</h4>
+                        <div *ngFor="let producto of productos"; class="card relacionados">
+                            <img class="foto-rel" src="{{producto.fotos[0]}}" alt="">
+                            <span class="bold">{{producto.titulo}}</span>
+                            <span>${{producto.precio}}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
