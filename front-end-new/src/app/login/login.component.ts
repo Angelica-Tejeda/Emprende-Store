@@ -10,7 +10,6 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  //encapsulation: ViewEncapsulation.None,
   providers: [MessageService],
 })
 export class LoginComponent implements OnInit {
@@ -49,12 +48,11 @@ export class LoginComponent implements OnInit {
       this.authService.iniciarSesionEmpr(this.loginForm.value).subscribe({
         next: (res) => {
           if (res.status == 'success') {
-            //alert(JSON.stringify(res));
-            this.router.navigate(['/home']);
+            this.router.navigate(['/management']);
           }
         },
         error: (err) => {
-          console.error(err)
+          console.error(err);
           this.waiting = false;
           if (err.error.status == 'error') {
             if (err.error.message.includes('contraseña')) {
@@ -73,7 +71,8 @@ export class LoginComponent implements OnInit {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+              detail:
+                'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
               life: 5000,
             });
           }

@@ -13,21 +13,18 @@ import { environment } from '../../../environments/environment';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
-  //encapsulation: ViewEncapsulation.None,
   providers: [ConfirmationService, MessageService],
 })
 export class NavbarComponent implements OnInit {
   public isMenuCollapsed = true;
   public isDropdownOpened = false;
   public isLogged = false;
-  //public isSearchFilled = false;
   public url: string = this.router.url;
   mediaUrl: string = environment.mediaURL;
   usuario: any = null;
   searchForm: FormGroup = new FormGroup({
     busqueda: new FormControl(null, Validators.required),
   });
-  //productosFiltrados: any[] = [];
 
   constructor(
     private router: Router,
@@ -72,22 +69,6 @@ export class NavbarComponent implements OnInit {
     this.isDropdownOpened = event;
   }
 
-  /*checkSearchFilled() {
-    alert("works")
-    if (this.searchForm.get("busqueda")) {
-      this.isSearchFilled = true;
-    } else {
-      this.isSearchFilled = false;
-    }
-  }*/
-
-  /*filtrarProductos(event: Event) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-
-    this.productosFiltrados = filtered;
-  }*/
-
   buscarProductos() {
     if (this.searchForm.valid) {
       let b = this.searchForm.value;
@@ -97,13 +78,15 @@ export class NavbarComponent implements OnInit {
 
   cerrarSesion(): void {
     this.confirmationService.confirm({
-      message: '¿Seguro que quieres de cerrar tu sesión y salir?',
+      message: '¿Seguro que quieres de cerrar tu sesión?',
       header: 'Cerrar sesión',
       icon: 'pi pi-exclamation-circle',
       accept: () => {
         this.authService.cerrarSesion().subscribe((res) => {
           if (res.status == 'success') {
-            this.cookieService.deleteAll();
+            this.cookieService.delete('usuario_act');
+            this.cookieService.delete('usuario_rol');
+            this.cookieService.delete('usuario_id');
             this.isLogged = false;
             this.router.navigate(['/home']);
             this.messageService.clear();
@@ -116,14 +99,7 @@ export class NavbarComponent implements OnInit {
           }
         });
       },
-      reject: () => {
-        /*this.messageService.add({
-          severity: 'error',
-          summary: 'Sesión finalizada',
-          detail: 'res.message',
-          life: 5000,
-        });*/
-      },
+      reject: () => {},
     });
   }
 }

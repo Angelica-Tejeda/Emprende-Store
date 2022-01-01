@@ -1,29 +1,79 @@
 <app-navbar></app-navbar>
-<header class="hero" id="start">
-    <div class="banner" id="banner">
-        <video loop muted autoplay oncanplay="this.play()" onloadedmetadata="this.muted = true" class="video">
+<header class="bg-primary">
+    <div class="container-md p-3 text-center">
+        <video class="w-100" controls loop oncanplay="this.volume = 0.2; this.play()">
             <source src="../../assets/video/Who decides how long a second is_ - John Kitching.mp4" type="video/mp4">
         </video>
     </div>
 </header>
-<!--/.header-->
-<section class="about-us bg-lighter" id="about">
-    <div class="content">
-        <h2>Sobre Nosotros</h2>
-        <p class="text-content">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo unde, officia veritatis,
-            cupiditate soluta sit
-            molestias dolor architecto impedit nam rem quis quam totam eaque sunt quae optio obcaecati illum! Lorem
-            ipsum dolor sit amet consectetur, adipisicing elit. Placeat illo sint accusantium molestiae minus sit,
-            tenetur quisquam? Quasi officia, asperiores a veritatis cupiditate consequatur eos impedit autem earum
-            similique fuga.</p>
+<section>
+    <div class="container-md text-center py-5">
+        <h2>Visita nuestra tienda</h2>
+        <p>
+            Nuestra tienda reune un amplio catálogo de productos y servicios, todos ellos ofrecidos por padres de familia cuyos hijos viven con algún Trastorno del Espectro Autista (TEA).
+        </p>
+        <a class="mx-auto" [routerLink]="['/store']">
+            <button pButton pRipple type="button" label="Ir a la Tienda" icon="pi pi-shopping-cart" class="p-button-lg"></button>
+        </a>
     </div>
 </section>
-<section class="contacto content" id="contacto">
-    <h2>Contacto</h2>
-    <div class="contact-icons">
-        <div class="icon"><i class="bi bi-facebook"></i></div>
-        <div class="icon"><i class="bi bi-instagram"></i></div>
-        <div class="icon"><i class="bi bi-twitter"></i></div>
+<section class="bg-lighter">
+    <div class="container-md text-center py-5">
+        <h2>Sobre Nosotros</h2>
+        <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo unde, officia veritatis, cupiditate soluta
+            sit molestias dolor architecto impedit nam rem quis quam totam eaque sunt quae optio obcaecati illum! Lorem
+            ipsum dolor sit amet consectetur, adipisicing elit. Placeat illo sint accusantium molestiae minus sit,
+            tenetur quisquam? Quasi officia, asperiores a veritatis cupiditate consequatur eos impedit autem earum
+            similique fuga.
+        </p>
+    </div>
+</section>
+<section>
+    <div class="container-md text-center py-5">
+        <h2>Misión</h2>
+        <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo unde, officia veritatis, cupiditate soluta
+            sit molestias dolor architecto impedit nam rem quis quam totam eaque sunt quae optio obcaecati illum!
+        </p>
+    </div>
+</section>
+<section class="bg-lighter">
+    <div class="container-md text-center py-5">
+        <h2>Visión</h2>
+        <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo unde, officia veritatis, cupiditate soluta
+            sit molestias dolor architecto impedit nam rem quis quam totam eaque sunt quae optio obcaecati illum!
+        </p>
+    </div>
+</section>
+<section>
+    <div class="container-md text-center py-5">
+        <h2>Contacto</h2>
+        <div>
+            <p>Encuentranos en nuestras redes sociales:</p>
+            <a class="button-icon-link" target="_blank" href="https://www.facebook.com/APADAGUAYAS">
+                <p-button styleClass="button-icon mx-3 mb-3">
+                    <ng-template pTemplate="content">
+                        <i class="pi pi-facebook" style="font-size: 2rem"></i>
+                    </ng-template>
+                </p-button>
+            </a>
+            <a class="button-icon-link" target="_blank" href="https://twitter.com/apadaguayas">
+                <p-button styleClass="button-icon mx-3 mb-3">
+                    <ng-template pTemplate="content">
+                        <i class="pi pi-twitter" style="font-size: 2rem"></i>
+                    </ng-template>
+                </p-button>
+            </a>
+            <a class="button-icon-link" target="_blank" href="https://www.instagram.com/apadaguayas/">
+                <p-button styleClass="button-icon mx-3 mb-3">
+                    <ng-template pTemplate="content">
+                        <i class="pi pi-instagram" style="font-size: 2rem"></i>
+                    </ng-template>
+                </p-button>
+            </a>
+        </div>
     </div>
 </section>
 <app-footbar></app-footbar>
