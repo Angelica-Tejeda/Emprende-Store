@@ -2,18 +2,18 @@
 <div class="container">
     <h2>Productos Populares</h2>
     <ngb-carousel>
-      <ng-template ngbSlide *ngFor="let foto of fotos">
-          <div class="wrapper">
-              <img [src]="foto" alt="Random first slide">
-              <!--CAMBIAR POR ESTA LINEA CUANDO YA SE ESTEN CARGANDO DATOS DEL BACK
+        <ng-template ngbSlide *ngFor="let foto of fotos">
+            <div class="wrapper">
+                <img [src]="foto" alt="Random first slide">
+                <!--CAMBIAR POR ESTA LINEA CUANDO YA SE ESTEN CARGANDO DATOS DEL BACK
                             <img [src]="url+foto" alt="Random first slide">
                         -->
-          </div>
-      </ng-template>
+            </div>
+        </ng-template>
     </ngb-carousel>
-    </div>
-    <div class="container ofertas">
-        <h2>Ofertas</h2>
-    
-    </div>
+</div>
+<div class="container ofertas">
+    <h2>Ofertas</h2>
+
+</div>
 <app-footbar></app-footbar>

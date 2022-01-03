@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   ];
   contactForm: FormGroup = new FormGroup(
     {
-      nombre: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+      nombre: new FormControl(null, Validators.required),
       email: new FormControl(null, [Validators.required, Validators.email]),
       asunto: new FormControl(null, Validators.required),
       mensaje: new FormControl(null, Validators.required),
@@ -50,6 +50,5 @@ export class HomeComponent implements OnInit {
     } else {
       this.sendingForm = false;
     }
-
   }
 }

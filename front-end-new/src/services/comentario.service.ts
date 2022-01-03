@@ -31,7 +31,10 @@ export class ComentarioService {
     });
   }
 
-  getOwnComentariosByPublicacion(userId: number, publId: number): Observable<any> {
+  getOwnComentariosByPublicacion(
+    userId: number,
+    publId: number
+  ): Observable<any> {
     return this.http.get(`${_apiUrl}/publ/own/${userId}/${publId}`, {
       withCredentials: true,
     });

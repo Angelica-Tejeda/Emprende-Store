@@ -13,6 +13,7 @@ import { environment } from '../../environments/environment';
 export class ProductComponent implements OnInit {
   mediaUrl: string = environment.mediaURL;
   notFound: boolean = false;
+  product: any;
 
   constructor(
     private router: Router,

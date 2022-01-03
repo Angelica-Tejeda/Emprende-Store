@@ -10,11 +10,13 @@ import { CookieService } from 'ngx-cookie-service';
 export class NotAllowedComponent implements OnInit {
   isLogged: boolean = false;
 
-  constructor(private location: Location, 
-    private cookieService: CookieService,) {}
+  constructor(
+    private location: Location,
+    private cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {
-    if (this.cookieService.check("usuario_id")) {
+    if (this.cookieService.check('usuario_id')) {
       this.isLogged = true;
     }
   }

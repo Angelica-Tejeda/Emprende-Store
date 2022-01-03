@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'profile/:userId', component: ProfileComponent },
   { path: 'store', component: StoreComponent },
   { path: 'search/:busqueda', component: SearchComponent },
-  { path: '**', component: NotFoundPageComponent }
+  { path: '**', component: NotFoundPageComponent },
 ];
 
 @NgModule({

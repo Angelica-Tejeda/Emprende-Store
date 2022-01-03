@@ -6,7 +6,7 @@ import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
   selector: 'app-store',
   templateUrl: './store.component.html',
   styleUrls: ['./store.component.css'],
-  providers: [NgbCarouselConfig]
+  providers: [NgbCarouselConfig],
 })
 export class StoreComponent implements OnInit {
   fotos: Array<string> = [
@@ -18,7 +18,10 @@ export class StoreComponent implements OnInit {
     'https://www.tecnical.com/imagecache/uploads_images_entradas_tecnical-publica-el-seu-primer-blog-sobre-formatges_626x414_c_manchego-bodegon.jpg',
   ];
   ProductosPopulares: any;
-  constructor(publicacionService: PublicacionService, config: NgbCarouselConfig) {
+  constructor(
+    publicacionService: PublicacionService,
+    config: NgbCarouselConfig
+  ) {
     //this.ProductosPopulares= PulicacionService.getProductosPopulares();
   }
 

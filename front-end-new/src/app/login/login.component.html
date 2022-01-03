@@ -38,10 +38,10 @@
                         </span>
                         <small *ngIf="submitted && loginForm.get('password')?.invalid" id="password-help"
                             class="p-error">Ingrese su contraseña.</small>
-                        <small *ngIf="messagePassword" id="password-help"
-                            class="p-error">{{messagePassword}}</small>
+                        <small *ngIf="messagePassword" id="password-help" class="p-error">{{messagePassword}}</small>
                         <div>
-                            <button pButton pRipple type="submit" label="INICIAR SESIÓN" [icon]="waiting ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'"
+                            <button pButton pRipple type="submit" label="INICIAR SESIÓN"
+                                [icon]="waiting ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'"
                                 class="p-button login-button"></button>
                             <a class="forgot-password" [routerLink]="'.'">Olvidé mi contraseña</a>
                         </div>

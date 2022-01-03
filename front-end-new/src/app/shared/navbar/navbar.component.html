@@ -24,21 +24,22 @@
     </a>
     <div *ngIf="url != '/login'" [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
         <div class="dropdown-divider d-lg-none"></div>
-            <div class="w-100">
-                <form [formGroup]="searchForm" (submit)="buscarProductos()" class="navbar-search-form">
-                    <!--<p-autoComplete class="navbar-input" [style]="{'width':'100%'}" placeholder="Búsqueda"
+        <div class="w-100">
+            <form [formGroup]="searchForm" (submit)="buscarProductos()" class="navbar-search-form">
+                <!--<p-autoComplete class="navbar-input" [style]="{'width':'100%'}" placeholder="Búsqueda"
                         formControlName="busqueda" [suggestions]="productosFiltrados"
                         (completeMethod)="filtrarProductos($event)" [minLength]="3" (onKeyUp)="isSearchFilled = true" ></p-autoComplete>
                     <button *ngIf="isSearchFilled" type="button" pButton pRipple icon="pi pi-times" class="p-button bg-ligther" (click)="searchForm.setValue({busqueda: null});isSearchFilled = false"></button>-->
-                    <span class="p-input-icon-right navbar-search-span">
-                        <i *ngIf="searchForm.valid" class="c-pointer pi pi-times" (click)="searchForm.setValue({busqueda: null})"></i>
-                        <input class="navbar-search-input" [ngClass]="{'ng-invalid': false}" type="text" pInputText placeholder="Búsqueda" formControlName="busqueda"/>
-                    </span>
-                    <button type="submit" pButton pRipple icon="pi pi-search"
-                        class="p-button navbar-search-button">
-                    </button>
-                </form>
-            </div>
+                <span class="p-input-icon-right navbar-search-span">
+                    <i *ngIf="searchForm.valid" class="c-pointer pi pi-times"
+                        (click)="searchForm.setValue({busqueda: null})"></i>
+                    <input class="navbar-search-input" [ngClass]="{'ng-invalid': false}" type="text" pInputText
+                        placeholder="Búsqueda" formControlName="busqueda" />
+                </span>
+                <button type="submit" pButton pRipple icon="pi pi-search" class="p-button navbar-search-button">
+                </button>
+            </form>
+        </div>
         <ul class="navbar-nav ml-auto">
             <div class="dropdown-divider d-lg-none"></div>
             <li class="nav-item m-auto">
@@ -71,8 +72,8 @@
                     </button>
                 </a>
                 <div ngbDropdownMenu aria-labelledby="profileDropDown" class="dropdown-menu bg-darker mt-3">
-                    <a ngbDropdownItem [routerLink]="['/profile', usuario.id]" [ngClass]="{'active': url == '/profile/{{usuario_id}}'}"
-                        (click)="isMenuCollapsed = true">
+                    <a ngbDropdownItem [routerLink]="['/profile', usuario.id]"
+                        [ngClass]="{'active': url == '/profile/{{usuario_id}}'}" (click)="isMenuCollapsed = true">
                         <button pButton pRipple type="button" label="Ver perfil"
                             class="p-button navbar-button my-1"></button>
                     </a>
@@ -83,7 +84,8 @@
                     </a>
                     <a ngbDropdownItem [routerLink]="'.'" [ngClass]="{'active': url == '/finances'}"
                         (click)="isMenuCollapsed = true">
-                        <button pButton pRipple type="button" label="Finanzas" class="p-button navbar-button my-1"></button>
+                        <button pButton pRipple type="button" label="Finanzas"
+                            class="p-button navbar-button my-1"></button>
                     </a>
                     <a ngbDropdownItem [routerLink]="'.'" [ngClass]="{'active': url == '/forum'}"
                         (click)="isMenuCollapsed = true">
@@ -97,8 +99,8 @@
                 </div>
             </li>
             <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
-                <a class="nav-link" [routerLink]="['/profile', usuario.id]" [ngClass]="{'active': url == '/profile/{{usuario_id}}'}"
-                    (click)="isMenuCollapsed = true">
+                <a class="nav-link" [routerLink]="['/profile', usuario.id]"
+                    [ngClass]="{'active': url == '/profile/{{usuario_id}}'}" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="VER PERFIL" class="p-button navbar-button"></button>
                 </a>
             </li>
