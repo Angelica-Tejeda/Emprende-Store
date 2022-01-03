@@ -2,10 +2,6 @@ h4.login-title {
   font-weight: 700;
 }
 
-.container-height {
-  min-height: calc(100vh - 9.125rem);
-}
-
 .forgot-password {
   font-size: small;
   color: #495057;

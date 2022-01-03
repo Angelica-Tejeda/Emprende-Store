@@ -1,92 +1,9 @@
 <app-navbar></app-navbar>
 
-<div class="container">
-    <div class="grid">
-        <div class="v-container-1">
-            <ngb-carousel class="carousel">
-                <ng-template ngbSlide *ngFor="let foto of fotos">
-                    <div class="wrapper">
-                        <img [src]="foto" alt="Random first slide">
-                        <!--CAMBIAR POR ESTA LINEA CUANDO YA SE ESTEN CARGANDO DATOS DEL BACK
-                        <img [src]="url+foto" alt="Random first slide">
-                    -->
-                    </div>
-                </ng-template>
-            </ngb-carousel>
+<app-not-found *ngIf="notFound"></app-not-found>
 
-            <div class="wrapper descripcion">
-                <h3>Descripción</h3>
-                <p>{{descripcion}}</p>
-            </div>
-            <div class="wrapper comentarios">
-                <h3>Comentarios</h3>
-                <div class="card">
-                    <div class="wrapper info">
-                        <span>Anonimo</span>
-                        <span>11/12/2021</span>
-                    </div>
-                    <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                    <p class="comment-text">{{descripcion}}</p>
-                </div>
-                <div class="card">
-                    <div class="wrapper info">
-                        <span>Anonimo</span>
-                        <span>11/12/2021</span>
-                    </div>
-                    <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                    <p class="comment-text">{{descripcion}}</p>
-                </div>
-                <div class="card">
-                    <div class="wrapper info">
-                        <span>Anonimo</span>
-                        <span>11/12/2021</span>
-                    </div>
-                    <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                    <p class="comment-text">{{descripcion}}</p>
-                </div>
+<div *ngIf="!notFound">
 
-            </div>
-        </div>
-        <div class="v-container-2">
-            <div class="info-producto">
-                <h2 class="nombre-product">{{titulo}}</h2>
-                <a class="vendedor">
-                    Nature's Garden
-                </a>
-                <div class="rating">
-                    <span class="puntuacion">5.0</span>
-                    <div class="stars">
-                        <i class="bi bi-star-fill icon"></i>
-                        <i class="bi bi-star-fill icon"></i>
-                        <i class="bi bi-star-fill icon"></i>
-                        <i class="bi bi-star-fill icon"></i>
-                        <i class="bi bi-star-fill icon"></i>
-                    </div>
-                </div>
-                <h1 class="precio">$ 5.99</h1>
-                <div class="center"><a href="javascript:void(0)"
-                        class="mt-4 waves-effect waves-dark btn btn-primary btn-md btn-rounded"
-                        data-abc="true">Contactar<i class="bi bi-whatsapp icon"></i> </a></div>
-            </div>
-            <div class="wrapper">
-                <h3>Productos Relacionados</h3>
-                <div class="card relacionados">
-                    <img class="foto-rel" src="{{fotos[0]}}" alt="">
-                    <span class="bold">Queso Fresco</span>
-                    <span>$5.99</span>
-                </div>
-                <div class="card relacionados">
-                    <img class="foto-rel" src="{{fotos[1]}}" alt="">
-                    <span class="bold">Queso Gouda</span>
-                    <span>$7.99</span>
-                </div>
-                <div class="card relacionados">
-                    <img class="foto-rel" src="{{fotos[0]}}" alt="">
-                    <span class="bold">Queso Fresco</span>
-                    <span>$5.99</span>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 
 <app-footbar></app-footbar>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { UsuarioService } from 'src/services/usuario.service';
 import { VisitaService } from 'src/services/visita.service';
@@ -14,6 +14,7 @@ import { environment } from '../../environments/environment';
 })
 export class ManagementComponent implements OnInit {
   mediaUrl: string = `${environment.mediaURL}`;
+  notAllowed: boolean = false;
   id: any;
   usuario: any;
   productos: any;
@@ -53,7 +54,7 @@ export class ManagementComponent implements OnInit {
         this.visitasContacto = data.result.rows;
       });
     } else {
-      this.router.navigate(['/home']);
+      this.notAllowed = true;
     }
   }
 

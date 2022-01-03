@@ -2,9 +2,9 @@
 
 <p-toast position="bottom-center"></p-toast>
 
-<div class="container-fliud container-height bg-lighter d-flex flex-column justify-content-center">
-    <div class="container-sm d-flex flex-column justify-content-center">
-        <p-card class="m-auto w-100 my-3" [style]="{'max-width': '60rem', 'margin': 'auto', 'border-radius': '10px'}">
+<div class="container-fliud container-full-height bg-lighter d-flex flex-column justify-content-center">
+    <div class="container-sm py-3 d-flex flex-column justify-content-center">
+        <p-card class="m-auto w-100 my-3" [style]="{'max-width': '60rem', 'margin': 'auto'}">
             <div class="d-flex justify-content-around align-items-center">
                 <div class="login-container p-fluid d-none d-md-block my-md-3 my-lg-5 ml-lg-5 px-md-3">
                     <img class="h-100 w-100" src="../../assets/img/login-image.png" alt="Emprende Store LogIn">
@@ -41,8 +41,8 @@
                         <small *ngIf="messagePassword" id="password-help"
                             class="p-error">{{messagePassword}}</small>
                         <div>
-                            <button pButton pRipple type="submit" label="INICIAR SESIÓN" [icon]="waiting ? 'pi pi-spin pi-spinner': ''"
-                                class="p-button login-button" [ngClass]="!waiting ? 'no-icon': ''"></button>
+                            <button pButton pRipple type="submit" label="INICIAR SESIÓN" [icon]="waiting ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'"
+                                class="p-button login-button"></button>
                             <a class="forgot-password" [routerLink]="'.'">Olvidé mi contraseña</a>
                         </div>
                     </form>

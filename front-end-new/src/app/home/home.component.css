@@ -1,0 +1,25 @@
+video {
+    width: 250rem;
+    border-radius: 25px;
+    box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+}
+
+.apada-logo {
+    max-width: 100%;
+    width: 20rem;
+}
+
+.avatar-image {
+    max-height: 3rem;
+    border-radius: 100px;
+}
+
+.contact-form-textarea {
+    width: 100%;
+}
+
+@media (min-width: 992px) {
+    .contact-form-textarea {
+        width: auto;
+    }
+}

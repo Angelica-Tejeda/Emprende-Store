@@ -6,10 +6,14 @@ body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
   font-weight: normal;
+  color: #495057;
 }
 body {
   margin: 0;
   padding-top: 4.125rem;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
 }
 button {
   border-radius: 50px!important;
@@ -31,8 +35,79 @@ button {
   background-color: #aec0e4 !important;
 }
 
-.button-icon-link:hover{
+.gap-0 {
+  gap: 0;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-3 {
+  gap: 0.5rem;
+}
+.gap-3 {
+  gap: 1rem;
+}
+.gap-4 {
+  gap: 1.5rem;
+}
+.gap-5 {
+  gap: 3rem;
+}
+
+.container-full-height {
+  min-height: calc(100vh - 18rem);
+}
+
+@media (min-width: 576px) {
+  .container-full-height {
+    min-height: calc(100vh - 13.125rem);
+  }
+}
+
+.custom-card {
+    padding: 1rem;
+    border-radius: 25px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+}
+@media (min-width: 992px) {
+  .custom-card {
+    padding: 2rem;
+  }
+}
+
+.p-accordion-header-link {
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+}
+.p-accordion-content {
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+}
+.p-accordion p-accordiontab .p-accordion-tab {
+  margin-bottom: 0.5rem;
+}
+.p-accordion p-accordiontab:last-of-type .p-accordion-tab {
+  margin-bottom: 0;
+}
+
+.nav-link span {
+  white-space: nowrap;
+}
+
+.link-button:hover{
   text-decoration: none!important;
+}
+
+.footbar-button button {
+  background: #2d2f60;
+  border: 1px solid #2d2f60;
+}
+.footbar-button button:enabled:hover {
+  background: #25264f;
+  border-color: #25264f;
+}
+.footbar-button button:enabled:active {
+  background: #454669;
+  border-color: #454669;
 }
 
 .button-icon {
@@ -61,6 +136,10 @@ button {
   height: 7rem;
 }
 
+.button-responsive {
+  width: 100%;
+}
+
 @media (min-width: 576px) {
   .p-toast.p-toast-bottom-center {
     width: 25rem;
@@ -76,6 +155,10 @@ button {
 
   .button-dialog-container {
     height: auto;
+  }
+
+  .button-responsive {
+    width: auto;
   }
 }
 

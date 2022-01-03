@@ -55,7 +55,7 @@
             </li>
             <div class="dropdown-divider d-lg-none"></div>
             <li *ngIf="!isLogged" class="nav-item m-auto">
-                <a class="nav-link soy-emprendedor" [routerLink]="['/login']" (click)="isMenuCollapsed = true">
+                <a class="nav-link" [routerLink]="['/login']" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="SOY EMPRENDEDOR"
                         class="p-button navbar-button"></button>
                 </a>
@@ -96,7 +96,7 @@
                     </a>
                 </div>
             </li>
-            <li *ngIf="isLogged" class="nav-item m-auto d-lg-none w-100">
+            <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
                 <a class="nav-link" [routerLink]="['/profile', usuario.id]" [ngClass]="{'active': url == '/profile/{{usuario_id}}'}"
                     (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="VER PERFIL" class="p-button navbar-button"></button>

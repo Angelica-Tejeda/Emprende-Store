@@ -1,78 +1,203 @@
+<p-toast position="bottom-center"></p-toast>
 <app-navbar></app-navbar>
 <header class="bg-primary">
-    <div class="container-md p-3 text-center">
-        <video class="w-100" controls loop oncanplay="this.volume = 0.2; this.play()">
-            <source src="../../assets/video/Who decides how long a second is_ - John Kitching.mp4" type="video/mp4">
-        </video>
+    <div class="container-md text-center py-3 py-lg-5 d-flex flex-column gap-3 flex-lg-row">
+        <div class="custom-card bg-lighter">
+            <video class="d-block mw-100" controls loop oncanplay="this.volume = 0.2; this.muted = true; this.play();">
+                <source src="../../assets/video/Who decides how long a second is_ - John Kitching.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="custom-card bg-lighter d-flex align-items-center">
+            <div>
+                <h4>Visita nuestra tienda</h4>
+                <p>
+                    Nuestra tienda reune un amplio catálogo de productos y servicios, todos ellos ofrecidos por padres
+                    de familia cuyos hijos viven con algún Trastorno del Espectro Autista (TEA).
+                </p>
+                <a class="link-button mx-auto" [routerLink]="['/store']">
+                    <button pButton pRipple type="button" label="Ir a la Tienda" icon="pi pi-shopping-cart"
+                        class="p-button button-responsive"></button>
+                </a>
+            </div>
+        </div>
     </div>
 </header>
-<section>
-    <div class="container-md text-center py-5">
-        <h2>Visita nuestra tienda</h2>
-        <p>
-            Nuestra tienda reune un amplio catálogo de productos y servicios, todos ellos ofrecidos por padres de familia cuyos hijos viven con algún Trastorno del Espectro Autista (TEA).
-        </p>
-        <a class="mx-auto" [routerLink]="['/store']">
-            <button pButton pRipple type="button" label="Ir a la Tienda" icon="pi pi-shopping-cart" class="p-button-lg"></button>
-        </a>
-    </div>
-</section>
-<section class="bg-lighter">
-    <div class="container-md text-center py-5">
+<section class="bg-lighter py-3 py-lg-5">
+    <div class="container-md text-center">
         <h2>Sobre Nosotros</h2>
-        <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo unde, officia veritatis, cupiditate soluta
-            sit molestias dolor architecto impedit nam rem quis quam totam eaque sunt quae optio obcaecati illum! Lorem
-            ipsum dolor sit amet consectetur, adipisicing elit. Placeat illo sint accusantium molestiae minus sit,
-            tenetur quisquam? Quasi officia, asperiores a veritatis cupiditate consequatur eos impedit autem earum
-            similique fuga.
-        </p>
+    </div>
+    <div class="container-md text-center d-flex flex-column gap-3">
+        <p-accordion class="d-md-none" [multiple]="true">
+            <p-accordionTab header="¿Qué es APADA?">
+                <img class="apada-logo my-2" src="../../assets/img/apada-logo-transparent.png" alt="APADA Guayas logo">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices mauris quis sapien sagittis,
+                    quis pretium nisl placerat. Quisque consectetur sagittis nunc quis sodales. Proin accumsan enim sit
+                    amet libero volutpat, sed elementum justo sollicitudin. Mauris dictum ullamcorper magna vitae
+                    consectetur. Integer eros nunc, dapibus eget sem at, commodo mollis lectus. Integer ipsum purus,
+                    faucibus eget lacinia eu, ullamcorper vitae turpis. Aenean euismod elit ac laoreet hendrerit.
+                </p>
+                <p>
+                    Vivamus justo massa, eleifend et nisl fringilla, laoreet mollis ante. Cras magna urna, sodales et
+                    lorem ut, pretium congue nisi. Etiam orci dolor, posuere vel dapibus sed, cursus eget diam. Nulla
+                    volutpat libero libero, quis molestie lorem malesuada vitae. Nam dignissim augue ut sapien semper
+                    convallis. Phasellus euismod facilisis molestie. Maecenas ante libero, gravida quis maximus feugiat,
+                    gravida et dui. Donec pharetra sapien rutrum maximus tincidunt. Curabitur porttitor luctus tortor,
+                    eu ullamcorper orci interdum efficitur. Nulla ut massa sit amet ipsum finibus tempor. Ut et placerat
+                    odio. Aliquam consequat, dui et euismod mollis, neque elit placerat lectus, vel lacinia sapien velit
+                    non massa.
+                </p>
+            </p-accordionTab>
+            <p-accordionTab header="Misión">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices mauris quis sapien sagittis,
+                    quis pretium nisl placerat. Quisque consectetur sagittis nunc quis sodales. Proin accumsan enim sit
+                    amet libero volutpat, sed elementum justo sollicitudin.
+                </p>
+            </p-accordionTab>
+            <p-accordionTab header="Visión">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices mauris quis sapien sagittis,
+                    quis pretium nisl placerat. Quisque consectetur sagittis nunc quis sodales. Proin accumsan enim sit
+                    amet libero volutpat, sed elementum justo sollicitudin. Mauris dictum ullamcorper magna vitae
+                    consectetur. Integer eros nunc, dapibus eget sem at, commodo mollis lectus. Integer ipsum purus,
+                    faucibus eget lacinia eu, ullamcorper vitae turpis.
+                </p>
+            </p-accordionTab>
+        </p-accordion>
+        <div class="custom-card d-none d-md-flex align-items-center">
+            <div>
+                <h4>¿Qué es APADA?</h4>
+                <img class="apada-logo my-2" src="../../assets/img/apada-logo-transparent.png" alt="">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices mauris quis sapien sagittis,
+                    quis pretium nisl placerat. Quisque consectetur sagittis nunc quis sodales. Proin accumsan enim sit
+                    amet libero volutpat, sed elementum justo sollicitudin. Mauris dictum ullamcorper magna vitae
+                    consectetur. Integer eros nunc, dapibus eget sem at, commodo mollis lectus. Integer ipsum purus,
+                    faucibus eget lacinia eu, ullamcorper vitae turpis. Aenean euismod elit ac laoreet hendrerit.
+                </p>
+                <p>
+                    Vivamus justo massa, eleifend et nisl fringilla, laoreet mollis ante. Cras magna urna, sodales et
+                    lorem ut, pretium congue nisi. Etiam orci dolor, posuere vel dapibus sed, cursus eget diam. Nulla
+                    volutpat libero libero, quis molestie lorem malesuada vitae. Nam dignissim augue ut sapien semper
+                    convallis. Phasellus euismod facilisis molestie. Maecenas ante libero, gravida quis maximus feugiat,
+                    gravida et dui. Donec pharetra sapien rutrum maximus tincidunt. Curabitur porttitor luctus tortor,
+                    eu ullamcorper orci interdum efficitur. Nulla ut massa sit amet ipsum finibus tempor. Ut et placerat
+                    odio. Aliquam consequat, dui et euismod mollis, neque elit placerat lectus, vel lacinia sapien velit
+                    non massa.
+                </p>
+            </div>
+        </div>
+        <div class="d-none d-md-flex gap-3">
+            <div class="custom-card d-flex align-items-center">
+                <div>
+                    <h4>Misión</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices mauris quis sapien
+                        sagittis, quis pretium nisl placerat. Quisque consectetur sagittis nunc quis sodales. Proin
+                        accumsan enim sit amet libero volutpat, sed elementum justo sollicitudin.
+                    </p>
+                </div>
+            </div>
+            <div class="custom-card d-flex align-items-center">
+                <div>
+                    <h4>Visión</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices mauris quis sapien
+                        sagittis, quis pretium nisl placerat. Quisque consectetur sagittis nunc quis sodales. Proin
+                        accumsan enim sit amet libero volutpat, sed elementum justo sollicitudin. Mauris dictum
+                        ullamcorper magna vitae consectetur. Integer eros nunc, dapibus eget sem at, commodo mollis
+                        lectus. Integer ipsum purus, faucibus eget lacinia eu, ullamcorper vitae turpis.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
-<section>
-    <div class="container-md text-center py-5">
-        <h2>Misión</h2>
-        <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo unde, officia veritatis, cupiditate soluta
-            sit molestias dolor architecto impedit nam rem quis quam totam eaque sunt quae optio obcaecati illum!
-        </p>
-    </div>
-</section>
-<section class="bg-lighter">
-    <div class="container-md text-center py-5">
-        <h2>Visión</h2>
-        <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo unde, officia veritatis, cupiditate soluta
-            sit molestias dolor architecto impedit nam rem quis quam totam eaque sunt quae optio obcaecati illum!
-        </p>
-    </div>
-</section>
-<section>
-    <div class="container-md text-center py-5">
-        <h2>Contacto</h2>
-        <div>
-            <p>Encuentranos en nuestras redes sociales:</p>
-            <a class="button-icon-link" target="_blank" href="https://www.facebook.com/APADAGUAYAS">
-                <p-button styleClass="button-icon mx-3 mb-3">
-                    <ng-template pTemplate="content">
-                        <i class="pi pi-facebook" style="font-size: 2rem"></i>
-                    </ng-template>
-                </p-button>
-            </a>
-            <a class="button-icon-link" target="_blank" href="https://twitter.com/apadaguayas">
-                <p-button styleClass="button-icon mx-3 mb-3">
-                    <ng-template pTemplate="content">
-                        <i class="pi pi-twitter" style="font-size: 2rem"></i>
-                    </ng-template>
-                </p-button>
-            </a>
-            <a class="button-icon-link" target="_blank" href="https://www.instagram.com/apadaguayas/">
-                <p-button styleClass="button-icon mx-3 mb-3">
-                    <ng-template pTemplate="content">
-                        <i class="pi pi-instagram" style="font-size: 2rem"></i>
-                    </ng-template>
-                </p-button>
-            </a>
+<section class="bg-primary">
+    <div class="container-md text-center d-lg-flex gap-5">
+        <div class="py-3 py-lg-5 d-flex flex-column">
+            <h2 class="text-white">Testimonios</h2>
+            <div class="d-flex flex-column gap-3 justify-content-between h-100">
+                <div class="custom-card">
+                    <p class="text-justify">
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices mauris quis sapien
+                        sagittis, quis pretium nisl placerat. Quisque consectetur sagittis nunc quis sodales."
+                    </p>
+                    <div class="d-flex gap-3 justify-content-end align-items-center">
+                        <p class="text-right mb-0">
+                            <small>
+                                Josué Cabezas - Emprendedor, miembro de apada.
+                            </small>
+                        </p>
+                        <img class="avatar-image" src="http://localhost:3000/profile/profile-4.png" alt="Perfil 1">
+                    </div>
+                </div>
+                <div class="custom-card">
+                    <p class="text-justify">
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices mauris quis sapien
+                        sagittis, quis pretium nisl placerat. Quisque consectetur sagittis nunc quis sodales."
+                    </p>
+                    <div class="d-flex gap-3 justify-content-end align-items-center">
+                        <p class="text-right mb-0">
+                            <small>
+                                Josué Cabezas - Emprendedor, miembro de apada.
+                            </small>
+                        </p>
+                        <img class="avatar-image" src="http://localhost:3000/profile/profile-4.png" alt="Perfil 1">
+                    </div>
+                </div>
+                <div class="custom-card">
+                    <p class="text-justify">
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices mauris quis sapien
+                        sagittis, quis pretium nisl placerat. Quisque consectetur sagittis nunc quis sodales."
+                    </p>
+                    <div class="d-flex gap-3 justify-content-end align-items-center">
+                        <p class="text-right mb-0">
+                            <small>
+                                Josué Cabezas - Emprendedor, miembro de apada.
+                            </small>
+                        </p>
+                        <img class="avatar-image" src="http://localhost:3000/profile/profile-4.png" alt="Perfil 1">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="py-3 py-lg-5 d-flex flex-column">
+            <h2 class="text-white">Contáctanos</h2>
+            <div class="custom-card bg-lighter h-100 d-flex flex-column">
+                <form class="d-flex flex-column justify-content-around h-100" [formGroup]="contactForm" (submit)="enviarFormulario()">
+                    <div>
+                        <p class="mb-0">¿Tienes dudas, sugerencias o quiéres formar parte de esta iniciativa?</p>
+                        <p>Llena el siguiente formulario y nos pondremos en contacto contigo.</p>
+                    </div>
+                    <div class="d-flex flex-column align-items-stretch">
+                        <span class="p-float-label mt-3 mb-2">
+                            <input pInputText id="nombre" type="text" formControlName="nombre" name="nombre"
+                                class="w-100" [ngClass]="(submitted && contactForm.get('nombre')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                            <label for="nombre">Nombre</label>
+                        </span>
+                        <span class="p-float-label mt-4 mb-2">
+                            <input pInputText id="email" type="text" formControlName="email" name="email" class="w-100"  [ngClass]="(submitted && contactForm.get('email')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                            <label for="email">E-mail</label>
+                        </span>
+                        <span class="p-float-label mt-4 mb-2 text-left" [style]="{'height': '50px'}">
+                            <p-dropdown [options]="asuntoOptions" id="asunto" formControlName="asunto" placeholder=" " [style]="{'height': '50px'}" [styleClass]="'w-100'" class="w-100" [ngClass]="(submitted && contactForm.get('asunto')?.invalid) ? 'ng-dirty ng-invalid' : ''"></p-dropdown>
+                            <label for="asunto">Asunto</label>
+                        </span>
+                        <span class="p-float-label mt-4">
+                            <textarea pInputTextarea id="mensaje" [rows]="4" [cols]="35" formControlName="mensaje"
+                                name="mensaje" class="contact-form-textarea"  [ngClass]="(submitted && contactForm.get('mensaje')?.invalid) ? 'ng-dirty ng-invalid' : ''"></textarea>
+                            <label for="mensaje">Mensaje</label>
+                        </span>
+                        <div class="text-right">
+                            <button pButton pRipple type="submit" label="Enviar"
+                                [icon]="sendingForm ? 'pi pi-spin pi-spinner' : ''" class="p-button w-100 mt-4">
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </section>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
   passMask: boolean = true;
   submitted: boolean = false;
   waiting: boolean = false;
+  back: boolean = false;
   messageEmail: string = '';
   messagePassword: string = '';
   loginForm: FormGroup = new FormGroup(
@@ -28,6 +30,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
+    private location: Location,
     private cookieService: CookieService,
     private messageService: MessageService,
     private authService: AuthService
@@ -35,8 +39,13 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.cookieService.get('usuario_id')) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/management']);
     }
+    this.route.queryParams.subscribe((params) => {
+      if (params['back']) {
+        this.back = params['back'];
+      }
+    });
   }
 
   iniciarSesion(): void {
@@ -48,7 +57,11 @@ export class LoginComponent implements OnInit {
       this.authService.iniciarSesionEmpr(this.loginForm.value).subscribe({
         next: (res) => {
           if (res.status == 'success') {
-            this.router.navigate(['/management']);
+            if (this.back) {
+              this.location.back();
+            } else {
+              this.router.navigate(['/management']);
+            }
           }
         },
         error: (err) => {

@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
-
-<div class="padding">
+<app-not-allowed *ngIf="notAllowed"></app-not-allowed>
+<div *ngIf="!notAllowed" class="padding">
     <div class="col-md-12">
         <!-- Column -->
         <div class="card">
