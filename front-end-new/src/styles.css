@@ -71,7 +71,6 @@ button {
 .container-full-height {
   min-height: calc(100vh - 18rem);
 }
-
 @media (min-width: 576px) {
   .container-full-height {
     min-height: calc(100vh - 13.125rem);
@@ -84,6 +83,11 @@ button {
   background-color: #ffffff;
   box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%),
     0 1px 3px 0 rgb(0 0 0 / 12%);
+}
+@media (min-width: 576px) {
+  .custom-card {
+    padding: 1.5rem;
+  }
 }
 @media (min-width: 992px) {
   .custom-card {
@@ -177,6 +181,21 @@ button {
   }
 }
 
+.mt-4-5 {
+  margin-top: 2rem!important;
+}
+
 .c-pointer {
   cursor: pointer;
+}
+
+.p-galleria .p-galleria-item-nav {
+  margin-top: auto;
+  margin-bottom: auto;
+  top: 0;
+  bottom: 0;
+}
+
+.p-galleria-indicator-onitem.p-galleria-indicators-bottom .p-galleria-indicators {
+  border-radius: 0 0 25px 25px;
 }

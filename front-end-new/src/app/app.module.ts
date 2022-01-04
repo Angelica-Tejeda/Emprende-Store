@@ -12,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { GalleriaModule } from 'primeng/galleria';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
@@ -63,6 +64,7 @@ import { NotAllowedComponent } from './shared/not-allowed/not-allowed.component'
     CardModule,
     ConfirmDialogModule,
     DropdownModule,
+    GalleriaModule,
     InputTextareaModule,
     InputTextModule,
     MessagesModule,

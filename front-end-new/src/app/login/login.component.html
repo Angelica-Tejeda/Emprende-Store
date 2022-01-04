@@ -11,9 +11,9 @@
                 </div>
                 <div
                     class="login-container p-fluid d-flex flex-column justify-content-around my-md-3 my-lg-5 mr-lg-5 px-md-3 text-center">
-                    <form [formGroup]="loginForm" (submit)="iniciarSesion()">
+                    <form [formGroup]="loginForm" (submit)="iniciarSesion()" class="d-flex flex-column">
                         <h4 class="login-title">Inicio de sesión</h4>
-                        <span class="p-input-filled p-input-icon-left p-float-label mt-5">
+                        <span class="p-input-filled p-input-icon-left p-float-label mt-4">
                             <i class="pi pi-envelope"></i>
                             <input pInputText
                                 [ngClass]="(submitted && loginForm.get('email')?.invalid) || messageEmail? 'ng-dirty ng-invalid' : ''"
@@ -26,7 +26,7 @@
                         <small *ngIf="submitted && loginForm.get('email')?.errors?.['email']" id="email-help"
                             class="p-error">El E-mail no es válido.</small>
                         <small *ngIf="messageEmail" id="email-help" class="p-error">{{messageEmail}}</small>
-                        <span class="p-input-filled p-input-icon-left p-input-icon-right p-float-label mt-5">
+                        <span class="p-input-filled p-input-icon-left p-input-icon-right p-float-label mt-4-5">
                             <i class="pi pi-shield"></i>
                             <i class="c-pointer pi" [ngClass]="passMask ? 'pi-eye' : 'pi-eye-slash'"
                                 (click)="passMask = !passMask"></i>
@@ -42,8 +42,16 @@
                         <div>
                             <button pButton pRipple type="submit" label="INICIAR SESIÓN"
                                 [icon]="waiting ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'"
-                                class="p-button login-button"></button>
-                            <a class="forgot-password" [routerLink]="'.'">Olvidé mi contraseña</a>
+                                class="p-button login-button mt-4"></button>
+                                <p class="mb-0">
+                                    <a class="login-link" [routerLink]="'.'">
+                                        <small>Olvidé mi contraseña</small>
+                                    </a>
+                                    |
+                                    <a class="login-link" [routerLink]="'.'">
+                                        <small>Registro</small>
+                                    </a>
+                                </p>
                         </div>
                     </form>
                 </div>

@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.authService.iniciarSesionEmpr(this.loginForm.value).subscribe({
         next: (res) => {
-          if (res.status == 'success') {
+          if (res.status == 'success') {//TODO: corregir estas lineas que son comprobaciones innecesarioas, y en error vefiricar los errores correctamente.
             if (this.back) {
               this.location.back();
             } else {

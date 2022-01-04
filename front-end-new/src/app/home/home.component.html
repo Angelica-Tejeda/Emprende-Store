@@ -1,8 +1,8 @@
 <p-toast position="bottom-center"></p-toast>
 <app-navbar></app-navbar>
 <header class="bg-primary">
-    <div class="container-md text-center py-3 py-lg-5 d-flex flex-column gap-3 flex-lg-row">
-        <div class="custom-card bg-lighter">
+    <div class="container-sm text-center py-3 py-sm-4 py-lg-5 d-flex flex-column gap-3 flex-lg-row">
+        <div>
             <video class="d-block mw-100" controls loop oncanplay="this.volume = 0.2; this.muted = true; this.play();">
                 <source src="../../assets/video/Who decides how long a second is_ - John Kitching.mp4" type="video/mp4">
             </video>
@@ -16,17 +16,17 @@
                 </p>
                 <a class="link-button mx-auto" [routerLink]="['/store']">
                     <button pButton pRipple type="button" label="Ir a la Tienda" icon="pi pi-shopping-cart"
-                        class="p-button button-responsive"></button>
+                        class="p-button p-button-lg button-responsive"></button>
                 </a>
             </div>
         </div>
     </div>
 </header>
-<section class="bg-lighter py-3 py-lg-5">
-    <div class="container-md text-center">
+<section class="bg-lighter py-3 py-sm-4 py-lg-5">
+    <div class="container-sm text-center">
         <h2>Sobre Nosotros</h2>
     </div>
-    <div class="container-md text-center d-flex flex-column gap-3">
+    <div class="container-sm text-center d-flex flex-column gap-3">
         <p-accordion class="d-md-none" [multiple]="true">
             <p-accordionTab header="¿Qué es APADA?">
                 <img class="apada-logo my-2" src="../../assets/img/apada-logo-transparent.png" alt="APADA Guayas logo">
@@ -115,8 +115,8 @@
     </div>
 </section>
 <section class="bg-primary">
-    <div class="container-md text-center d-lg-flex gap-5">
-        <div class="py-3 py-lg-5 d-flex flex-column">
+    <div class="container-sm text-center d-lg-flex gap-5">
+        <div class="py-3 py-sm-4 py-lg-5 d-flex flex-column">
             <h2 class="text-white">Testimonios</h2>
             <div class="d-flex flex-column gap-3 justify-content-between h-100">
                 <div class="custom-card">
@@ -163,7 +163,7 @@
                 </div>
             </div>
         </div>
-        <div class="py-3 py-lg-5 d-flex flex-column">
+        <div class="py-3 py-sm-4 py-lg-5 d-flex flex-column">
             <h2 class="text-white">Contáctanos</h2>
             <div class="custom-card bg-lighter h-100 d-flex flex-column">
                 <form class="d-flex flex-column justify-content-around h-100" [formGroup]="contactForm"
@@ -173,25 +173,25 @@
                         <p>Llena el siguiente formulario y nos pondremos en contacto contigo.</p>
                     </div>
                     <div class="d-flex flex-column align-items-stretch">
-                        <span class="p-float-label mt-3 mb-2">
+                        <span class="p-float-label mt-4">
                             <input pInputText id="nombre" type="text" formControlName="nombre" name="nombre"
                                 class="w-100"
                                 [ngClass]="(submitted && contactForm.get('nombre')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                             <label for="nombre">Nombre</label>
                         </span>
-                        <span class="p-float-label mt-4 mb-2">
+                        <span class="p-float-label mt-4-5">
                             <input pInputText id="email" type="text" formControlName="email" name="email" class="w-100"
                                 [ngClass]="(submitted && contactForm.get('email')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                             <label for="email">E-mail</label>
                         </span>
-                        <span class="p-float-label mt-4 mb-2 text-left" [style]="{'height': '50px'}">
+                        <span class="p-float-label mt-4-5 text-left" [style]="{'height': '50px'}">
                             <p-dropdown [options]="asuntoOptions" id="asunto" formControlName="asunto" placeholder=" "
-                                [style]="{'height': '50px'}" [styleClass]="'w-100'" class="w-100"
+                                [style]="{'height': '50px'}" [styleClass]="'w-100'" class="w-100" [scrollHeight]="'216'"
                                 [ngClass]="(submitted && contactForm.get('asunto')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                             </p-dropdown>
                             <label for="asunto">Asunto</label>
                         </span>
-                        <span class="p-float-label mt-4">
+                        <span class="p-float-label mt-4-5">
                             <textarea pInputTextarea id="mensaje" [rows]="4" [cols]="35" formControlName="mensaje"
                                 name="mensaje" class="contact-form-textarea"
                                 [ngClass]="(submitted && contactForm.get('mensaje')?.invalid) ? 'ng-dirty ng-invalid' : ''"></textarea>
@@ -199,7 +199,7 @@
                         </span>
                         <div class="text-right">
                             <button pButton pRipple type="submit" label="Enviar"
-                                [icon]="sendingForm ? 'pi pi-spin pi-spinner' : ''" class="p-button w-100 mt-4">
+                                [icon]="sendingForm ? 'pi pi-spin pi-spinner' : ''" class="p-button w-100 mt-3">
                             </button>
                         </div>
                     </div>

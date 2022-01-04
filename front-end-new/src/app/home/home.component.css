@@ -1,8 +1,19 @@
 video {
-  width: 250rem;
   border-radius: 25px;
   box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%),
     0 1px 3px 0 rgb(0 0 0 / 12%);
+}
+
+@media (min-width: 992px) {
+  video {
+    width: 200rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  video {
+    width: 300rem;
+  }
 }
 
 .apada-logo {

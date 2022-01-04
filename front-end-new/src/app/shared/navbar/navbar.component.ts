@@ -89,6 +89,7 @@ export class NavbarComponent implements OnInit {
             this.cookieService.delete('usuario_id');
             this.isLogged = false;
             this.router.navigate(['/home']);
+            //TODO: Corregir comportamiento de notificación de cierre de sesión.
             this.messageService.clear();
             this.messageService.add({
               severity: 'success',
