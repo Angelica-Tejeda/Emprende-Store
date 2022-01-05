@@ -1,5 +1,18 @@
 <app-navbar></app-navbar>
 
-<p>search works!</p>
+<div class="container-sm">
+    <div class="d-flex flex-wrap gap-3">
+        <div class="custom-card" *ngFor="let product of resultados.result.rows">
+            <p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
+                <ng-template pTemplate="item" let-item>
+                    <div class="image-galleria-template d-flex justify-content-center align-items-center">
+                        <img [src]="mediaUrl + item" />
+                    </div>
+                </ng-template>
+            </p-galleria>
+            
+        </div>
+    </div>
+</div>
 
 <app-footbar></app-footbar>
