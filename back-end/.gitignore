@@ -11,9 +11,6 @@
 /node_modules
 
 # media files
-/media/banner
-/media/profile
-/media/product
 
 # profiling files
 chrome-profiler-events*.json
