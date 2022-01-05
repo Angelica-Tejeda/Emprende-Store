@@ -10,6 +10,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { CarouselModule } from 'primeng/carousel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { GalleriaModule } from 'primeng/galleria';
@@ -62,6 +63,7 @@ import { NotAllowedComponent } from './shared/not-allowed/not-allowed.component'
     AutoCompleteModule,
     ButtonModule,
     CardModule,
+    CarouselModule,
     ConfirmDialogModule,
     DropdownModule,
     GalleriaModule,

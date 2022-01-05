@@ -55,7 +55,6 @@ export class ProductComponent implements OnInit {
           this.product = res.result;
         },
         error: (err) => {
-          alert(JSON.stringify(err));
           if ((err.status = '404')) {
             this.notFound = true;
           } else {

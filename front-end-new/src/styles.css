@@ -4,6 +4,7 @@
   --primary: rgb(36,70,157);
   --darker: rgb(46,47,97);
 }
+
 html,
 body {
   height: 100%;
@@ -59,7 +60,7 @@ button {
 .gap-1 {
   gap: 0.25rem;
 }
-.gap-3 {
+.gap-2 {
   gap: 0.5rem;
 }
 .gap-3 {
@@ -73,11 +74,11 @@ button {
 }
 
 .container-full-height {
-  min-height: calc(100vh - 18rem);
+  min-height: calc(100vh - 17rem);
 }
 @media (min-width: 576px) {
   .container-full-height {
-    min-height: calc(100vh - 13.125rem);
+    min-height: calc(100vh - 12.125rem);
   }
 }
 

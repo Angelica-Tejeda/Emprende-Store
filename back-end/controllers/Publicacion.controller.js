@@ -128,7 +128,7 @@ exports.getAllPublicaciones = async (req, res) => {
                     for (cat of publicacion.categoria) {
                         categ.push(cat.split("-")[1]);
                     }
-                    pub.categoria = categ;
+                    publicacion.categoria = categ;
                 }
                 res.status(200).json({
                     status: "success",

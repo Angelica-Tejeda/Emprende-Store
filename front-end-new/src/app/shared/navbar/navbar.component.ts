@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { ConfirmationService } from 'primeng/api';
@@ -16,11 +16,14 @@ import { environment } from '../../../environments/environment';
   providers: [ConfirmationService, MessageService],
 })
 export class NavbarComponent implements OnInit {
-  public isMenuCollapsed = true;
-  public isDropdownOpened = false;
-  public isLogged = false;
-  public url: string = this.router.url;
+  @Input() isHome: boolean = false;
+  @Input() isSearch: boolean = false;
+  @Input() isLogin: boolean = false;
   mediaUrl: string = environment.mediaURL;
+  url: string = this.router.url;
+  isMenuCollapsed = true;
+  isDropdownOpened = false;
+  isLogged = false;
   usuario: any = null;
   searchForm: FormGroup = new FormGroup({
     busqueda: new FormControl(null, Validators.required),
@@ -28,6 +31,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private cookieService: CookieService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
@@ -58,9 +62,11 @@ export class NavbarComponent implements OnInit {
           }
         });
     }
-    if (this.url.includes('search')) {
-      this.searchForm.setValue({
-        busqueda: decodeURIComponent(this.url.split('/')[2]),
+    if (this.isSearch) {
+      this.route.params.subscribe(({ busqueda }) => {
+        this.searchForm.setValue({
+          busqueda: decodeURIComponent(busqueda),
+        });
       });
     }
   }

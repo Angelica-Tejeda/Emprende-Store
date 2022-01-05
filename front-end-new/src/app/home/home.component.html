@@ -1,5 +1,5 @@
 <p-toast position="bottom-center"></p-toast>
-<app-navbar></app-navbar>
+<app-navbar [isHome]="true"></app-navbar>
 <header class="bg-primary">
     <div class="container-sm text-center py-3 py-sm-4 py-lg-5 d-flex flex-column gap-3 flex-lg-row">
         <div>
@@ -22,7 +22,7 @@
         </div>
     </div>
 </header>
-<section class="bg-lighter py-3 py-sm-4 py-lg-5">
+<section id="sobrenosotros" class="bg-lighter py-3 py-sm-4 py-lg-5">
     <div class="container-sm text-center">
         <h2>Sobre Nosotros</h2>
     </div>
@@ -116,7 +116,7 @@
 </section>
 <section class="bg-primary">
     <div class="container-sm text-center d-lg-flex gap-5">
-        <div class="py-3 py-sm-4 py-lg-5 d-flex flex-column">
+        <div id="testimonios" class="py-3 py-sm-4 py-lg-5 d-flex flex-column">
             <h2 class="text-white">Testimonios</h2>
             <div class="d-flex flex-column gap-3 justify-content-between h-100">
                 <div class="custom-card">
@@ -163,7 +163,7 @@
                 </div>
             </div>
         </div>
-        <div class="py-3 py-sm-4 py-lg-5 d-flex flex-column">
+        <div id="contacto" class="py-3 py-sm-4 py-lg-5 d-flex flex-column">
             <h2 class="text-white">Contáctanos</h2>
             <div class="custom-card bg-lighter h-100 d-flex flex-column">
                 <form class="d-flex flex-column justify-content-around h-100" [formGroup]="contactForm"
