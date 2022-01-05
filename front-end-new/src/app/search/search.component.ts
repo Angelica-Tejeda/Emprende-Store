@@ -15,36 +15,6 @@ export class SearchComponent implements OnInit {
       "count": 11,
       "rows": [
         {
-          "id": 21,
-          "titulo": null,
-          "descripcion": null,
-          "servicio": null,
-          "fotos": [
-            "/default/product-default.png"
-          ],
-          "categoria": [],
-          "precio": null,
-          "puntuacion": null,
-          "descuento": 0,
-          "activo": false,
-          "creado": "2021-12-12T09:30:46.170Z",
-          "modificado": "2021-12-22T21:29:44.947Z",
-          "usuario": {
-            "id": 4,
-            "nombre": "Josué",
-            "apellido": "Cabezas",
-            "negocio": "Negocio Inventado",
-            "foto_perfil": "/profile/profile-4.png",
-            "celular": "593939139687",
-            "facebook": "https://www.facebook.com/josue.cabezas2/",
-            "instagram": "josu.cabezas",
-            "twitter": "hossujc",
-            "tiktok": null,
-            "linkedin": "http://www.linkedin.com/in/josu%C3%A9-cabezas-7405b8215",
-            "activo": true
-          }
-        },
-        {
           "id": 7,
           "titulo": "Camisas para perros",
           "descripcion": "Camisetas para perritos cachorros o adultos de todas las razas con diferentes diseños./nSe hacen diseños personalizados",
@@ -169,39 +139,6 @@ export class SearchComponent implements OnInit {
           "activo": true,
           "creado": "2021-12-10T07:21:05.629Z",
           "modificado": "2021-12-23T00:04:25.960Z",
-          "usuario": {
-            "id": 4,
-            "nombre": "Josué",
-            "apellido": "Cabezas",
-            "negocio": "Negocio Inventado",
-            "foto_perfil": "/profile/profile-4.png",
-            "celular": "593939139687",
-            "facebook": "https://www.facebook.com/josue.cabezas2/",
-            "instagram": "josu.cabezas",
-            "twitter": "hossujc",
-            "tiktok": null,
-            "linkedin": "http://www.linkedin.com/in/josu%C3%A9-cabezas-7405b8215",
-            "activo": true
-          }
-        },
-        {
-          "id": 15,
-          "titulo": "Plan nutricional y recetas veganas",
-          "descripcion": "Plan nutricional y recetario para seguir una dieta vegana supliendo todas tus necesidades alimenticias.",
-          "servicio": true,
-          "fotos": [
-            "/default/product-default.png"
-          ],
-          "categoria": [
-            null,
-            null
-          ],
-          "precio": "35.00",
-          "puntuacion": null,
-          "descuento": 0,
-          "activo": false,
-          "creado": "2021-12-10T07:21:10.114Z",
-          "modificado": "2021-12-23T00:06:46.628Z",
           "usuario": {
             "id": 4,
             "nombre": "Josué",

@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
-
+:root {
+  --lighter: rgb(174, 192, 228);
+  --primary: rgb(36,70,157);
+  --darker: rgb(46,47,97);
+}
 html,
 body {
   height: 100%;
