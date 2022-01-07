@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
     {
       nombre: new FormControl(null, Validators.required),
       email: new FormControl(null, [Validators.required, Validators.email]),
+      celular: new FormControl(null, [Validators.required, Validators.minLength(10), Validators.pattern('^[+]?[0-9|\(|\)|\-]+')]),
       asunto: new FormControl(null, Validators.required),
       mensaje: new FormControl(null, Validators.required),
     },

@@ -1,12 +1,3 @@
-.login-link {
-  font-size: small;
-  color: #495057;
-}
-
-.login-link:hover {
-  color: #22469e;
-}
-
 .login-container {
   width: 21rem;
 }

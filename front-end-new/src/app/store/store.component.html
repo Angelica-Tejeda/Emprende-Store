@@ -1,5 +1,99 @@
 <app-navbar></app-navbar>
 
+<div class="bg-primary">
+    <div class="container-sm py-3 py-sm-4 py-lg-5">
+        <h2 class="text-white">Productos Destacados</h2>
+        <div class="d-flex flex-wrap gap-3 justify-content-around">
+            <div class="custom-card c-pointer" *ngFor="let product of productosDestacados">
+                <p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="true"
+                    [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true"
+                    [showIndicatorsOnItem]="true">
+                    <ng-template pTemplate="item" let-item>
+                        <div class="image-galleria-template d-flex justify-content-center align-items-center">
+                            <img [src]="mediaUrl + item" [routerLink]="['/product', product.id]" />
+                        </div>
+                    </ng-template>
+                </p-galleria>
+                <div [routerLink]="['/product',product.id]" class="c-pointer">
+                    <h2 class="precio mt-4">$ {{product.precio}}</h2>
+                    <h5 class="titulo">{{product.titulo}}</h5>
+                    <small>{{product.usuario.nombre}} {{product.usuario.apellido}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="bg-lighter">
+    <div class="container-sm py-3 py-sm-4 py-lg-5">
+        <h2>Categorías destacadas</h2>
+        <div class="d-flex flex-wrap gap-3 justify-content-around">
+            <a [routerLink]="['/store']">
+                <button pButton pRipple type="button" label="Animales y mascotas" class="p-button-lg"></button>
+            </a>
+            <a [routerLink]="['/store']">
+                <button pButton pRipple type="button" label="Vegano" class="p-button-lg"></button>
+            </a>
+            <a [routerLink]="['/store']">
+                <button pButton pRipple type="button" label="Artesanías" class="p-button-lg"></button>
+            </a>
+            <a [routerLink]="['/store']">
+                <button pButton pRipple type="button" label="Alimentos y comida" class="p-button-lg"></button>
+            </a>
+            <a [routerLink]="['/store']">
+                <button pButton pRipple type="button" label="Postres" class="p-button-lg"></button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="bg-primary">
+    <div class="container-sm py-3 py-sm-4 py-lg-5">
+        <h2 class="text-white">Más vendidos</h2>
+        <div class="d-flex flex-wrap gap-3 justify-content-around">
+            <div class="custom-card c-pointer" *ngFor="let product of masVendidos">
+                <p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="true"
+                    [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true"
+                    [showIndicatorsOnItem]="true">
+                    <ng-template pTemplate="item" let-item>
+                        <div class="image-galleria-template d-flex justify-content-center align-items-center">
+                            <img [src]="mediaUrl + item" [routerLink]="['/product', product.id]" />
+                        </div>
+                    </ng-template>
+                </p-galleria>
+                <div [routerLink]="['/product',product.id]" class="c-pointer">
+                    <h2 class="precio mt-4">$ {{product.precio}}</h2>
+                    <h5 class="titulo">{{product.titulo}}</h5>
+                    <small>{{product.usuario.nombre}} {{product.usuario.apellido}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="bg-lighter">
+    <div class="container-sm py-3 py-sm-4 py-lg-5">
+        <h2>Últimas Novedades</h2>
+        <div class="d-flex flex-wrap gap-3 justify-content-around">
+            <div class="custom-card c-pointer" *ngFor="let product of novedades">
+                <p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="true"
+                    [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true"
+                    [showIndicatorsOnItem]="true">
+                    <ng-template pTemplate="item" let-item>
+                        <div class="image-galleria-template d-flex justify-content-center align-items-center">
+                            <img [src]="mediaUrl + item" [routerLink]="['/product', product.id]" />
+                        </div>
+                    </ng-template>
+                </p-galleria>
+                <div [routerLink]="['/product',product.id]" class="c-pointer">
+                    <h2 class="precio mt-4">$ {{product.precio}}</h2>
+                    <h5 class="titulo">{{product.titulo}}</h5>
+                    <small>{{product.usuario.nombre}} {{product.usuario.apellido}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <app-footbar></app-footbar>

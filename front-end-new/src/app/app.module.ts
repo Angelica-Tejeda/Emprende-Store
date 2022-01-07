@@ -20,6 +20,7 @@ import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -34,6 +35,8 @@ import { ManagementComponent } from './management/management.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { NotAllowedComponent } from './shared/not-allowed/not-allowed.component';
+import { UnexpectedErrorComponent } from './shared/unexpected-error/unexpected-error.component';
+import { ProductEditComponent } from './product-edit/product-edit.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,8 @@ import { NotAllowedComponent } from './shared/not-allowed/not-allowed.component'
     NotFoundComponent,
     NotFoundPageComponent,
     NotAllowedComponent,
+    UnexpectedErrorComponent,
+    ProductEditComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -73,6 +78,7 @@ import { NotAllowedComponent } from './shared/not-allowed/not-allowed.component'
     PasswordModule,
     RippleModule,
     ToastModule,
+    DragDropModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

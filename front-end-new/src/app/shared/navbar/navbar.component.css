@@ -13,6 +13,19 @@ nav.navbar a {
     0 1px 5px 0 rgb(0 0 0 / 12%);
 }
 
+
+@media (max-width: 991.99px) {
+  /*.collapse.navbar-collapse.collapse-scrollable {
+    overflow-y: auto;
+    overflow-x: auto;
+  }*/
+  .collapse.navbar-collapse.collapse-scrollable {
+    max-height: calc(100vh - 4.125rem);
+    overflow-y: scroll;
+  }
+}
+
+
 .close-navbar-toggler {
   height: 100%;
   width: 100%;

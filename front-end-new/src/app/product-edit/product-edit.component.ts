@@ -10,11 +10,11 @@ import {
 import { HttpClient } from '@angular/common/http';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 @Component({
-  selector: 'app-create-product',
-  templateUrl: './create-product.component.html',
-  styleUrls: ['./create-product.component.css']
+  selector: 'app-product-edit',
+  templateUrl: './product-edit.component.html',
+  styleUrls: ['./product-edit.component.css']
 })
-export class CreateProductComponent implements OnInit {
+export class ProductEditComponent implements OnInit {
   categorias: Array<string> = [
     "Comestibles",
     "Aperitivos",
@@ -35,7 +35,7 @@ export class CreateProductComponent implements OnInit {
     "Vegetales",
     "Mascotas"
   ];
-  fotos: Array<string> = ["https://www.publicdomainpictures.net/pictures/200000/nahled/cheese-1476708601kxS.jpg", "https://www.tecnical.com/imagecache/uploads_images_entradas_tecnical-publica-el-seu-primer-blog-sobre-formatges_626x414_c_manchego-bodegon.jpg","http://www.asturiasmundial.com/noticias/fotos/119622_1_thumb.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt9ZjkYuQ9PBi6MH0NuE5ZcfPG_Iud_YnNHA&usqp=CAU","http://www.asturiasmundial.com/noticias/fotos/119622_1_thumb.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt9ZjkYuQ9PBi6MH0NuE5ZcfPG_Iud_YnNHA&usqp=CAU"];
+  fotos: Array<string> = ["https://www.publicdomainpictures.net/pictures/200000/nahled/cheese-1476708601kxS.jpg", "https://www.tecnical.com/imagecache/uploads_images_entradas_tecnical-publica-el-seu-primer-blog-sobre-formatges_626x414_c_manchego-bodegon.jpg","http://www.asturiasmundial.com/noticias/fotos/119622_1_thumb.jpg","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt9ZjkYuQ9PBi6MH0NuE5ZcfPG_Iud_YnNHA&usqp=CAU"];
   productForm = new FormGroup({
     tipo: new FormControl('', Validators.required),
     titulo: new FormControl('', Validators.required),
@@ -49,7 +49,7 @@ export class CreateProductComponent implements OnInit {
   onSubmit() { }
 
   onChange() {
-    var option = $("#tipo").val();
+    /*var option = $("#tipo").val();
     if (option == "true") {
       $(".servicioCats").removeClass("activate");
       $(".productoCats").removeClass("activate");
@@ -58,7 +58,7 @@ export class CreateProductComponent implements OnInit {
       $(".servicioCats").removeClass("activate");
       $(".productoCats").removeClass("activate");
       $(".productoCats").addClass("activate");
-    }
+    }*/
   }
 
   ngOnInit(): void {

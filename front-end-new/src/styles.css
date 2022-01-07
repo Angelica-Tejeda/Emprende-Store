@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
   --lighter: rgb(174, 192, 228);
-  --primary: rgb(36,70,157);
-  --darker: rgb(46,47,97);
+  --primary: rgb(36, 70, 157);
+  --darker: rgb(46, 47, 97);
 }
 
 html,
@@ -160,7 +160,11 @@ button {
   height: 7rem;
 }
 
-.button-responsive {
+.categories-button {
+  padding: 0.25rem 0.5rem !important;
+}
+
+.p-button.button-responsive {
   width: 100%;
 }
 
@@ -181,17 +185,33 @@ button {
     height: auto;
   }
 
-  .button-responsive {
+  .p-button.button-responsive {
     width: auto;
   }
 }
 
+.small-link {
+  font-size: small;
+  color: #495057;
+}
+
+.small-link:hover {
+  color: #22469e;
+}
+
 .mt-4-5 {
-  margin-top: 2rem!important;
+  margin-top: 2rem !important;
 }
 
 .c-pointer {
   cursor: pointer;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
+.p-dropdown-panel
+  .p-dropdown-items
+  .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+  border-radius: 25px;
 }
 
 .p-galleria .p-galleria-item-nav {
@@ -200,7 +220,24 @@ button {
   top: 0;
   bottom: 0;
 }
-
-.p-galleria-indicator-onitem.p-galleria-indicators-bottom .p-galleria-indicators {
+.p-galleria-indicator-onitem.p-galleria-indicators-bottom
+  .p-galleria-indicators {
   border-radius: 0 0 25px 25px;
+}
+.p-galleria-indicator-onitem.p-galleria-indicators-bottom
+  .p-galleria-indicators {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  gap: 0.5rem;
+}
+.p-galleria.p-galleria-indicators-bottom .p-galleria-indicator {
+  margin: 0;
+}
+.p-galleria .p-galleria-item-nav {
+  height: 3rem;
+  width: 3rem;
+}
+.p-galleria .p-galleria-item-nav .p-galleria-item-prev-icon,
+.p-galleria .p-galleria-item-nav .p-galleria-item-next-icon {
+  font-size: 1.5rem;
 }

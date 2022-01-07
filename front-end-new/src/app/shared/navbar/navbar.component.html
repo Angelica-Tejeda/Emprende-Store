@@ -22,7 +22,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
     </a>
-    <div *ngIf="!isLogin" [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+    <div *ngIf="!isLogin" [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse" [ngClass]="!isMenuCollapsed ? 'collapse-scrollable' : ''">
         <div *ngIf="!isHome" class="dropdown-divider d-lg-none"></div>
         <div *ngIf="!isHome" class="w-100">
             <form [formGroup]="searchForm" (submit)="buscarProductos()" class="navbar-search-form">
@@ -42,7 +42,7 @@
         </div>
         <ul class="navbar-nav ml-auto">
             <div class="dropdown-divider d-lg-none"></div>
-            <li *ngIf="!isHome" class="nav-item m-auto">
+            <li class="nav-item m-auto">
                 <a class="nav-link" [routerLink]="['/store']" [ngClass]="{'active': url == '/store'}"
                     (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="TIENDA" class="p-button navbar-button"></button>
@@ -59,14 +59,19 @@
                     <button pButton pRipple type="button" label="SOBRE NOSOTROS" class="p-button navbar-button"></button>
                 </a>
             </li>
-            <li *ngIf="isHome" class="nav-item m-auto">
+            <li *ngIf="isHome" class="d-lg-none nav-item m-auto">
                 <a class="nav-link" href="#testimonios" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="TESTIMONIOS" class="p-button navbar-button"></button>
                 </a>
             </li>
-            <li *ngIf="isHome" class="nav-item m-auto">
+            <li *ngIf="isHome" class="d-lg-none nav-item m-auto">
                 <a class="nav-link" href="#contacto" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="CONTACTO" class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <li *ngIf="isHome" class="d-none d-lg-block nav-item m-auto">
+                <a class="nav-link" href="#contacto" (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="TESTIMONIOS - CONTACTO" class="p-button navbar-button"></button>
                 </a>
             </li>
             <div class="dropdown-divider d-lg-none"></div>
@@ -81,6 +86,7 @@
                 <a class="nav-link" [ngClass]="{'active': isDropdownOpened}" tabindex="0" ngbDropdownToggle
                     role="button" id="profileDropDown">
                     <button pButton pRipple type="button" class="p-button navbar-button no-label profile-button">
+                        <!--<i class="pi mr-2" [ngClass]="!isDropdownOpened ? 'pi-chevron-down' : 'pi-chevron-up'" style="font-size: 1rem"></i>-->
                         <span class="custom-button-label">{{ usuario.nombre.toUpperCase() }}</span>
                         <img class="rounded-circle ml-3" src="{{ mediaUrl }}{{ usuario.foto_perfil }}"
                             alt="Foto de perfil">

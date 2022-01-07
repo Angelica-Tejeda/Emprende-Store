@@ -228,7 +228,7 @@ exports.getOwnPublicacionById = async (req, res) => {
         ],
     })
         .then((publicacion) => {
-            if (publicacion) {
+            if (publicacion && publicacion.usuario.id == req.params.userId) {
                 res.status(200).json({
                     status: "success",
                     message: "Publicación obtenida con éxito.",
