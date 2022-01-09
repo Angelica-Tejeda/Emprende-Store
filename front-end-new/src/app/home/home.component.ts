@@ -9,19 +9,23 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  sendingForm: boolean = false;
-  submitted: boolean = false;
   asuntoOptions: string[] = [
     'Preguntas',
     'Sugerencias',
     'Quejas',
     'Quiero ser parte de APADA',
   ];
+  sendingContactForm: boolean = false;
+  submittedContactForm: boolean = false;
   contactForm: FormGroup = new FormGroup(
     {
       nombre: new FormControl(null, Validators.required),
       email: new FormControl(null, [Validators.required, Validators.email]),
-      celular: new FormControl(null, [Validators.required, Validators.minLength(10), Validators.pattern('^[+]?[0-9|\(|\)|\-]+')]),
+      celular: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.pattern('^[+]?[0-9|(|)|-]+'),
+      ]),
       asunto: new FormControl(null, Validators.required),
       mensaje: new FormControl(null, Validators.required),
     },
@@ -34,9 +38,10 @@ export class HomeComponent implements OnInit {
 
   enviarFormulario(): void {
     //TODO: Hacer el servicio y la infraestructura para enviar el formulario
-    this.sendingForm = true;
-    this.submitted = true;
+    this.sendingContactForm = true;
+    this.submittedContactForm = true;
     if (this.contactForm.valid) {
+      this.contactForm.disable();
       setTimeout(() => {
         this.messageService.add({
           key: 'general',
@@ -46,10 +51,13 @@ export class HomeComponent implements OnInit {
             'Tu formulario será revisado por uno de nuestros administradores. Pronto recibirás una respuesta a tu correo electrónico.',
           life: 7000,
         });
-        this.sendingForm = false;
-      }, 700);
+        this.sendingContactForm = false;
+        this.contactForm.reset();
+        this.contactForm.enable();
+      }, 1500);
     } else {
-      this.sendingForm = false;
+      this.sendingContactForm = false;
+      this.contactForm.enable();
     }
   }
 }

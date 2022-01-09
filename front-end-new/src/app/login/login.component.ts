@@ -14,11 +14,11 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent implements OnInit {
   passMask: boolean = true;
-  submitted: boolean = false;
-  waiting: boolean = false;
   redirect: boolean = false;
   messageEmail: string = '';
   messagePassword: string = '';
+  sendingLoginForm: boolean = false;
+  submittedLoginForm: boolean = false;
   loginForm: FormGroup = new FormGroup(
     {
       email: new FormControl(null, [Validators.required, Validators.email]),
@@ -48,11 +48,12 @@ export class LoginComponent implements OnInit {
   }
 
   iniciarSesion(): void {
-    this.waiting = true;
-    this.submitted = true;
+    this.sendingLoginForm = true;
+    this.submittedLoginForm = true;
     this.messagePassword = '';
     this.messageEmail = '';
     if (this.loginForm.valid) {
+      this.loginForm.disable();
       this.authService.iniciarSesionEmpr(this.loginForm.value).subscribe({
         next: (res) => {
           if (this.redirect) {
@@ -63,7 +64,8 @@ export class LoginComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          this.waiting = false;
+          this.sendingLoginForm = false;
+          this.loginForm.enable();
           if (err.error.status == 'error') {
             if (err.error.message.includes('contraseña')) {
               this.messagePassword = err.error.message;
@@ -91,7 +93,8 @@ export class LoginComponent implements OnInit {
         },
       });
     } else {
-      this.waiting = false;
+      this.sendingLoginForm = false;
+      this.loginForm.enable();
     }
   }
 }

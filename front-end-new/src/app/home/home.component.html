@@ -176,36 +176,36 @@
                         <span class="p-input-filled p-float-label mt-4">
                             <input pInputText id="nombre" type="text" formControlName="nombre" name="nombre"
                                 class="w-100"
-                                [ngClass]="(submitted && contactForm.get('nombre')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                [ngClass]="(submittedContactForm && contactForm.get('nombre')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                             <label for="nombre">Nombre</label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
                             <input pInputText id="email" type="text" formControlName="email" name="email" class="w-100"
-                                [ngClass]="(submitted && contactForm.get('email')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                [ngClass]="(submittedContactForm && contactForm.get('email')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                             <label for="email">E-mail</label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
                             <input pInputText id="celular" type="tel" formControlName="celular" name="celular"
                                 class="w-100"
-                                [ngClass]="(submitted && contactForm.get('celular')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                [ngClass]="(submittedContactForm && contactForm.get('celular')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                             <label for="celular">Número celular</label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5 text-left" [style]="{'height': '50px'}">
                             <p-dropdown [options]="asuntoOptions" id="asunto" formControlName="asunto" placeholder=" "
                                 [style]="{'height': '50px'}" [styleClass]="'w-100'" class="w-100" [scrollHeight]="'216'"
-                                [ngClass]="(submitted && contactForm.get('asunto')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                [ngClass]="(submittedContactForm && contactForm.get('asunto')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                             </p-dropdown>
                             <label for="asunto">Asunto</label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
                             <textarea pInputTextarea id="mensaje" [rows]="4" [cols]="35" formControlName="mensaje"
                                 name="mensaje" class="contact-form-textarea"
-                                [ngClass]="(submitted && contactForm.get('mensaje')?.invalid) ? 'ng-dirty ng-invalid' : ''"></textarea>
+                                [ngClass]="(submittedContactForm && contactForm.get('mensaje')?.invalid) ? 'ng-dirty ng-invalid' : ''"></textarea>
                             <label for="mensaje">Mensaje</label>
                         </span>
-                        <div class="text-right">
-                            <button pButton pRipple type="submit" label="Enviar" [disabled]="sendingForm"
-                                [icon]="sendingForm ? 'pi pi-spin pi-spinner' : ''" class="p-button w-100 mt-3">
+                        <div>
+                            <button pButton pRipple type="submit" label="Enviar" [disabled]="sendingContactForm"
+                                [icon]="sendingContactForm ? 'pi pi-spin pi-spinner' : ''" class="p-button w-100 mt-3">
                             </button>
                         </div>
                     </div>

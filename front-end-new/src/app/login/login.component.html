@@ -14,14 +14,14 @@
                         <span class="p-input-filled p-input-icon-left p-float-label mt-4">
                             <i class="pi pi-envelope"></i>
                             <input pInputText
-                                [ngClass]="(submitted && loginForm.get('email')?.invalid) || messageEmail? 'ng-dirty ng-invalid' : ''"
+                                [ngClass]="(submittedLoginForm && loginForm.get('email')?.invalid) || messageEmail? 'ng-dirty ng-invalid' : ''"
                                 id="email" type="text" formControlName="email" name="email"
                                 aria-describedby="email-help">
                             <label for="email">E-mail</label>
                         </span>
-                        <small *ngIf="submitted && loginForm.get('email')?.errors?.['required']" id="email-help"
+                        <small *ngIf="submittedLoginForm && loginForm.get('email')?.errors?.['required']" id="email-help"
                             class="p-error">Ingrese su E-mail.</small>
-                        <small *ngIf="submitted && loginForm.get('email')?.errors?.['email']" id="email-help"
+                        <small *ngIf="submittedLoginForm && loginForm.get('email')?.errors?.['email']" id="email-help"
                             class="p-error">El E-mail no es válido.</small>
                         <small *ngIf="messageEmail" id="email-help" class="p-error">{{messageEmail}}</small>
                         <span class="p-input-filled p-input-icon-left p-input-icon-right p-float-label mt-4-5">
@@ -29,17 +29,17 @@
                             <i class="c-pointer pi" [ngClass]="passMask ? 'pi-eye' : 'pi-eye-slash'"
                                 (click)="passMask = !passMask"></i>
                             <input pInputText
-                                [ngClass]="(submitted && loginForm.get('password')?.invalid) || messagePassword ? 'ng-dirty ng-invalid' : ''"
+                                [ngClass]="(submittedLoginForm && loginForm.get('password')?.invalid) || messagePassword ? 'ng-dirty ng-invalid' : ''"
                                 id="password" [attr.type]="passMask ? 'password' : 'text'" formControlName="password"
                                 name="password" aria-describedby="password-help">
                             <label for="password">Contraseña</label>
                         </span>
-                        <small *ngIf="submitted && loginForm.get('password')?.invalid" id="password-help"
+                        <small *ngIf="submittedLoginForm && loginForm.get('password')?.invalid" id="password-help"
                             class="p-error">Ingrese su contraseña.</small>
                         <small *ngIf="messagePassword" id="password-help" class="p-error">{{messagePassword}}</small>
                         <div>
                             <button pButton pRipple type="submit" label="INICIAR SESIÓN"
-                                [icon]="waiting ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'" [disabled]="waiting"
+                                [icon]="sendingLoginForm ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'" [disabled]="sendingLoginForm"
                                 class="p-button login-button mt-4"></button>
                             <p class="mb-0 d-flex gap-1 justify-content-center align-items-center">
                                 <a class="small-link" [routerLink]="'.'">
