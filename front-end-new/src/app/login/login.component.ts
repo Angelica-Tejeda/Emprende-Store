@@ -11,13 +11,12 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [MessageService],
 })
 export class LoginComponent implements OnInit {
   passMask: boolean = true;
   submitted: boolean = false;
   waiting: boolean = false;
-  back: boolean = false;
+  redirect: boolean = false;
   messageEmail: string = '';
   messagePassword: string = '';
   loginForm: FormGroup = new FormGroup(
@@ -42,8 +41,8 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/management']);
     }
     this.route.queryParams.subscribe((params) => {
-      if (params['back']) {
-        this.back = params['back'];
+      if (params['redirect']) {
+        this.redirect = params['redirect'];
       }
     });
   }
@@ -56,12 +55,10 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.authService.iniciarSesionEmpr(this.loginForm.value).subscribe({
         next: (res) => {
-          if (res.status == 'success') {//TODO: corregir estas lineas que son comprobaciones innecesarioas, y en error vefiricar los errores correctamente.
-            if (this.back) {
-              this.location.back();
-            } else {
-              this.router.navigate(['/management']);
-            }
+          if (this.redirect) {
+            this.location.back();
+          } else {
+            this.router.navigate(['/management']);
           }
         },
         error: (err) => {
@@ -74,6 +71,7 @@ export class LoginComponent implements OnInit {
               this.messageEmail = err.error.message;
             } else {
               this.messageService.add({
+                key: 'general',
                 severity: 'error',
                 summary: 'Error',
                 detail: err.error.message,
@@ -82,6 +80,7 @@ export class LoginComponent implements OnInit {
             }
           } else {
             this.messageService.add({
+              key: 'general',
               severity: 'error',
               summary: 'Error',
               detail:

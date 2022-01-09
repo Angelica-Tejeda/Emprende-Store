@@ -7,7 +7,6 @@ import { MessageService } from 'primeng/api';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [MessageService],
 })
 export class HomeComponent implements OnInit {
   sendingForm: boolean = false;
@@ -40,6 +39,7 @@ export class HomeComponent implements OnInit {
     if (this.contactForm.valid) {
       setTimeout(() => {
         this.messageService.add({
+          key: 'general',
           severity: 'success',
           summary: 'Formulario enviado',
           detail:

@@ -9,7 +9,7 @@
             <p *ngIf="!isLogged" class="mx-auto">Inicia sesión para verificar tu identidad.</p>
             <div class="d-flex flex-column flex-sm-row-reverse justify-content-center gap-3">
                 <a *ngIf="!isLogged" class="link-button" [routerLink]="['/login']"
-                    [queryParams]="{ back: true }">
+                    [queryParams]="{ redirect: true }">
                     <button pButton pRipple type="button" label="Iniciar sesión" icon="pi pi-sign-in"
                         class="p-button-lg button-responsive"></button>
                 </a>

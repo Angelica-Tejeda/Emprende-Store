@@ -1,7 +1,5 @@
 <app-navbar [isLogin]="true"></app-navbar>
 
-<p-toast position="bottom-center"></p-toast>
-
 <div class="container-fliud container-full-height bg-lighter d-flex flex-column justify-content-center">
     <div class="container-sm py-3 d-flex flex-column justify-content-center">
         <p-card class="m-auto w-100 my-3" [style]="{'max-width': '60rem', 'margin': 'auto'}">
@@ -41,17 +39,17 @@
                         <small *ngIf="messagePassword" id="password-help" class="p-error">{{messagePassword}}</small>
                         <div>
                             <button pButton pRipple type="submit" label="INICIAR SESIÓN"
-                                [icon]="waiting ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'"
+                                [icon]="waiting ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'" [disabled]="waiting"
                                 class="p-button login-button mt-4"></button>
-                                <p class="mb-0">
-                                    <a class="small-link" [routerLink]="'.'">
-                                        <small>Olvidé mi contraseña</small>
-                                    </a>
-                                    |
-                                    <a class="small-link" [routerLink]="'.'">
-                                        <small>Registro</small>
-                                    </a>
-                                </p>
+                            <p class="mb-0 d-flex gap-1 justify-content-center align-items-center">
+                                <a class="small-link" [routerLink]="'.'">
+                                    <small>Olvidé mi contraseña</small>
+                                </a>
+                                <span>|</span>
+                                <a class="small-link" [routerLink]="'.'">
+                                    <small>Ser miembro</small>
+                                </a>
+                            </p>
                         </div>
                     </form>
                 </div>

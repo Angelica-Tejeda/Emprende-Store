@@ -1,15 +1,5 @@
 <div class="close-navbar-toggler fixed-top" *ngIf="!isMenuCollapsed" (click)="isMenuCollapsed = true"></div>
 
-<p-confirmDialog #cd [style]="{'min-width': '30vw', 'max-width': '90vw'}" [baseZIndex]="10000">
-    <p-footer class="d-flex flex-column-reverse justify-content-between d-sm-block button-dialog-container">
-        <button type="button" pButton class="p-button-danger" icon="pi pi-times" label="Cancelar"
-            (click)="cd.reject()"></button>
-        <button type="button" pButton class="p-button" icon="pi pi-check" label="Aceptar"
-            (click)="cd.accept()"></button>
-    </p-footer>
-</p-confirmDialog>
-<p-toast position="bottom-center"></p-toast>
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-darker fixed-top">
     <a class="navbar-brand mr-0" [routerLink]="['/home']">
         <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
@@ -54,6 +44,7 @@
                     <button pButton pRipple type="button" label="CATEGORIAS" class="p-button navbar-button"></button>
                 </a>
             </li>
+            <div *ngIf="isHome" class="dropdown-divider d-lg-none"></div>
             <li *ngIf="isHome" class="nav-item m-auto">
                 <a class="nav-link" href="#sobrenosotros" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="SOBRE NOSOTROS" class="p-button navbar-button"></button>
@@ -70,14 +61,19 @@
                 </a>
             </li>
             <li *ngIf="isHome" class="d-none d-lg-block nav-item m-auto">
+                <a class="nav-link" href="#testimonios" (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="TESTIMONIOS" class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <li *ngIf="isHome" class="d-none d-lg-block nav-item m-auto">
                 <a class="nav-link" href="#contacto" (click)="isMenuCollapsed = true">
-                    <button pButton pRipple type="button" label="TESTIMONIOS - CONTACTO" class="p-button navbar-button"></button>
+                    <button pButton pRipple type="button" label="CONTACTO" class="p-button navbar-button"></button>
                 </a>
             </li>
             <div class="dropdown-divider d-lg-none"></div>
             <li *ngIf="!isLogged" class="nav-item m-auto">
                 <a class="nav-link" [routerLink]="['/login']" (click)="isMenuCollapsed = true">
-                    <button pButton pRipple type="button" label="SOY EMPRENDEDOR"
+                    <button pButton pRipple type="button" label="INICIAR SESIÓN"
                         class="p-button navbar-button"></button>
                 </a>
             </li>

@@ -1,1 +1,14 @@
+<p-confirmDialog #cd [style]="{'min-width': '30vw', 'max-width': '90vw'}" [baseZIndex]="10000">
+    <p-footer class="d-flex flex-column-reverse justify-content-between d-sm-block button-dialog-container">
+        <button type="button" pButton class="p-button-danger" icon="pi pi-times" label="Cancelar"
+            (click)="cd.reject()"></button>
+        <button type="button" pButton class="p-button" icon="pi pi-check" label="Aceptar"
+            (click)="cd.accept()"></button>
+    </p-footer>
+</p-confirmDialog>
+
+<p-toast position="bottom-center" key="general"></p-toast>
+<p-toast position="bottom-center" key="user"></p-toast>
+<p-toast position="bottom-center" key="restrict"></p-toast>
+
 <router-outlet></router-outlet>

@@ -40,7 +40,7 @@
                 </div>
                 <h1>$ {{ product.precio }}</h1>
                 <a class="link-button align-self-sm-center" target="_blank"
-                    href="https://wa.me/{{ product.usuario.celular }}?text={{ mensaje }}">
+                    href="https://wa.me/{{ product.usuario.celular }}?text={{ mensajeContacto }}">
                     <button pButton pRipple type="button" label="Contactar" icon="pi pi-whatsapp"
                         class="p-button-lg button-responsive"></button>
                 </a>
@@ -74,6 +74,7 @@
             </div>
             <div class="product-info pb-3 pb-sm-4 pb-lg-5">
                 <h2>Comentarios</h2>
+                <!--TODO: Agregar la sección para enviar comentarios-->
                 <div *ngIf="comentarios !== null" class="d-flex flex-column gap-3">
                     <div *ngFor="let coment of comentarios" class="custom-card">
                         <div class="d-flex gap-3 justify-content-between">

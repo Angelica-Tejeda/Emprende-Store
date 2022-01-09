@@ -150,6 +150,7 @@ button {
 .p-toast.p-toast-bottom-center {
   width: calc(100vw - 2rem);
   bottom: 0;
+  z-index: 90!important;
 }
 
 .p-dialog .p-dialog-footer button {

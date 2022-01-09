@@ -18,7 +18,8 @@ export class ProductComponent implements OnInit {
   publId: any;
   product: any;
   comentarios: any = null;
-  mensaje: string = '';
+  mensajeContacto: string = '';
+  //TODO: Cargar productos relacionados y productos del mismo vendedor desde backend
   productosVendedor: any = [
     {
       id: 13,
@@ -176,12 +177,20 @@ export class ProductComponent implements OnInit {
           next: (res) => {
             this.owned = true;
             this.product = res.result;
-            this.mensaje =
-              'Hola, estoy interesado en tu producto "' +
-              this.product.titulo +
-              '" que se encuentra publicado en Emprende Store.\nhttp://localhost:4200' +
-              this.router.url;
-            this.mensaje = encodeURIComponent(this.mensaje);
+            if (res.result.servicio) {
+              this.mensajeContacto =
+                'Hola, estoy interesado en tu servicio "' +
+                this.product.titulo +
+                '" que se encuentra publicado en Emprende Store.\n' +
+                window.location.href;
+            } else {
+              this.mensajeContacto =
+                'Hola, estoy interesado en tu producto "' +
+                this.product.titulo +
+                '" que se encuentra publicado en Emprende Store.\n' +
+                window.location.href;
+            }
+            this.mensajeContacto = encodeURIComponent(this.mensajeContacto);
             this.comentarioService
               .getComentariosByPublicacion(
                 this.product.usuario.id,
@@ -191,7 +200,6 @@ export class ProductComponent implements OnInit {
                 next: (res) => {
                   this.comentarios = res.result.rows;
                 },
-                error: (err) => {},
               });
           },
           error: (err) => {
@@ -201,12 +209,22 @@ export class ProductComponent implements OnInit {
                 .subscribe({
                   next: (res) => {
                     this.product = res.result;
-                    this.mensaje =
-                      'Hola, estoy interesado en tu producto "' +
-                      this.product.titulo +
-                      '" que se encuentra publicado en Emprende Store.\nhttp://localhost:4200' +
-                      this.router.url;
-                    this.mensaje = encodeURIComponent(this.mensaje);
+                    if (res.result.servicio) {
+                      this.mensajeContacto =
+                        'Hola, estoy interesado en tu servicio "' +
+                        this.product.titulo +
+                        '" que se encuentra publicado en Emprende Store.\n' +
+                        window.location.href;
+                    } else {
+                      this.mensajeContacto =
+                        'Hola, estoy interesado en tu producto "' +
+                        this.product.titulo +
+                        '" que se encuentra publicado en Emprende Store.\n' +
+                        window.location.href;
+                    }
+                    this.mensajeContacto = encodeURIComponent(
+                      this.mensajeContacto
+                    );
                     this.comentarioService
                       .getComentariosByPublicacion(
                         this.product.usuario.id,
@@ -216,7 +234,6 @@ export class ProductComponent implements OnInit {
                         next: (res) => {
                           this.comentarios = res.result.rows;
                         },
-                        error: (err) => {},
                       });
                   },
                   error: (err) => {
@@ -236,12 +253,20 @@ export class ProductComponent implements OnInit {
       this.publicacionService.getPublicacionById(this.publId).subscribe({
         next: (res) => {
           this.product = res.result;
-          this.mensaje =
-            'Hola, estoy interesado en tu producto "' +
-            this.product.titulo +
-            '" que se encuentra publicado en Emprende Store.\nhttp://localhost:4200' +
-            this.router.url;
-          this.mensaje = encodeURIComponent(this.mensaje);
+          if (res.result.servicio) {
+            this.mensajeContacto =
+              'Hola, estoy interesado en tu servicio "' +
+              this.product.titulo +
+              '" que se encuentra publicado en Emprende Store.\n' +
+              window.location.href;
+          } else {
+            this.mensajeContacto =
+              'Hola, estoy interesado en tu producto "' +
+              this.product.titulo +
+              '" que se encuentra publicado en Emprende Store.\n' +
+              window.location.href;
+          }
+          this.mensajeContacto = encodeURIComponent(this.mensajeContacto);
           this.comentarioService
             .getComentariosByPublicacion(
               this.product.usuario.id,
@@ -251,7 +276,6 @@ export class ProductComponent implements OnInit {
               next: (res) => {
                 this.comentarios = res.result.rows;
               },
-              error: (err) => {},
             });
         },
         error: (err) => {

@@ -13,7 +13,6 @@ import { environment } from '../../../environments/environment';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
-  providers: [ConfirmationService, MessageService],
 })
 export class NavbarComponent implements OnInit {
   @Input() isHome: boolean = false;
@@ -24,6 +23,7 @@ export class NavbarComponent implements OnInit {
   isMenuCollapsed = true;
   isDropdownOpened = false;
   isLogged = false;
+  public restrictedToast = false;
   usuario: any = null;
   searchForm: FormGroup = new FormGroup({
     busqueda: new FormControl(null, Validators.required),
@@ -46,12 +46,14 @@ export class NavbarComponent implements OnInit {
     ) {
       this.usuarioService
         .getOwnUsuarioById(+this.cookieService.get('usuario_id'))
-        .subscribe((res) => {
-          if (res.status == 'success') {
+        .subscribe({
+          next: (res) => {
             this.usuario = res.result;
             this.isLogged = true;
             if (!this.usuario.activo) {
+              this.messageService.clear('restrict');
               this.messageService.add({
+                key: 'restrict',
                 severity: 'warn',
                 summary: 'Cuenta restringida',
                 detail:
@@ -59,7 +61,21 @@ export class NavbarComponent implements OnInit {
                 sticky: true,
               });
             }
-          }
+          },
+          error: (err) => {
+            this.messageService.add({
+              key: 'general',
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'Ha ocurrido un error inesperado. Por favor, inicie sesión nuevamente.',
+              life: 5000,
+            });
+            this.cookieService.delete('usuario_act');
+            this.cookieService.delete('usuario_rol');
+            this.cookieService.delete('usuario_id');
+            this.router.navigate(['/login'], {queryParams: { redirect: true}});
+          },
         });
     }
     if (this.isSearch) {
@@ -88,22 +104,23 @@ export class NavbarComponent implements OnInit {
       header: 'Cerrar sesión',
       icon: 'pi pi-exclamation-circle',
       accept: () => {
-        this.authService.cerrarSesion().subscribe((res) => {
-          if (res.status == 'success') {
+        this.authService.cerrarSesion().subscribe({
+          next: (res) => {
             this.cookieService.delete('usuario_act');
             this.cookieService.delete('usuario_rol');
             this.cookieService.delete('usuario_id');
             this.isLogged = false;
-            this.router.navigate(['/home']);
-            //TODO: Corregir comportamiento de notificación de cierre de sesión.
-            this.messageService.clear();
+            this.router.navigate(['/login']);
+            this.messageService.clear('restrict');
+            this.messageService.clear('user');
             this.messageService.add({
+              key: 'general',
               severity: 'success',
               summary: 'Sesión finalizada',
               detail: res.message,
               life: 5000,
             });
-          }
+          },
         });
       },
       reject: () => {},
