@@ -7,6 +7,7 @@ exports.createComentario = async (req, res) => {
         usuario_id: req.body.usuario_id,
         celular: req.body.celular,
         nombre: req.body.nombre,
+        //nombre: req.body.nombre === null ? 'Usuario anónimo' : req.body.nombre,
         texto: req.body.texto,
         puntuacion: req.body.puntuacion,
     })
@@ -55,7 +56,7 @@ exports.getAllComentariosByUsuario = async (req, res) => {
         include: [
             {
                 model: Publicacion,
-                attributes: ["id", "titulo", "fotos", "precio", "activo"],
+                attributes: ["id", "titulo"],
             },
         ],
     })
@@ -92,6 +93,7 @@ exports.getComentariosByUsuario = async (req, res) => {
             usuario_id: req.params.userId,
             oculto: false,
         },
+        attributes: { exclude: ["celular"] },
     })
         .then((comentarios) => {
             if (comentarios.count > 0) {
@@ -195,6 +197,7 @@ exports.getComentariosByPublicacion = async (req, res) => {
             publicacion_id: req.params.publId,
             oculto: false,
         },
+        attributes: { exclude: ["celular"] },
     })
         .then((comentarios) => {
             if (comentarios.count > 0) {
@@ -232,14 +235,14 @@ exports.updateComentarioOculto = async (req, res) => {
         }
     )
         .then((result) => {
-            let texto = "desocutado";
+            let texto = "ahora es visible";
             if (req.body.oculto) {
-                texto = "ocultado";
+                texto = "ha sido ocultado.";
             }
             if (result == 1) {
                 res.status(200).json({
                     status: "success",
-                    message: "El comentario ha sido " + texto + " con éxito.",
+                    message: "El comentario " + texto,
                     result: result,
                 });
             } else {

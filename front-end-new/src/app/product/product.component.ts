@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { PublicacionService } from 'src/services/publicacion.service';
 import { ComentarioService } from 'src/services/comentario.service';
+import { IpService } from 'src/services/ip.service';
+import { VisitaService } from 'src/services/visita.service';
+import { MessageService } from 'primeng/api';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -18,6 +22,23 @@ export class ProductComponent implements OnInit {
   publId: any;
   product: any;
   comentarios: any = null;
+  showNewComment: boolean = false;
+  updatingComment: any = null;
+  sendingCommentForm: boolean = false;
+  submittedCommentForm: boolean = false;
+  commentForm: FormGroup = new FormGroup(
+    {
+      nombre: new FormControl(null, null),
+      //email: new FormControl(null, [Validators.required, Validators.email]),
+      celular: new FormControl(null, [
+        Validators.minLength(10),
+        Validators.pattern('^[+]?[0-9|(|)|-]+'),
+      ]),
+      puntuacion: new FormControl(null, Validators.required),
+      texto: new FormControl(null, Validators.required),
+    },
+    { updateOn: 'submit' }
+  );
   mensajeContacto: string = '';
   //TODO: Cargar productos relacionados y productos del mismo vendedor desde backend
   productosVendedor: any = [
@@ -160,7 +181,10 @@ export class ProductComponent implements OnInit {
     private route: ActivatedRoute,
     private cookieService: CookieService,
     private publicacionService: PublicacionService,
-    private comentarioService: ComentarioService
+    private comentarioService: ComentarioService,
+    private ipService: IpService,
+    private visitaService: VisitaService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -192,7 +216,7 @@ export class ProductComponent implements OnInit {
             }
             this.mensajeContacto = encodeURIComponent(this.mensajeContacto);
             this.comentarioService
-              .getComentariosByPublicacion(
+              .getOwnComentariosByPublicacion(
                 this.product.usuario.id,
                 this.product.id
               )
@@ -204,88 +228,172 @@ export class ProductComponent implements OnInit {
           },
           error: (err) => {
             if (err.status == '404') {
-              this.publicacionService
-                .getPublicacionById(this.publId)
-                .subscribe({
-                  next: (res) => {
-                    this.product = res.result;
-                    if (res.result.servicio) {
-                      this.mensajeContacto =
-                        'Hola, estoy interesado en tu servicio "' +
-                        this.product.titulo +
-                        '" que se encuentra publicado en Emprende Store.\n' +
-                        window.location.href;
-                    } else {
-                      this.mensajeContacto =
-                        'Hola, estoy interesado en tu producto "' +
-                        this.product.titulo +
-                        '" que se encuentra publicado en Emprende Store.\n' +
-                        window.location.href;
-                    }
-                    this.mensajeContacto = encodeURIComponent(
-                      this.mensajeContacto
-                    );
-                    this.comentarioService
-                      .getComentariosByPublicacion(
-                        this.product.usuario.id,
-                        this.product.id
-                      )
-                      .subscribe({
-                        next: (res) => {
-                          this.comentarios = res.result.rows;
-                        },
-                      });
-                  },
-                  error: (err) => {
-                    if (err.status == '404') {
-                      this.notFound = true;
-                    } else {
-                      this.unexpected = true;
-                    }
-                  },
-                });
+              this.getPublicacionNoOwn();
             } else {
               this.unexpected = true;
             }
           },
         });
     } else {
-      this.publicacionService.getPublicacionById(this.publId).subscribe({
-        next: (res) => {
-          this.product = res.result;
-          if (res.result.servicio) {
-            this.mensajeContacto =
-              'Hola, estoy interesado en tu servicio "' +
-              this.product.titulo +
-              '" que se encuentra publicado en Emprende Store.\n' +
-              window.location.href;
-          } else {
-            this.mensajeContacto =
-              'Hola, estoy interesado en tu producto "' +
-              this.product.titulo +
-              '" que se encuentra publicado en Emprende Store.\n' +
-              window.location.href;
-          }
-          this.mensajeContacto = encodeURIComponent(this.mensajeContacto);
-          this.comentarioService
-            .getComentariosByPublicacion(
-              this.product.usuario.id,
-              this.product.id
-            )
-            .subscribe({
-              next: (res) => {
-                this.comentarios = res.result.rows;
-              },
-            });
-        },
-        error: (err) => {
-          if (err.status == '404') {
-            this.notFound = true;
-          } else {
-            this.unexpected = true;
-          }
-        },
-      });
+      this.getPublicacionNoOwn();
     }
   }
+
+  getPublicacionNoOwn() {
+    this.publicacionService.getPublicacionById(this.publId).subscribe({
+      next: (res) => {
+        this.product = res.result;
+        if (res.result.servicio) {
+          this.mensajeContacto =
+            'Hola, estoy interesado en tu servicio "' +
+            this.product.titulo +
+            '" que se encuentra publicado en Emprende Store.\n' +
+            window.location.href;
+        } else {
+          this.mensajeContacto =
+            'Hola, estoy interesado en tu producto "' +
+            this.product.titulo +
+            '" que se encuentra publicado en Emprende Store.\n' +
+            window.location.href;
+        }
+        this.mensajeContacto = encodeURIComponent(this.mensajeContacto);
+        this.comentarioService
+          .getComentariosByPublicacion(this.product.usuario.id, this.product.id)
+          .subscribe({
+            next: (res) => {
+              this.comentarios = res.result.rows;
+            },
+          });
+        /*this.ipService.getIPAddress().subscribe({
+          next: (res) => {
+            alert(JSON.stringify(res));
+            
+          },
+        });*/
+      },
+      error: (err) => {
+        if (err.status == '404') {
+          this.notFound = true;
+        } else {
+          this.unexpected = true;
+        }
+      },
+    });
+  }
+
+  enviarComentario() {
+    this.submittedCommentForm = true;
+    this.sendingCommentForm = true;
+    if (this.commentForm.valid) {
+      let payload = {
+        publicacion_id: this.product.id,
+        usuario_id: this.product.usuario.id,
+        celular: this.commentForm.get('celular')?.value,
+        //nombre: this.commentForm.get('nombre')?.value,
+        texto: this.commentForm.get('texto')?.value,
+        puntuacion: this.commentForm.get('puntuacion')?.value,
+      };
+      if (this.commentForm.get('nombre')?.value !== null) {
+        Object.assign(payload, {
+          nombre: this.commentForm.get('nombre')?.value,
+        });
+      }
+      this.commentForm.disable();
+      this.comentarioService.createComentario(payload).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            key: 'general',
+            severity: 'success',
+            summary: 'Comentario enviado',
+            detail: res.message,
+            life: 5000,
+          });
+          this.sendingCommentForm = false;
+          this.commentForm.reset();
+          this.commentForm.enable();
+          this.showNewComment = false;
+          this.comentarios.unshift(res.result);
+        },
+        error: (err) => {
+          console.error(err);
+          if (err.status == '400') {
+            this.messageService.add({
+              key: 'general',
+              severity: 'error',
+              summary: 'Error',
+              detail: err.error.message,
+              life: 5000,
+            });
+          } else {
+            this.messageService.add({
+              key: 'general',
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+              life: 5000,
+            });
+          }
+          this.sendingCommentForm = false;
+          this.commentForm.enable();
+        },
+      });
+    } else {
+      this.sendingCommentForm = false;
+      this.commentForm.enable();
+    }
+  }
+
+  cambiarEstadoComentario(coment: any) {
+    let payload = {
+      oculto: !coment.oculto,
+    };
+    this.updatingComment = coment.id;
+    this.comentarioService
+      .updateComentarioOculto(
+        +this.cookieService.get('usuario_id'),
+        coment.id,
+        payload
+      )
+      .subscribe({
+        next: (res) => {
+          this.messageService.add({
+            key: 'user',
+            severity: 'success',
+            summary: 'Comentario actualizado',
+            detail: res.message,
+            life: 5000,
+          });
+          coment.oculto = !coment.oculto;
+          this.updatingComment = null;
+        },
+        error: (err) => {
+          console.error(err);
+          if (err.status == '403') {
+            this.messageService.add({
+              key: 'user',
+              severity: 'error',
+              summary: 'Error',
+              detail: err.error.message,
+              life: 5000,
+            });
+          } else {
+            this.messageService.add({
+              key: 'user',
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+              life: 5000,
+            });
+          }
+          this.updatingComment = null;
+        },
+      });
+  }
+
+  /*async reload(url: string): Promise<boolean> {
+    await this.router.navigateByUrl('.', { skipLocationChange: true });
+    return this.router.navigateByUrl(url);
+  }*/
 }

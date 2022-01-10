@@ -161,7 +161,12 @@ button {
   height: 7rem;
 }
 
-.categories-button {
+.xs-button {
+  padding: 0.25rem 0.5rem !important;
+}
+
+.xs-adapt-button {
+  max-height: 32px;
   padding: 0.25rem 0.5rem !important;
 }
 

@@ -39,7 +39,7 @@
                         <small *ngIf="messagePassword" id="password-help" class="p-error">{{messagePassword}}</small>
                         <div>
                             <button pButton pRipple type="submit" label="INICIAR SESIÓN"
-                                [icon]="sendingLoginForm ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'" [disabled]="sendingLoginForm"
+                                icon="pi pi-sign-in" [disabled]="sendingLoginForm" [loading]="sendingLoginForm"
                                 class="p-button login-button mt-4"></button>
                             <p class="mb-0 d-flex gap-1 justify-content-center align-items-center">
                                 <a class="small-link" [routerLink]="'.'">

@@ -44,8 +44,8 @@ export class ComentarioService {
     return this.http.get(`${_apiUrl}/publ/${userId}/${publId}`);
   }
 
-  updateComentarioOculto(data: any): Observable<any> {
-    return this.http.patch(`${_apiUrl}`, data, {
+  updateComentarioOculto(userId: number, comentId: number, data: any): Observable<any> {
+    return this.http.patch(`${_apiUrl}/oculto/${userId}/${comentId}`, data, {
       withCredentials: true,
     });
   }

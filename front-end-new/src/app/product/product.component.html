@@ -39,18 +39,22 @@
                     </div>
                 </div>
                 <h1>$ {{ product.precio }}</h1>
-                <a class="link-button align-self-sm-center" target="_blank"
+                <a *ngIf="!owned" class="link-button align-self-sm-center" target="_blank"
                     href="https://wa.me/{{ product.usuario.celular }}?text={{ mensajeContacto }}">
-                    <button pButton pRipple type="button" label="Contactar" icon="pi pi-whatsapp"
-                        class="p-button-lg button-responsive"></button>
+                    <button pButton pRipple type="button" label="CONTACTAR" icon="pi pi-whatsapp"
+                        class="p-button-lg p-button-success button-responsive"></button>
                 </a>
+                <div *ngIf="owned" class="link-button align-self-sm-center">
+                    <button pButton pRipple type="button" label="CONTACTAR" icon="pi pi-whatsapp"
+                        class="p-button-lg p-button-success button-responsive" disabled></button>
+                </div>
                 <div class="mt-3">
                     <h6>Categorías:</h6>
                     <div class="d-flex flex-wrap gap-2 justify-content-center">
                         <a *ngFor="let categoria of product.categoria" class="link-button align-self-sm-center"
                             [routerLink]="'.'">
                             <button pButton pRipple type="button" label="{{categoria}}"
-                                class="p-button-sm categories-button"></button>
+                                class="p-button-sm xs-button"></button>
                         </a>
                     </div>
                 </div>
@@ -63,7 +67,8 @@
         <div>
             <div class="product-info py-3 py-sm-4 py-lg-5">
                 <h2>Descripción</h2>
-                <p class="mb-0 text-justify">{{ product.descripcion }} Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                <p class="mb-0 text-justify">{{ product.descripcion }} Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit.
                     Quos temporibus at nesciunt quis sunt porro nisi unde pariatur culpa laboriosam cum nostrum,
                     consequatur dolorem dolore delectus laudantium quasi maxime? Libero!</p>
                 <!--<div class="custom-card">
@@ -73,13 +78,97 @@
                 </div>-->
             </div>
             <div class="product-info pb-3 pb-sm-4 pb-lg-5">
-                <h2>Comentarios</h2>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="mb-0">Comentarios</h2>
+                    <button pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned || showNewComment"
+                        class="p-button-sm p-button-warning d-none d-sm-block" (click)="showNewComment = true"></button>
+                </div>
                 <!--TODO: Agregar la sección para enviar comentarios-->
-                <div *ngIf="comentarios !== null" class="d-flex flex-column gap-3">
-                    <div *ngFor="let coment of comentarios" class="custom-card">
+                <div class="d-flex flex-column gap-3">
+                    <button *ngIf="!showNewComment" pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned"
+                        class="p-button-warning d-sm-none" (click)="showNewComment = true"></button>
+                    <div *ngIf="showNewComment && !owned" class="custom-card d-flex flex-column">
+                        <form class="d-flex flex-column justify-content-around h-100" [formGroup]="commentForm"
+                            (submit)="enviarComentario()">
+                            <div>
+                                <p class="text-justify">
+                                    Recuerda que una vez envíado, el comentario no se podrá modificar ni eliminar. Se
+                                    amable y educado, y que tus críticas sean constructivas.
+                                </p>
+                            </div>
+                            <div class="d-flex flex-column align-items-stretch">
+                                <span class="p-input-filled p-float-label mt-4">
+                                    <input pInputText id="nombre" type="text" formControlName="nombre" name="nombre"
+                                        class="w-100"
+                                        [ngClass]="(submittedCommentForm && commentForm.get('nombre')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                    <label for="nombre">Nombre</label>
+                                </span>
+                                <small class="ml-2">*Campo no obligatorio</small>
+                                <span class="p-input-filled p-float-label mt-4-5">
+                                    <input pInputText id="celular" type="tel" formControlName="celular" name="celular"
+                                        class="w-100"
+                                        [ngClass]="(submittedCommentForm && commentForm.get('celular')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                    <label for="celular">Número celular</label>
+                                </span>
+                                <small class="ml-2">*Campo no obligatorio</small>
+                                <span class="mt-4-5 position-relative">
+                                    <label class="comment-punt-label mb-0" for="puntuacion" [ngClass]="(submittedCommentForm && commentForm.get('puntuacion')?.invalid) ? 'ng-dirty ng-invalid' : ''">Puntuación</label>
+                                    <div class="comment-punt" [ngClass]="(submittedCommentForm && commentForm.get('puntuacion')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                        <ngb-rating id="puntuacion" formControlName="puntuacion" name="puntuacion" [max]="5">
+                                            <ng-template let-fill="fill" let-index="index">
+                                                <span class="star new-comment" [class.full]="fill === 100">&#9733;</span>
+                                            </ng-template>
+                                        </ngb-rating>
+                                    </div>
+                                </span>
+                                <span class="p-input-filled p-float-label mt-4-5">
+                                    <textarea pInputTextarea id="texto" [rows]="4" formControlName="texto"
+                                        name="texto" class="contact-form-textarea w-100"
+                                        [ngClass]="(submittedCommentForm && commentForm.get('texto')?.invalid) ? 'ng-dirty ng-invalid' : ''"></textarea>
+                                    <label for="texto">Mensaje</label>
+                                </span>
+                                <div class="d-flex flex-column-reverse flex-sm-row justify-content-sm-end gap-2 mt-3">
+                                    <button pButton pRipple label="Cancelar" icon="pi pi-times"
+                                        [disabled]="sendingCommentForm" class="p-button-danger button-responsive"
+                                        (click)="showNewComment = false; submittedCommentForm = false; commentForm.reset();">
+                                    </button>
+                                    <button pButton pRipple type="submit" icon="pi pi-check" label="Enviar"
+                                        [disabled]="sendingCommentForm" [loading]="sendingCommentForm"
+                                        class="p-button button-responsive">
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div *ngIf="comentarios === null" class="custom-card text-center">
+                        <h5 class="mb-0">Aún no hay comentarios.</h5>
+                    </div>
+                    <div *ngFor="let coment of comentarios" class="custom-card"
+                        [ngClass]="coment.oculto ? 'opacity-50' : ''">
                         <div class="d-flex gap-3 justify-content-between">
                             <h5>{{ coment.nombre }}</h5>
-                            <small class="text-right">{{ coment.creado | date:'dd/LL/YYYY, HH:mm' }}</small>
+                            <div class="d-flex gap-1">
+                                <div class="d-flex flex-column">
+                                    <small class="text-right fecha">{{ coment.creado | date:'dd/LL/YYYY' }}</small>
+                                    <small class="text-right fecha">{{ coment.creado | date:'HH:mm' }}</small>
+                                </div>
+                                <button *ngIf="owned && !coment.oculto" pButton pRipple icon="pi pi-eye-slash"
+                                    class="d-sm-none p-button-sm xs-adapt-button"
+                                    (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
+                                    [loading]="updatingComment == coment.id"></button>
+                                <button *ngIf="owned && !coment.oculto" pButton pRipple label="Ocultar"
+                                    icon="pi pi-eye-slash" class="d-none d-sm-block p-button-sm xs-adapt-button"
+                                    (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
+                                    [loading]="updatingComment == coment.id"></button>
+                                <button *ngIf="owned && coment.oculto" pButton pRipple icon="pi pi-eye"
+                                    class="d-sm-none p-button-sm xs-adapt-button"
+                                    (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
+                                    [loading]="updatingComment == coment.id"></button>
+                                <button *ngIf="owned && coment.oculto" pButton pRipple label="Mostrar" icon="pi pi-eye"
+                                    class="d-none d-sm-block p-button-sm xs-adapt-button"
+                                    (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
+                                    [loading]="updatingComment == coment.id"></button>
+                            </div>
                         </div>
                         <ng-template #t let-fill="fill">
                             <span class="star" [class.full]="fill === 100">
@@ -88,14 +177,16 @@
                         </ng-template>
                         <ngb-rating [(rate)]="coment.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
                         </ngb-rating>
-                        <p class="mb-0">{{ coment.texto }}</p>
+                        <p class="mb-0 text-justify">{{ coment.texto }}</p>
                     </div>
                 </div>
-                <div *ngIf="comentarios === null" class="d-flex flex-column gap-3">
+                <!--<div *ngIf="comentarios === null" class="d-flex flex-column gap-3">
+                    <button pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned || showNewComment"
+                        class="p-button-warning d-sm-none" (click)="showNewComment = true"></button>
                     <div class="custom-card text-center">
                         <h5 class="mb-0">Aún no hay comentarios.</h5>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
         <div class="d-flex flex-column">
