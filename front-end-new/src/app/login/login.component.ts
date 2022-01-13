@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
                 severity: 'error',
                 summary: 'Error',
                 detail: err.error.message,
-                life: 5000,
+                life: 4000,
               });
             }
           } else {
@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 5000,
+              life: 4000,
             });
           }
         },

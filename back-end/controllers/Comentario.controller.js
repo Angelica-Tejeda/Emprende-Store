@@ -5,9 +5,8 @@ exports.createComentario = async (req, res) => {
     Comentario.create({
         publicacion_id: req.body.publicacion_id,
         usuario_id: req.body.usuario_id,
-        celular: req.body.celular,
-        nombre: req.body.nombre,
-        //nombre: req.body.nombre === null ? 'Usuario anónimo' : req.body.nombre,
+        celular: req.body.celular !== null ? "593" + req.body.celular.substring(1) : null,
+        nombre: req.body.nombre !== null ? req.body.nombre : undefined,
         texto: req.body.texto,
         puntuacion: req.body.puntuacion,
     })
@@ -86,7 +85,7 @@ exports.getAllComentariosByUsuario = async (req, res) => {
         });
 };
 
-exports.getComentariosByUsuario = async (req, res) => {
+/*exports.getComentariosByUsuario = async (req, res) => {
     Comentario.findAndCountAll({
         order: [["id", "DESC"]],
         where: {
@@ -119,7 +118,7 @@ exports.getComentariosByUsuario = async (req, res) => {
                 error: err,
             });
         });
-};
+};*/
 
 exports.getOwnComentariosByNullPublicacion = async (req, res) => {
     Comentario.findAndCountAll({
@@ -128,6 +127,7 @@ exports.getOwnComentariosByNullPublicacion = async (req, res) => {
             usuario_id: req.params.userId,
             publicacion_id: null,
         },
+        attributes: { exclude: ["modificado", "publicacion_id", "usuario_id"] },
     })
         .then((comentarios) => {
             if (comentarios.count > 0) {
@@ -161,6 +161,9 @@ exports.getOwnComentariosByPublicacion = async (req, res) => {
         where: {
             usuario_id: req.params.userId,
             publicacion_id: req.params.publId,
+        },
+        attributes: {
+            exclude: ["modificado", "publicacion_id", "usuario_id"],
         },
     })
         .then((comentarios) => {
@@ -197,7 +200,16 @@ exports.getComentariosByPublicacion = async (req, res) => {
             publicacion_id: req.params.publId,
             oculto: false,
         },
-        attributes: { exclude: ["celular"] },
+        attributes: {
+            exclude: [
+                "id",
+                "celular",
+                "modificado",
+                "publicacion_id",
+                "usuario_id",
+                "oculto",
+            ],
+        },
     })
         .then((comentarios) => {
             if (comentarios.count > 0) {

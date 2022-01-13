@@ -5,7 +5,7 @@ const VisitaPublicacion = require("../database/models/VisitaPublicacion");
 
 exports.createVisitaPerfil = async (req, res) => {
     VisitaPerfil.create({
-        usuario_id: req.body.usuario,
+        usuario_id: req.body.usuario_id,
         ip: req.body.ip,
     })
         .then((visita) => {
@@ -27,8 +27,8 @@ exports.createVisitaPerfil = async (req, res) => {
 
 exports.createVisitaPublicacion = async (req, res) => {
     VisitaPublicacion.create({
-        usuario_id: req.body.usuario,
-        publicacion_id: req.body.publicacion,
+        usuario_id: req.body.usuario_id,
+        publicacion_id: req.body.publicacion_id,
         ip: req.body.ip,
         contacto: false,
     })
@@ -51,8 +51,8 @@ exports.createVisitaPublicacion = async (req, res) => {
 
 exports.createContactoPublicacion = async (req, res) => {
     VisitaPublicacion.create({
-        usuario_id: req.body.usuario,
-        publicacion_id: req.body.publicacion,
+        usuario_id: req.body.usuario_id,
+        publicacion_id: req.body.publicacion_id,
         ip: req.body.ip,
         contacto: true,
     })

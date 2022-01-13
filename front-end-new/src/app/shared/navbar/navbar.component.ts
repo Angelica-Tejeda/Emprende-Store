@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private authService: AuthService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
   ) {}
 
   ngOnInit(): void {
@@ -64,18 +64,20 @@ export class NavbarComponent implements OnInit {
             }
           },
           error: (err) => {
-            this.cookieService.delete('usuario_act');
-            this.cookieService.delete('usuario_rol');
-            this.cookieService.delete('usuario_id');
             this.messageService.add({
               key: 'general',
               severity: 'error',
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado. Por favor, inicie sesión nuevamente.',
-              life: 5000,
+              life: 3000,
             });
             this.router.navigate(['/login'], {queryParams: { redirect: true}});
+            this.cookieService.delete('usuario_act');
+            this.cookieService.delete('usuario_rol');
+            if (this.cookieService.get('usuario_id') === null) {
+              this.cookieService.delete('usuario_id');
+            }
           },
         });
     }
@@ -119,7 +121,7 @@ export class NavbarComponent implements OnInit {
               severity: 'success',
               summary: 'Sesión finalizada',
               detail: res.message,
-              life: 5000,
+              life: 3000,
             });
           },
         });

@@ -32,7 +32,7 @@ export class ProductComponent implements OnInit {
       //email: new FormControl(null, [Validators.required, Validators.email]),
       celular: new FormControl(null, [
         Validators.minLength(10),
-        Validators.pattern('^[+]?[0-9|(|)|-]+'),
+        Validators.pattern('^[0][9][0-9]+'),
       ]),
       puntuacion: new FormControl(null, Validators.required),
       texto: new FormControl(null, Validators.required),
@@ -264,12 +264,22 @@ export class ProductComponent implements OnInit {
               this.comentarios = res.result.rows;
             },
           });
-        /*this.ipService.getIPAddress().subscribe({
-          next: (res) => {
-            alert(JSON.stringify(res));
-            
+        this.ipService.getIPAddress().subscribe({
+          next: (resIp) => {
+            Object.assign(resIp, {
+              usuario_id: this.product.usuario.id,
+              publicacion_id: this.product.id,
+            });
+            this.visitaService.createVisitaPublicacion(resIp).subscribe();
           },
-        });*/
+          error: (errIp) => {
+            let payload = {
+              usuario_id: this.product.usuario.id,
+              publicacion_id: this.product.id,
+            };
+            this.visitaService.createVisitaPublicacion(payload).subscribe();
+          },
+        });
       },
       error: (err) => {
         if (err.status == '404') {
@@ -282,6 +292,7 @@ export class ProductComponent implements OnInit {
   }
 
   enviarComentario() {
+    alert(JSON.stringify(this.commentForm.value))
     this.submittedCommentForm = true;
     this.sendingCommentForm = true;
     if (this.commentForm.valid) {
@@ -289,15 +300,15 @@ export class ProductComponent implements OnInit {
         publicacion_id: this.product.id,
         usuario_id: this.product.usuario.id,
         celular: this.commentForm.get('celular')?.value,
-        //nombre: this.commentForm.get('nombre')?.value,
+        nombre: this.commentForm.get('nombre')?.value,
         texto: this.commentForm.get('texto')?.value,
         puntuacion: this.commentForm.get('puntuacion')?.value,
       };
-      if (this.commentForm.get('nombre')?.value !== null) {
+      /*if (this.commentForm.get('nombre')?.value !== null) {
         Object.assign(payload, {
           nombre: this.commentForm.get('nombre')?.value,
         });
-      }
+      }*/
       this.commentForm.disable();
       this.comentarioService.createComentario(payload).subscribe({
         next: (res) => {
@@ -306,13 +317,18 @@ export class ProductComponent implements OnInit {
             severity: 'success',
             summary: 'Comentario enviado',
             detail: res.message,
-            life: 5000,
+            life: 3000,
           });
           this.sendingCommentForm = false;
           this.commentForm.reset();
           this.commentForm.enable();
           this.showNewComment = false;
-          this.comentarios.unshift(res.result);
+          if (this.comentarios === null) {
+            this.comentarios = [];
+            this.comentarios.unshift(res.result);
+          } else {
+            this.comentarios.unshift(res.result);
+          }
         },
         error: (err) => {
           console.error(err);
@@ -322,7 +338,7 @@ export class ProductComponent implements OnInit {
               severity: 'error',
               summary: 'Error',
               detail: err.error.message,
-              life: 5000,
+              life: 3000,
             });
           } else {
             this.messageService.add({
@@ -331,7 +347,7 @@ export class ProductComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 5000,
+              life: 3000,
             });
           }
           this.sendingCommentForm = false;
@@ -362,7 +378,7 @@ export class ProductComponent implements OnInit {
             severity: 'success',
             summary: 'Comentario actualizado',
             detail: res.message,
-            life: 5000,
+            life: 3000,
           });
           coment.oculto = !coment.oculto;
           this.updatingComment = null;
@@ -375,7 +391,7 @@ export class ProductComponent implements OnInit {
               severity: 'error',
               summary: 'Error',
               detail: err.error.message,
-              life: 5000,
+              life: 3000,
             });
           } else {
             this.messageService.add({
@@ -384,7 +400,7 @@ export class ProductComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 5000,
+              life: 3000,
             });
           }
           this.updatingComment = null;
@@ -392,8 +408,22 @@ export class ProductComponent implements OnInit {
       });
   }
 
-  /*async reload(url: string): Promise<boolean> {
-    await this.router.navigateByUrl('.', { skipLocationChange: true });
-    return this.router.navigateByUrl(url);
-  }*/
+  registrarCompra() {
+    this.ipService.getIPAddress().subscribe({
+      next: (resIp) => {
+        Object.assign(resIp, {
+          usuario_id: this.product.usuario.id,
+          publicacion_id: this.product.id,
+        });
+        this.visitaService.createContactoPublicacion(resIp).subscribe();
+      },
+      error: (errIp) => {
+        let payload = {
+          usuario_id: this.product.usuario.id,
+          publicacion_id: this.product.id,
+        };
+        this.visitaService.createContactoPublicacion(payload).subscribe();
+      },
+    });
+  }
 }

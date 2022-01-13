@@ -16,6 +16,9 @@ body {
   font-weight: normal;
   color: #495057;
 }
+html {
+  scroll-behavior: smooth;
+ }
 body {
   margin: 0;
   padding-top: 4.125rem;

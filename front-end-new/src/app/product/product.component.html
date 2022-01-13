@@ -5,7 +5,7 @@
 
 <div *ngIf="!notFound && !unexpected" class="bg-primary">
     <div class="container-sm py-3 py-sm-4 py-lg-5 d-flex gap-3 flex-column flex-lg-row">
-        <div class="custom-card galeria-container bg-lighter p-0">
+        <div class="custom-card bg-lighter p-0">
             <p-galleria [value]="product.fotos" [circular]="true" [showThumbnails]="false" [showItemNavigators]="true"
                 [showIndicators]="true" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
                 <ng-template pTemplate="item" let-item>
@@ -42,7 +42,7 @@
                 <a *ngIf="!owned" class="link-button align-self-sm-center" target="_blank"
                     href="https://wa.me/{{ product.usuario.celular }}?text={{ mensajeContacto }}">
                     <button pButton pRipple type="button" label="CONTACTAR" icon="pi pi-whatsapp"
-                        class="p-button-lg p-button-success button-responsive"></button>
+                        class="p-button-lg p-button-success button-responsive" (click)="registrarCompra()"></button>
                 </a>
                 <div *ngIf="owned" class="link-button align-self-sm-center">
                     <button pButton pRipple type="button" label="CONTACTAR" icon="pi pi-whatsapp"
@@ -83,7 +83,6 @@
                     <button pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned || showNewComment"
                         class="p-button-sm p-button-warning d-none d-sm-block" (click)="showNewComment = true"></button>
                 </div>
-                <!--TODO: Agregar la sección para enviar comentarios-->
                 <div class="d-flex flex-column gap-3">
                     <button *ngIf="!showNewComment" pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned"
                         class="p-button-warning d-sm-none" (click)="showNewComment = true"></button>
@@ -105,25 +104,30 @@
                                 </span>
                                 <small class="ml-2">*Campo no obligatorio</small>
                                 <span class="p-input-filled p-float-label mt-4-5">
-                                    <input pInputText id="celular" type="tel" formControlName="celular" name="celular"
-                                        class="w-100"
-                                        [ngClass]="(submittedCommentForm && commentForm.get('celular')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                    <p-inputMask id="celular" type="tel" formControlName="celular" name="celular"
+                                        mask="9999999999" [autoClear]="false"
+                                        [styleClass]="(submittedCommentForm && commentForm.get('celular')?.invalid) ? 'w-100 ng-dirty ng-invalid' : 'w-100'">
+                                    </p-inputMask>
                                     <label for="celular">Número celular</label>
                                 </span>
                                 <small class="ml-2">*Campo no obligatorio</small>
                                 <span class="mt-4-5 position-relative">
-                                    <label class="comment-punt-label mb-0" for="puntuacion" [ngClass]="(submittedCommentForm && commentForm.get('puntuacion')?.invalid) ? 'ng-dirty ng-invalid' : ''">Puntuación</label>
-                                    <div class="comment-punt" [ngClass]="(submittedCommentForm && commentForm.get('puntuacion')?.invalid) ? 'ng-dirty ng-invalid' : ''">
-                                        <ngb-rating id="puntuacion" formControlName="puntuacion" name="puntuacion" [max]="5">
+                                    <label class="comment-punt-label mb-0" for="puntuacion"
+                                        [ngClass]="(submittedCommentForm && commentForm.get('puntuacion')?.invalid) ? 'ng-dirty ng-invalid' : ''">Puntuación</label>
+                                    <div class="comment-punt"
+                                        [ngClass]="(submittedCommentForm && commentForm.get('puntuacion')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                        <ngb-rating id="puntuacion" formControlName="puntuacion" name="puntuacion"
+                                            [max]="5">
                                             <ng-template let-fill="fill" let-index="index">
-                                                <span class="star new-comment" [class.full]="fill === 100">&#9733;</span>
+                                                <span class="star new-comment"
+                                                    [class.full]="fill === 100">&#9733;</span>
                                             </ng-template>
                                         </ngb-rating>
                                     </div>
                                 </span>
                                 <span class="p-input-filled p-float-label mt-4-5">
-                                    <textarea pInputTextarea id="texto" [rows]="4" formControlName="texto"
-                                        name="texto" class="contact-form-textarea w-100"
+                                    <textarea pInputTextarea id="texto" [rows]="4" formControlName="texto" name="texto"
+                                        class="contact-form-textarea w-100"
                                         [ngClass]="(submittedCommentForm && commentForm.get('texto')?.invalid) ? 'ng-dirty ng-invalid' : ''"></textarea>
                                     <label for="texto">Mensaje</label>
                                 </span>
@@ -177,16 +181,15 @@
                         </ng-template>
                         <ngb-rating [(rate)]="coment.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
                         </ngb-rating>
+                        <p *ngIf="owned" class="mb-1"><span class="font-weight-bold">Celular:</span> {{ coment.celular ?
+                            '+' + coment.celular.substring(0,3) + ' ' + coment.celular.substring(3, 5) + ' ' +
+                            coment.celular.substring(5, 8) + ' ' + coment.celular.substring(8) : 'No ingresado' }}
+                        </p>
                         <p class="mb-0 text-justify">{{ coment.texto }}</p>
                     </div>
+                    <!--TODO: Agregar paginación a los comentarios-->
+                    <!--<p-paginator [rows]="10" [totalRecords]="120" [rowsPerPageOptions]="[10,20,30]"></p-paginator>-->
                 </div>
-                <!--<div *ngIf="comentarios === null" class="d-flex flex-column gap-3">
-                    <button pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned || showNewComment"
-                        class="p-button-warning d-sm-none" (click)="showNewComment = true"></button>
-                    <div class="custom-card text-center">
-                        <h5 class="mb-0">Aún no hay comentarios.</h5>
-                    </div>
-                </div>-->
             </div>
         </div>
         <div class="d-flex flex-column">

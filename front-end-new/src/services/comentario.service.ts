@@ -21,30 +21,30 @@ export class ComentarioService {
     });
   }
 
-  getComentariosByUsuario(userId: number): Observable<any> {
-    return this.http.get(`${_apiUrl}/user/${userId}`);
-  }
-
-  getOwnComentariosByNullPublicacion(userId: number): Observable<any> {
-    return this.http.get(`${_apiUrl}/publ/own/${userId}/null`, {
-      withCredentials: true,
-    });
-  }
-
   getOwnComentariosByPublicacion(
     userId: number,
-    publId: number
+    publId: number | null
   ): Observable<any> {
-    return this.http.get(`${_apiUrl}/publ/own/${userId}/${publId}`, {
-      withCredentials: true,
-    });
+    if (publId === null) {
+      return this.http.get(`${_apiUrl}/publ/own/${userId}/null`, {
+        withCredentials: true,
+      });
+    } else {
+      return this.http.get(`${_apiUrl}/publ/own/${userId}/${publId}`, {
+        withCredentials: true,
+      });
+    }
   }
 
   getComentariosByPublicacion(userId: number, publId: number): Observable<any> {
     return this.http.get(`${_apiUrl}/publ/${userId}/${publId}`);
   }
 
-  updateComentarioOculto(userId: number, comentId: number, data: any): Observable<any> {
+  updateComentarioOculto(
+    userId: number,
+    comentId: number,
+    data: any
+  ): Observable<any> {
     return this.http.patch(`${_apiUrl}/oculto/${userId}/${comentId}`, data, {
       withCredentials: true,
     });

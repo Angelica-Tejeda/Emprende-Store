@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
       celular: new FormControl(null, [
         Validators.required,
         Validators.minLength(10),
-        Validators.pattern('^[+]?[0-9|(|)|-]+'),
+        Validators.pattern('^[0][9][0-9]+'),
       ]),
       asunto: new FormControl(null, Validators.required),
       mensaje: new FormControl(null, Validators.required),
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
           summary: 'Formulario enviado',
           detail:
             'Tu formulario será revisado por uno de nuestros administradores. Pronto recibirás una respuesta a tu correo electrónico.',
-          life: 7000,
+          life: 5000,
         });
         this.sendingContactForm = false;
         this.contactForm.reset();

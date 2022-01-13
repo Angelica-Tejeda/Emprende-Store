@@ -14,13 +14,15 @@ import { CarouselModule } from 'primeng/carousel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { GalleriaModule } from 'primeng/galleria';
+import {InputMaskModule} from 'primeng/inputmask';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
+import { PaginatorModule } from 'primeng/paginator';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -72,9 +74,11 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
     ConfirmDialogModule,
     DropdownModule,
     GalleriaModule,
+    InputMaskModule,
     InputTextareaModule,
     InputTextModule,
     MessagesModule,
+    PaginatorModule,
     PasswordModule,
     RippleModule,
     ToastModule,

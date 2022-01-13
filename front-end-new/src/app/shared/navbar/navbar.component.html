@@ -1,7 +1,10 @@
 <div class="close-navbar-toggler fixed-top" *ngIf="!isMenuCollapsed" (click)="isMenuCollapsed = true"></div>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-darker fixed-top">
-    <a class="navbar-brand mr-0" [routerLink]="['/home']">
+    <a *ngIf="!isHome" class="navbar-brand mr-0" [routerLink]="['/store']">
+        <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
+    </a>
+    <a *ngIf="isHome" class="navbar-brand mr-0" [routerLink]="['/home']" fragment="header">
         <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
     </a>
     <a *ngIf="!isLogin" [ngClass]="{'active': !isMenuCollapsed}">
@@ -39,34 +42,24 @@
                 </a>
             </li>
             <li *ngIf="!isHome" class="nav-item m-auto">
-                <a class="nav-link" [routerLink]="'.'" [ngClass]="{'active': url == '/categories'}"
+                <a class="nav-link" [routerLink]="'/home'"
                     (click)="isMenuCollapsed = true">
-                    <button pButton pRipple type="button" label="CATEGORIAS" class="p-button navbar-button"></button>
+                    <button pButton pRipple type="button" label="SOBRE NOSOTROS" class="p-button navbar-button"></button>
                 </a>
             </li>
             <div *ngIf="isHome" class="dropdown-divider d-lg-none"></div>
             <li *ngIf="isHome" class="nav-item m-auto">
-                <a class="nav-link" href="#sobrenosotros" (click)="isMenuCollapsed = true">
+                <a class="nav-link" [routerLink]="['.']" fragment="sobrenosotros" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="SOBRE NOSOTROS" class="p-button navbar-button"></button>
                 </a>
             </li>
-            <li *ngIf="isHome" class="d-lg-none nav-item m-auto">
-                <a class="nav-link" href="#testimonios" (click)="isMenuCollapsed = true">
+            <li *ngIf="isHome" class="nav-item m-auto">
+                <a class="nav-link" [routerLink]="['.']" fragment="testimonios" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="TESTIMONIOS" class="p-button navbar-button"></button>
                 </a>
             </li>
-            <li *ngIf="isHome" class="d-lg-none nav-item m-auto">
-                <a class="nav-link" href="#contacto" (click)="isMenuCollapsed = true">
-                    <button pButton pRipple type="button" label="CONTACTO" class="p-button navbar-button"></button>
-                </a>
-            </li>
-            <li *ngIf="isHome" class="d-none d-lg-block nav-item m-auto">
-                <a class="nav-link" href="#testimonios" (click)="isMenuCollapsed = true">
-                    <button pButton pRipple type="button" label="TESTIMONIOS" class="p-button navbar-button"></button>
-                </a>
-            </li>
-            <li *ngIf="isHome" class="d-none d-lg-block nav-item m-auto">
-                <a class="nav-link" href="#contacto" (click)="isMenuCollapsed = true">
+            <li *ngIf="isHome" class="nav-item m-auto">
+                <a class="nav-link" [routerLink]="['.']" fragment="contacto" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="CONTACTO" class="p-button navbar-button"></button>
                 </a>
             </li>

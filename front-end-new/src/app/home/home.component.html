@@ -1,6 +1,6 @@
 <app-navbar [isHome]="true"></app-navbar>
 
-<header class="bg-primary">
+<header id="header" class="bg-primary">
     <div class="container-sm text-center py-3 py-sm-4 py-lg-5 d-flex flex-column gap-3 flex-lg-row">
         <div>
             <video class="d-block mw-100" controls loop oncanplay="this.volume = 0.2; this.muted = true; this.play();">
@@ -185,9 +185,10 @@
                             <label for="email">E-mail</label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
-                            <input pInputText id="celular" type="tel" formControlName="celular" name="celular"
-                                class="w-100"
-                                [ngClass]="(submittedContactForm && contactForm.get('celular')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                            <p-inputMask id="celular" type="tel" formControlName="celular" name="celular"
+                                mask="9999999999" [autoClear]="false"
+                                [styleClass]="(submittedContactForm && contactForm.get('celular')?.invalid) ? 'w-100 ng-dirty ng-invalid' : 'w-100'">
+                            </p-inputMask>
                             <label for="celular">Número celular</label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5 text-left" [style]="{'height': '50px'}">
