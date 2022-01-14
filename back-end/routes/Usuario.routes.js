@@ -5,11 +5,14 @@ const auth = require("../middlwares/auth")
 const owned = require("../middlwares/owned")
 const admin = require("../middlwares/admin")
 
+//Agregar ruta y controller para creación de usuario
+
 router.get("/all", auth, admin, controller.getAllUsuarios);
 router.get("/admin", auth, admin, controller.getUsuariosAdmin);
 router.get("/own/:userId", auth, owned, controller.getOwnUsuarioById);
+router.get("/min/:userId", auth, owned, controller.getMinUsuarioById);
 router.get("/:userId", controller.getUsuarioById);
-router.get("/", controller.getUsuarios);
+//router.get("/", controller.getUsuarios);
 
 router.patch("/activo/:userId", auth, admin, controller.updateUsuarioActivo);
 router.patch("/password/:userId", auth, owned, controller.updateUsuarioPassword);

@@ -25,6 +25,10 @@ export class PublicacionService {
     });
   }
 
+  getPublicacionesBySearch(search: string): Observable<any> {
+    return this.http.get(`${_apiUrl}/search/${search}`);
+  }
+
   getOwnPublicacionById(userId: number, publId: number): Observable<any> {
     return this.http.get(`${_apiUrl}/own/${userId}/${publId}`, {
       withCredentials: true,
@@ -43,9 +47,9 @@ export class PublicacionService {
     return this.http.get(`${_apiUrl}/${publId}`);
   }
 
-  getPublicaciones(): Observable<any> {
+  /*getPublicaciones(): Observable<any> {
     return this.http.get(`${_apiUrl}`);
-  }
+  }*/
 
   updatePublicacionFoto(
     userId: number,

@@ -13,10 +13,11 @@ router.get("/categ", controller.getCategorias);
 router.get("/all", auth, admin, controller.getAllPublicaciones);
 router.get("/own/user/:userId", auth, emprend, owned, controller.getOwnPublicacionesByUsuario);
 router.get("/own/:userId/:publId", auth, emprend, owned, controller.getOwnPublicacionById);
-router.get("/descuento", controller.getDiscountPublicaciones);
 router.get("/user/:userId", controller.getPublicacionesByUsuario);
+router.get("/search/:search", controller.getPublicacionesBySearch);
+router.get("/descuento", controller.getDiscountPublicaciones);
 router.get("/:publId", controller.getPublicacionById);
-router.get("/", controller.getPublicaciones);
+//router.get("/", controller.getPublicaciones);
 
 router.patch("/foto/:userId/:publId", auth, emprend, owned, controller.updatePublicacionFoto);
 router.patch("/activo/:userId/:publId", auth, emprend, owned, controller.updatePublicacionActivo);

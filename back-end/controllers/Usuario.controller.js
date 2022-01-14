@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const multer = require("multer");
 const fs = require("fs");
 
+//TODO: Revisar los endpoint que devuelven más datos de los necesarios
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./media/" + req.body.type + "/");
@@ -122,6 +124,36 @@ exports.getOwnUsuarioById = async (req, res) => {
         });
 };
 
+exports.getMinUsuarioById = async (req, res) => {
+    Usuario.findByPk(req.params.userId, {
+        attributes: ["id", "nombre", "foto_perfil", "activo"],
+    })
+        .then((usuario) => {
+            if (usuario) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Usuario obtenido con éxito.",
+                    result: usuario,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Usuario no encontrado.",
+                    result: usuario,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
+            });
+        });
+};
+
 exports.getUsuarioById = async (req, res) => {
     Usuario.findOne({
         where: { id: req.params.userId, rol: false, activo: true },
@@ -153,7 +185,7 @@ exports.getUsuarioById = async (req, res) => {
         });
 };
 
-exports.getUsuarios = async (req, res) => {
+/*exports.getUsuarios = async (req, res) => {
     Usuario.findAndCountAll({
         where: { rol: false, activo: true },
         attributes: { exclude: ["password"] },
@@ -182,7 +214,7 @@ exports.getUsuarios = async (req, res) => {
                 error: err,
             });
         });
-};
+};*/
 
 exports.updateUsuarioActivo = async (req, res) => {
     Usuario.update(

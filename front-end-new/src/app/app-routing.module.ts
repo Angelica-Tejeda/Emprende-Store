@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
+import { FinanceComponent } from './finance/finance.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ManagementComponent } from './management/management.component';
@@ -12,6 +13,7 @@ import { StoreComponent } from './store/store.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'finance', component: FinanceComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'management', component: ManagementComponent },
@@ -22,10 +24,10 @@ const routes: Routes = [
   { path: 'search/:busqueda', component: SearchComponent },
   { path: '**', component: NotFoundPageComponent },
 ];
+
 const routerOptions: ExtraOptions = {
   anchorScrolling: "enabled",
   scrollOffset: [0, 66]
-  //scrollPositionRestoration: "enabled"
 };
 
 @NgModule({

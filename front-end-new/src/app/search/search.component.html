@@ -1,9 +1,9 @@
 <app-navbar [isSearch]="true"></app-navbar>
 
 <div class="bg-lighter">
-    <div class="container-sm py-3 py-sm-4 py-lg-5">
+    <div class="container-sm container-full-height py-3 py-sm-4 py-lg-5">
         <div class="d-flex flex-wrap gap-3 justify-content-around">
-            <div class="custom-card c-pointer" *ngFor="let product of resultados.result.rows">
+            <div class="custom-card c-pointer" *ngFor="let product of resultados">
                 <p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="true"
                     [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true"
                     [showIndicatorsOnItem]="true">

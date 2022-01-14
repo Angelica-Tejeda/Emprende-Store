@@ -6,7 +6,7 @@ class VisitaPerfil extends Model {}
 VisitaPerfil.init(
     {
         id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.BIGINT,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,

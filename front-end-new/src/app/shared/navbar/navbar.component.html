@@ -1,10 +1,13 @@
 <div class="close-navbar-toggler fixed-top" *ngIf="!isMenuCollapsed" (click)="isMenuCollapsed = true"></div>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-darker fixed-top">
-    <a *ngIf="!isHome" class="navbar-brand mr-0" [routerLink]="['/store']">
+    <a *ngIf="!isHome && !isLogin" class="navbar-brand mr-0" [routerLink]="['/store']">
         <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
     </a>
     <a *ngIf="isHome" class="navbar-brand mr-0" [routerLink]="['/home']" fragment="header">
+        <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
+    </a>
+    <a *ngIf="isLogin" class="navbar-brand mr-0" [routerLink]="['/home']">
         <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
     </a>
     <a *ngIf="!isLogin" [ngClass]="{'active': !isMenuCollapsed}">
@@ -92,15 +95,15 @@
                         <button pButton pRipple type="button" label="Mi emprendimiento"
                             class="p-button navbar-button my-1"></button>
                     </a>
-                    <a ngbDropdownItem [routerLink]="'.'" [ngClass]="{'active': url == '/finances'}"
+                    <a ngbDropdownItem [routerLink]="'/finance'" [ngClass]="{'active': url == '/finance'}"
                         (click)="isMenuCollapsed = true">
                         <button pButton pRipple type="button" label="Finanzas"
                             class="p-button navbar-button my-1"></button>
                     </a>
-                    <a ngbDropdownItem [routerLink]="'.'" [ngClass]="{'active': url == '/forum'}"
+                    <!--<a ngbDropdownItem [routerLink]="'.'" [ngClass]="{'active': url == '/forum'}"
                         (click)="isMenuCollapsed = true">
                         <button pButton pRipple type="button" label="Foro" class="p-button navbar-button my-1"></button>
-                    </a>
+                    </a>-->
                     <div class="dropdown-divider"></div>
                     <a ngbDropdownItem (click)="cerrarSesion()">
                         <button pButton pRipple type="button" label="Cerrar sesión"
@@ -122,17 +125,17 @@
                 </a>
             </li>
             <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
-                <a class="nav-link" [routerLink]="'.'" [ngClass]="{'active': url == '/finances'}"
+                <a class="nav-link" [routerLink]="'/finance'" [ngClass]="{'active': url == '/finance'}"
                     (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="FINANZAS" class="p-button navbar-button"></button>
                 </a>
             </li>
-            <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
+            <!--<li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
                 <a class="nav-link" [routerLink]="'.'" [ngClass]="{'active': url == '/forum'}"
                     (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="FORO" class="p-button navbar-button"></button>
                 </a>
-            </li>
+            </li>-->
             <div *ngIf="isLogged" class="dropdown-divider d-lg-none"></div>
             <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
                 <a class="nav-link" [routerLink]="'.'" (click)="cerrarSesion(); isMenuCollapsed = true">

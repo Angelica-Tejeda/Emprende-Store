@@ -36,6 +36,7 @@ app.use(
 // Rutas
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/comentario", require("./routes/Comentario.routes"));
+app.use("/api/movimiento", require("./routes/Movimiento.routes"));
 app.use("/api/publicacion", require("./routes/Publicacion.routes"));
 app.use("/api/usuario", require("./routes/Usuario.routes"));
 app.use("/api/visita", require("./routes/Visita.routes"));

@@ -2,8 +2,8 @@ const sequelize = require("../db");
 const Sequelize = require("sequelize");
 const Model = Sequelize.Model;
 
-class VisitaPublicacion extends Model {}
-VisitaPublicacion.init(
+class Movimiento extends Model {}
+Movimiento.init(
     {
         id: {
             type: Sequelize.BIGINT,
@@ -19,27 +19,31 @@ VisitaPublicacion.init(
                 key: "id",
             },
         },
-        publicacion_id: {
-            type: Sequelize.INTEGER,
+        fecha: {
+            type: Sequelize.DATE,
             allowNull: false,
-            references: {
-                model: "publicacion",
-                key: "id",
-            },
         },
-        ip: {
-            type: Sequelize.STRING(15),
+        detalle: {
+            type: Sequelize.STRING(127),
             allowNull: true,
             validate: {
-                isIP: true,
+                len: [3, 120],
             },
         },
-        contacto: {
+        valor: {
+            type: Sequelize.DECIMAL(8, 2),
+            allowNull: false,
+        },
+        ingreso: {
             type: Sequelize.BOOLEAN,
             allowNull: false,
-            defaultValue: false,
         },
-        fecha: {
+        creado: {
+            type: Sequelize.DATE,
+            allowNull: false,
+            defaultValue: sequelize.literal("now()"),
+        },
+        modificado: {
             type: Sequelize.DATE,
             allowNull: false,
             defaultValue: sequelize.literal("now()"),
@@ -47,11 +51,11 @@ VisitaPublicacion.init(
     },
     {
         sequelize,
-        modelName: "visita_publicacion",
+        modelName: "movimiento",
         freezeTableName: true,
         timestamps: false,
     }
 );
 
-VisitaPublicacion.associate = (db) => {};
-module.exports = VisitaPublicacion;
+Movimiento.associate = (db) => {};
+module.exports = Movimiento;

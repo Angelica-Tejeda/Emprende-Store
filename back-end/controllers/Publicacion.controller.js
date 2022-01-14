@@ -1,7 +1,10 @@
 const Publicacion = require("../database/models/Publicacion");
 const Usuario = require("../database/models/Usuario");
+const { Op } = require("sequelize");
 const multer = require("multer");
 const fs = require("fs");
+
+//TODO: Revisar los endpoint que devuelven más datos de los necesarios
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -126,7 +129,7 @@ exports.getAllPublicaciones = async (req, res) => {
                 for (publicacion of publicaciones.rows) {
                     let categ = [];
                     for (cat of publicacion.categoria) {
-                        categ.push(cat.split("-")[1]);
+                        categ.push(cat.split(".")[1]);
                     }
                     publicacion.categoria = categ;
                 }
@@ -180,6 +183,13 @@ exports.getOwnPublicacionesByUsuario = async (req, res) => {
     })
         .then((publicaciones) => {
             if (publicaciones.count > 0) {
+                for (publicacion of publicaciones.rows) {
+                    let categ = [];
+                    for (cat of publicacion.categoria) {
+                        categ.push(cat.split(".")[1]);
+                    }
+                    publicacion.categoria = categ;
+                }
                 res.status(200).json({
                     status: "success",
                     message: "Publicaciones obtenidas con éxito.",
@@ -205,7 +215,63 @@ exports.getOwnPublicacionesByUsuario = async (req, res) => {
 };
 
 exports.getOwnPublicacionById = async (req, res) => {
-    Publicacion.findByPk(req.params.publId, {
+    Publicacion.findOne({
+        attributes: { exclude: ["usuario_id"] },
+        include: [
+            {
+                model: Usuario,
+                attributes: [
+                    "id",
+                    "nombre",
+                    "apellido",
+                    "negocio",
+                    "celular",
+                    "activo",
+                ],
+                where: {
+                    activo: true,
+                },
+            },
+        ],
+        where: {
+            id: req.params.publId,
+            activo: true,
+        },
+    })
+        .then((publicacion) => {
+            if (publicacion && publicacion.usuario.id == req.params.userId) {
+                let categ = [];
+                for (cat of publicacion.categoria) {
+                    categ.push(cat.split(".")[1]);
+                }
+                publicacion.categoria = categ;
+                res.status(200).json({
+                    status: "success",
+                    message: "Publicación obtenida con éxito.",
+                    result: publicacion,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Publicación no encontrada.",
+                    result: null,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
+            });
+        });
+};
+
+exports.getPublicacionesByUsuario = async (req, res) => {
+    Publicacion.findAndCountAll({
+        where: { usuario_id: req.params.userId, activo: true },
         attributes: { exclude: ["usuario_id"] },
         include: [
             {
@@ -227,18 +293,70 @@ exports.getOwnPublicacionById = async (req, res) => {
             },
         ],
     })
-        .then((publicacion) => {
-            if (publicacion && publicacion.usuario.id == req.params.userId) {
+        .then((publicaciones) => {
+            if (publicaciones.count > 0) {
+                for (publicacion of publicaciones.rows) {
+                    let categ = [];
+                    for (cat of publicacion.categoria) {
+                        categ.push(cat.split(".")[1]);
+                    }
+                    publicacion.categoria = categ;
+                }
                 res.status(200).json({
                     status: "success",
-                    message: "Publicación obtenida con éxito.",
-                    result: publicacion,
+                    message: "Publicaciones obtenidas con éxito.",
+                    result: publicaciones,
                 });
             } else {
                 res.status(404).json({
                     status: "error",
-                    message: "Publicación no encontrada.",
-                    result: null,
+                    message: "Publicaciones no encontradas.",
+                    result: publicaciones,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
+            });
+        });
+};
+
+exports.getPublicacionesBySearch = async (req, res) => {
+    Publicacion.findAndCountAll({
+        where: {
+            activo: true,
+            titulo: {
+                [Op.iLike]: "%" + req.params.search + "%",
+            },
+        },
+        attributes: ["id", "fotos", "precio", "descuento", "titulo"],
+        include: [
+            {
+                model: Usuario,
+                attributes: ["nombre", "apellido", "negocio"],
+                where: {
+                    activo: true,
+                },
+            },
+        ],
+    })
+        .then((publicaciones) => {
+            if (publicaciones.count > 0) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Publicaciones obtenidas con éxito.",
+                    result: publicaciones,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Publicaciones no encontradas.",
+                    result: publicaciones,
                 });
             }
         })
@@ -291,6 +409,13 @@ exports.getDiscountPublicaciones = async (req, res) => {
             });
             const nPubs = pubsFinal.length;
             if (nPubs > 0) {
+                for (publicacion of publicaciones.rows) {
+                    let categ = [];
+                    for (cat of publicacion.categoria) {
+                        categ.push(cat.split(".")[1]);
+                    }
+                    publicacion.categoria = categ;
+                }
                 res.status(200).json({
                     status: "success",
                     message: "Publicaciones obtenidas con éxito.",
@@ -307,56 +432,6 @@ exports.getDiscountPublicaciones = async (req, res) => {
                         count: nPubs,
                         rows: pubsFinal,
                     },
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message:
-                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
-                error: err,
-            });
-        });
-};
-
-exports.getPublicacionesByUsuario = async (req, res) => {
-    Publicacion.findAndCountAll({
-        where: { usuario_id: req.params.userId, activo: true },
-        attributes: { exclude: ["usuario_id"] },
-        include: [
-            {
-                model: Usuario,
-                attributes: [
-                    "id",
-                    "nombre",
-                    "apellido",
-                    "negocio",
-                    "foto_perfil",
-                    "celular",
-                    "facebook",
-                    "instagram",
-                    "twitter",
-                    "tiktok",
-                    "linkedin",
-                    "activo",
-                ],
-            },
-        ],
-    })
-        .then((publicaciones) => {
-            if (publicaciones.count > 0) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Publicaciones obtenidas con éxito.",
-                    result: publicaciones,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Publicaciones no encontradas.",
-                    result: publicaciones,
                 });
             }
         })
@@ -372,8 +447,10 @@ exports.getPublicacionesByUsuario = async (req, res) => {
 };
 
 exports.getPublicacionById = async (req, res) => {
-    Publicacion.findByPk(req.params.publId, {
-        attributes: { exclude: ["usuario_id"] },
+    Publicacion.findOne({
+        attributes: {
+            exclude: ["usuario_id", "activo", "creado", "modificado"],
+        },
         include: [
             {
                 model: Usuario,
@@ -382,24 +459,26 @@ exports.getPublicacionById = async (req, res) => {
                     "nombre",
                     "apellido",
                     "negocio",
-                    "foto_perfil",
                     "celular",
-                    "facebook",
-                    "instagram",
-                    "twitter",
-                    "tiktok",
-                    "linkedin",
                     "activo",
                 ],
+                where: {
+                    activo: true,
+                },
             },
         ],
+        where: {
+            id: req.params.publId,
+            activo: true,
+        },
     })
         .then((publicacion) => {
-            if (
-                publicacion &&
-                publicacion.activo &&
-                publicacion.usuario.activo
-            ) {
+            if (publicacion) {
+                let categ = [];
+                for (cat of publicacion.categoria) {
+                    categ.push(cat.split(".")[1]);
+                }
+                publicacion.categoria = categ;
                 res.status(200).json({
                     status: "success",
                     message: "Publicación obtenida con éxito.",
@@ -424,7 +503,7 @@ exports.getPublicacionById = async (req, res) => {
         });
 };
 
-exports.getPublicaciones = async (req, res) => {
+/*exports.getPublicaciones = async (req, res) => {
     Publicacion.findAll({
         where: { activo: true },
         attributes: { exclude: ["usuario_id"] },
@@ -485,7 +564,7 @@ exports.getPublicaciones = async (req, res) => {
                 error: err,
             });
         });
-};
+};*/
 
 exports.updatePublicacionFoto = async (req, res) => {
     dir = "media/product/" + req.user.id;
@@ -723,11 +802,19 @@ exports.updatePublicacion = async (req, res) => {
     let active = req.body.activo;
     let activeChange = false;
     let message = "La publicación se ha actualizado con éxito.";
-    if (req.body.titulo === null || req.body.descripcion === null || req.body.servicio === null || req.body.categoria === null || req.body.categoria === [] || req.body.fotos === [] || req.body.precio === null) {
+    if (
+        req.body.titulo === null ||
+        req.body.descripcion === null ||
+        req.body.servicio === null ||
+        req.body.categoria === null ||
+        req.body.categoria === [] ||
+        req.body.fotos === [] ||
+        req.body.precio === null
+    ) {
         if (active) {
             activeChange = true;
-            message = "La publicación se ha actualizado con éxito pero ha sido marcada como desactivada debido a los cambios realizados. Para poder activarla nuevamente debe llenar los campos requeridos.";
-
+            message =
+                "La publicación se ha actualizado con éxito pero ha sido marcada como desactivada debido a los cambios realizados. Para poder activarla nuevamente debe llenar los campos requeridos.";
         }
     } else if (req.body.servicio) {
         for (cat of req.body.categoria) {

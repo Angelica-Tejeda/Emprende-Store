@@ -14,7 +14,7 @@ import { CarouselModule } from 'primeng/carousel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { GalleriaModule } from 'primeng/galleria';
-import {InputMaskModule} from 'primeng/inputmask';
+import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
@@ -39,6 +39,7 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
 import { NotAllowedComponent } from './shared/not-allowed/not-allowed.component';
 import { UnexpectedErrorComponent } from './shared/unexpected-error/unexpected-error.component';
 import { ProductEditComponent } from './product-edit/product-edit.component';
+import { FinanceComponent } from './finance/finance.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
     NotAllowedComponent,
     UnexpectedErrorComponent,
     ProductEditComponent,
+    FinanceComponent,
   ],
   imports: [
     AppRoutingModule,

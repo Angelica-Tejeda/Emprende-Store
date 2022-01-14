@@ -15,13 +15,17 @@ export class UsuarioService {
     return this.http.get(`${_apiUrl}/own/${userId}`, { withCredentials: true });
   }
 
+  getMinUsuarioById(userId: number): Observable<any> {
+    return this.http.get(`${_apiUrl}/min/${userId}`, { withCredentials: true });
+  }
+
   getUsuarioById(userId: number): Observable<any> {
     return this.http.get(`${_apiUrl}/${userId}`);
   }
 
-  getUsuarios(): Observable<any> {
+  /*getUsuarios(): Observable<any> {
     return this.http.get(`${_apiUrl}/`);
-  }
+  }*/
 
   updateUsuarioPassword(userId: number, data: any): Observable<any> {
     return this.http.patch(`${_apiUrl}/password/${userId}`, data, {
