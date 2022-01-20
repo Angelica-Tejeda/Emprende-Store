@@ -2,23 +2,8 @@
 
 <div class="bg-lighter">
     <div class="container-sm container-full-height py-3 py-sm-4 py-lg-5">
-        <div class="d-flex flex-wrap gap-3 justify-content-around">
-            <div class="custom-card c-pointer" *ngFor="let product of resultados">
-                <p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="true"
-                    [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true"
-                    [showIndicatorsOnItem]="true">
-                    <ng-template pTemplate="item" let-item>
-                        <div class="image-galleria-template d-flex justify-content-center align-items-center">
-                            <img [src]="mediaUrl + item" [routerLink]="['/product', product.id]" />
-                        </div>
-                    </ng-template>
-                </p-galleria>
-                <div [routerLink]="['/product',product.id]" class="c-pointer">
-                    <h2 class="precio mt-4">$ {{product.precio}}</h2>
-                    <h5 class="titulo">{{product.titulo}}</h5>
-                    <small>{{product.usuario.nombre}} {{product.usuario.apellido}}</small>
-                </div>
-            </div>
+        <div class="d-flex flex-wrap gap-3 justify-content-between align-items-stretch">
+            <app-product-card *ngFor="let product of resultados" [product]="product"></app-product-card>
         </div>
     </div>
 </div>

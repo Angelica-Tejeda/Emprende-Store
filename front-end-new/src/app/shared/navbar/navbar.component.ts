@@ -72,18 +72,20 @@ export class NavbarComponent implements OnInit {
                 'Ha ocurrido un error inesperado. Por favor, inicie sesión nuevamente.',
               life: 3000,
             });
-            this.router.navigate(['/login'], {
-              queryParams: { redirect: true },
-            }).then(() => {
-              this.cookieService.delete('usuario_act');
-              this.cookieService.delete('usuario_rol');
-              if (
-                this.cookieService.check('usuario_id') &&
-                this.cookieService.get('usuario_id') === null
-              ) {
-                this.cookieService.delete('usuario_id');
-              }
-            });
+            this.router
+              .navigate(['/login'], {
+                queryParams: { redirect: true },
+              })
+              .then(() => {
+                this.cookieService.delete('usuario_act');
+                this.cookieService.delete('usuario_rol');
+                if (
+                  this.cookieService.check('usuario_id') &&
+                  this.cookieService.get('usuario_id') === null
+                ) {
+                  this.cookieService.delete('usuario_id');
+                }
+              });
           },
         });
     }
@@ -136,9 +138,20 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  redirectTo(uri: string, params: any) {
-    this.router
-      .navigateByUrl('/', { skipLocationChange: true })
-      .then(() => this.router.navigate([uri, params]));
+  redirectTo(uri: string, params?: any, fragment?: string) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      if (fragment) {
+        this.router.navigate([uri, params], { fragment: fragment });
+      } else if (params) {
+        this.router.navigate([uri, params]);
+      } else {
+        this.router.navigate([uri]);
+      }
+    });
+  }
+  redirectToFragment(uri: string, fragment: string) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([uri], { fragment: fragment });
+    });
   }
 }

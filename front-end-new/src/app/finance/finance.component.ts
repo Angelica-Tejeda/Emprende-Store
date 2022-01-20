@@ -7,6 +7,9 @@ import { MovimientoService } from 'src/services/movimiento.service';
   styleUrls: ['./finance.component.css'],
 })
 export class FinanceComponent implements OnInit {
+  total: number = 0;
+  ingresos: number = 0;
+  egresos: number = 0;
   constructor(private movimientoService: MovimientoService) {}
 
   ngOnInit(): void {}

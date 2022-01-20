@@ -5,7 +5,7 @@
 
 <div *ngIf="!notFound && !unexpected" class="bg-primary">
     <div class="container-sm py-3 py-sm-4 py-lg-5 d-flex gap-3 flex-column flex-lg-row">
-        <div class="custom-card bg-lighter p-0">
+        <div class="custom-card galeria-container bg-lighter p-0">
             <p-galleria [value]="product.fotos" [circular]="true" [showThumbnails]="false" [showItemNavigators]="true"
                 [showIndicators]="true" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
                 <ng-template pTemplate="item" let-item>
@@ -15,13 +15,13 @@
                 </ng-template>
             </p-galleria>
         </div>
-        <div class="custom-card w-100">
+        <div class="custom-card product-details">
             <div class="d-flex flex-column justify-content-around h-100">
                 <div>
-                    <a *ngIf="product.usuario.negocio !== null" [routerLink]="['/profile', product.usuario.id]">
+                    <a *ngIf="product.usuario.negocio" [routerLink]="['/profile', product.usuario.id]">
                         <small class="small-link">{{ product.usuario.negocio }}</small>
                     </a>
-                    <a *ngIf="product.usuario.negocio === null" href="">
+                    <a *ngIf="!product.usuario.negocio" [routerLink]="['/profile', product.usuario.id]">
                         <small class="small-link">{{ product.usuario.nombre }} {{ product.usuario.apellido }}</small>
                     </a>
                     <h3>{{ product.titulo }}</h3>
@@ -63,7 +63,7 @@
     </div>
 </div>
 <div *ngIf="!notFound && !unexpected" class="bg-lighter">
-    <div class="container-sm d-flex gap-5 flex-column flex-lg-row">
+    <div class="container-sm d-flex gap-lg-5 flex-column flex-lg-row">
         <div>
             <div class="product-info py-3 py-sm-4 py-lg-5">
                 <h2>Descripción</h2>
@@ -195,44 +195,14 @@
         <div class="d-flex flex-column">
             <div class="py-3 py-sm-4 py-lg-5 relacionados">
                 <h3>Más del vendedor</h3>
-                <div class="d-flex flex-column gap-3">
-                    <div class="custom-card c-pointer" *ngFor="let product of productosVendedor">
-                        <p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="true"
-                            [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true"
-                            [showIndicatorsOnItem]="true">
-                            <ng-template pTemplate="item" let-item>
-                                <div class="image-galleria-template d-flex justify-content-center align-items-center">
-                                    <img [src]="mediaUrl + item" [routerLink]="['/product',product.id]" />
-                                </div>
-                            </ng-template>
-                        </p-galleria>
-                        <div [routerLink]="['/product',product.id]" class="c-pointer">
-                            <h2 class="precio mt-4">$ {{product.precio}}</h2>
-                            <h5 class="titulo">{{product.titulo}}</h5>
-                            <small>{{product.usuario.nombre}} {{product.usuario.apellido}}</small>
-                        </div>
-                    </div>
+                <div class="d-flex flex-wrap gap-3 justify-content-between align-items-stretch">
+                    <app-product-card *ngFor="let product of productosVendedor" [product]="product" [related]="true"></app-product-card>
                 </div>
             </div>
             <div class="pb-3 pb-sm-4 pb-lg-5 relacionados">
                 <h3>Relacionado</h3>
-                <div class="d-flex flex-column gap-3">
-                    <div class="custom-card c-pointer" *ngFor="let product of productosRelacionados">
-                        <p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="true"
-                            [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true"
-                            [showIndicatorsOnItem]="true">
-                            <ng-template pTemplate="item" let-item>
-                                <div class="image-galleria-template d-flex justify-content-center align-items-center">
-                                    <img [src]="mediaUrl + item" [routerLink]="['/product',product.id]" />
-                                </div>
-                            </ng-template>
-                        </p-galleria>
-                        <div [routerLink]="['/product',product.id]" class="c-pointer">
-                            <h2 class="precio mt-4">$ {{product.precio}}</h2>
-                            <h5 class="titulo">{{product.titulo}}</h5>
-                            <small>{{product.usuario.nombre}} {{product.usuario.apellido}}</small>
-                        </div>
-                    </div>
+                <div class="d-flex flex-wrap gap-3 justify-content-between align-items-stretch">
+                    <app-product-card *ngFor="let product of productosRelacionados" [product]="product" [related]="true"></app-product-card>
                 </div>
             </div>
         </div>

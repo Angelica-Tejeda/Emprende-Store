@@ -44,9 +44,55 @@ exports.createMovimiento = async (req, res) => {
         });
 };
 
-exports.getMovimientosByUser = async(req, res) => {
-//TODO: hacer los endpoints para obtener los datos
-}
+exports.getMovimientosByUser = async (req, res) => {
+    Movimiento.findAndCountAll({
+        attributes: { exclude: ["id", "usuario_id", "creado", "modificado"] },
+        where: {
+            usuario_id: req.user.id,
+        },
+    })
+        .then((movimientos) => {
+            if (movimientos.count > 0) {
+                let total = 0;
+                let totalIngresos = 0;
+                let totalEgresos = 0;
+                for (mov of movimientos.rows) {
+                    total += parseFloat(mov.valor);
+                    if (mov.valor > 0) {
+                        totalIngresos += parseFloat(mov.valor);
+                    } else {
+                        totalEgresos += parseFloat(mov.valor);
+                    }
+                }
+                Object.assign(movimientos, {
+                    total: total.toFixed(2),
+                    ingresos: totalIngresos.toFixed(2),
+                    egresos: totalEgresos.toFixed(2),
+                });
+                res.status(200).json({
+                    status: "success",
+                    message: "Movimientos obtenidos con éxito.",
+                    result: movimientos,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Movimientos no encontrados.",
+                    result: movimientos,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
+            });
+        });
+    //TODO: hacer los endpoints para obtener los datos
+};
 
 exports.updateMovimiento = async (req, res) => {
     Movimiento.update(
@@ -118,7 +164,8 @@ exports.deleteMovimiento = async (req, res) => {
             } else {
                 res.status(403).json({
                     status: "error",
-                    message: "EL movimiento no se ha podido eliminar o ya no existe.",
+                    message:
+                        "EL movimiento no se ha podido eliminar o ya no existe.",
                     result: result,
                 });
             }

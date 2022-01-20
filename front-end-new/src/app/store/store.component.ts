@@ -9,6 +9,8 @@ import { environment } from '../../environments/environment';
 })
 export class StoreComponent implements OnInit {
   mediaUrl: string = environment.mediaURL;
+  categProductos = [];
+  categServicios = [];
   productosDestacados: any = [
     {
       id: 7,
@@ -400,7 +402,14 @@ export class StoreComponent implements OnInit {
       },
     },
   ];
-  constructor(publicacionService: PublicacionService) {}
+  constructor(private publicacionService: PublicacionService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.publicacionService.getCategorias().subscribe({
+      next: (res) => {
+        this.categProductos = res.result.categoriasProductos;
+        this.categServicios = res.result.categoriasServicios;
+      }
+    })
+  }
 }

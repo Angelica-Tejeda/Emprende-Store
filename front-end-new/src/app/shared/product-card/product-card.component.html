@@ -1,0 +1,18 @@
+<p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="product.fotos.length > 1 ? true : false"
+    [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
+    <ng-template pTemplate="item" let-item>
+        <a [routerLink]="['/product', product.id]" class="w-100">
+            <div class="image-galleria-template d-flex justify-content-center align-items-center" [ngClass]="related ? 'related-content' : ''">
+                <img [src]="mediaUrl + item" />
+            </div>
+        </a>
+    </ng-template>
+</p-galleria>
+<a [routerLink]="['/product', product.id]">
+    <div class="custom-card p-4 d-flex flex-column" [ngClass]="related ? 'related-content' : ''">
+        <h2>$ {{product.precio}}</h2>
+        <h5 class="h-100">{{product.titulo}}</h5>
+        <small *ngIf="product.usuario.negocio">{{product.usuario.negocio}}</small>
+        <small *ngIf="!product.usuario.negocio">{{product.usuario.nombre}} {{product.usuario.apellido}}</small>
+    </div>
+</a>

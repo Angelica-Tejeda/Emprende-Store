@@ -40,6 +40,7 @@ import { NotAllowedComponent } from './shared/not-allowed/not-allowed.component'
 import { UnexpectedErrorComponent } from './shared/unexpected-error/unexpected-error.component';
 import { ProductEditComponent } from './product-edit/product-edit.component';
 import { FinanceComponent } from './finance/finance.component';
+import { ProductCardComponent } from './shared/product-card/product-card.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { FinanceComponent } from './finance/finance.component';
     UnexpectedErrorComponent,
     ProductEditComponent,
     FinanceComponent,
+    ProductCardComponent,
   ],
   imports: [
     AppRoutingModule,

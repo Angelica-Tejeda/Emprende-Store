@@ -123,6 +123,10 @@ a.active > .p-button.navbar-button {
   background-color: #2d2f60;
 }
 
+.dropdown-item.active {
+  background-color: inherit;
+}
+
 .navbar-search-form {
   padding: 0 0.5rem;
   margin: 0.25rem auto;

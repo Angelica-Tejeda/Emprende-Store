@@ -17,9 +17,11 @@ export class MovimientoService {
     });
   }
 
-  /*getMovimientosByUser(): Observable<any> {
-
-  }*/
+  getMovimientosByUser(userId: number): Observable<any> {
+    return this.http.get(`${_apiUrl}/${userId}`, {
+      withCredentials: true,
+    });
+  }
 
   updateMovimiento(
     userId: number,
@@ -31,10 +33,7 @@ export class MovimientoService {
     });
   }
 
-  deleteMovimiento(
-    userId: number,
-    movimId: number
-  ): Observable<any> {
+  deleteMovimiento(userId: number, movimId: number): Observable<any> {
     return this.http.delete(`${_apiUrl}/${userId}/${movimId}`, {
       withCredentials: true,
     });
