@@ -1,0 +1,12 @@
+label{
+    width: 4.75rem;
+}
+.title{
+    font-size: 3rem;
+}
+.balance{
+    font-size: 4.5rem;
+}
+.ingresos, .egresos{
+    font-size: 2rem;
+}
