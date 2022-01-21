@@ -46,7 +46,7 @@ exports.createMovimiento = async (req, res) => {
 
 exports.getMovimientosByUser = async (req, res) => {
     Movimiento.findAndCountAll({
-        attributes: { exclude: ["id", "usuario_id", "creado", "modificado"] },
+        attributes: { exclude: ["usuario_id", "creado", "modificado"] },
         where: {
             usuario_id: req.user.id,
         },

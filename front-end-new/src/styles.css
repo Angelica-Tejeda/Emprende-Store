@@ -288,3 +288,14 @@ app-product-card .p-galleria .p-galleria-item-nav .p-galleria-item-prev-icon,
 app-product-card .p-galleria .p-galleria-item-nav .p-galleria-item-next-icon {
   font-size: 1rem;
 }
+
+.p-tabmenu .p-tabmenu-nav {
+  background-color: transparent;
+}
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+  background-color: transparent;
+  white-space: nowrap;
+}
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
+  background-color: transparent;
+}

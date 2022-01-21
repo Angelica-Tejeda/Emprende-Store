@@ -1,8 +1,32 @@
 <app-navbar></app-navbar>
+
 <app-not-allowed *ngIf="notAllowed"></app-not-allowed>
-<div *ngIf="!notAllowed" class="padding">
+<app-unexpected-error *ngIf="unexpected"></app-unexpected-error>
+
+<div *ngIf="!notAllowed && !unexpected" class="bg-lighter container-full-height">
+    <div class="container-sm pt-3">
+        <p-tabMenu #tab [model]="items" [activeItem]="activeItem"></p-tabMenu>
+        <!--<div *ngIf="activeItem.label == 'Mis Publicaciones'">
+            <p>hola Publicaciones</p>
+        </div>
+        <div *ngIf="activeItem.label == 'Comentarios'">
+            <p>hola comentarios</p>
+        </div>-->
+    </div>
+    <div *ngIf="activeItem.label == 'Mis Publicaciones'" class="container-sm py-3 py-sm-4 py-lg-5">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+            <input pInputText type="text" placeholder="Filtrar por titulo">
+            <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
+                class="p-button button-responsive"></button>
+        </div>
+        <div>
+
+        </div>
+    </div>
+</div>
+
+<!--<div *ngIf="!notAllowed" class="padding">
     <div class="col-md-12">
-        <!-- Column -->
         <div class="card">
             <div class="card-body little-profile text-center">
                 <div class="underline-title">
@@ -71,6 +95,6 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 <app-footbar></app-footbar>

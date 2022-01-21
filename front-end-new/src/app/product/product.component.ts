@@ -292,7 +292,6 @@ export class ProductComponent implements OnInit {
   }
 
   enviarComentario() {
-    alert(JSON.stringify(this.commentForm.value))
     this.submittedCommentForm = true;
     this.sendingCommentForm = true;
     if (this.commentForm.valid) {
@@ -329,6 +328,7 @@ export class ProductComponent implements OnInit {
           } else {
             this.comentarios.unshift(res.result);
           }
+          this.redirectTo('/product', this.product.id);
         },
         error: (err) => {
           console.error(err);
@@ -425,5 +425,22 @@ export class ProductComponent implements OnInit {
         this.visitaService.createContactoPublicacion(payload).subscribe();
       },
     });
+  }
+
+  redirectTo(uri: string, params?: any, fragment?: string) {
+    //this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    if (fragment) {
+      this.router.navigate([uri, params], { fragment: fragment });
+    } else if (params) {
+      this.router.navigate([uri, params]);
+    } else {
+      this.router.navigate([uri]);
+    }
+    //});
+  }
+  redirectToFragment(uri: string, fragment: string) {
+    //this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.router.navigate([uri], { fragment: fragment });
+    //});
   }
 }

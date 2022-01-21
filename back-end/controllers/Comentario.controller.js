@@ -5,7 +5,7 @@ exports.createComentario = async (req, res) => {
     Comentario.create({
         publicacion_id: req.body.publicacion_id,
         usuario_id: req.body.usuario_id,
-        celular: req.body.celular !== null ? "593" + req.body.celular.substring(1) : null,
+        celular: req.body.celular !== null ? "593" + req.body.celular.substring(1) : undefined,
         nombre: req.body.nombre !== null ? req.body.nombre : undefined,
         texto: req.body.texto,
         puntuacion: req.body.puntuacion,

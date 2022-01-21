@@ -77,16 +77,16 @@
                         consequatur dolorem dolore delectus laudantium quasi maxime? Libero!</p>
                 </div>-->
             </div>
-            <div class="product-info pb-3 pb-sm-4 pb-lg-5">
+            <div id="comentario" class="product-info pb-3 pb-sm-4 pb-lg-5">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h2 class="mb-0">Comentarios</h2>
                     <button pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned || showNewComment"
-                        class="p-button-sm p-button-warning d-none d-sm-block" (click)="showNewComment = true"></button>
+                        class="p-button-sm p-button-warning d-none d-sm-block" (click)="showNewComment = true; redirectTo('/product', product.id, 'comentario')"></button>
                 </div>
                 <div class="d-flex flex-column gap-3">
                     <button *ngIf="!showNewComment" pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned"
-                        class="p-button-warning d-sm-none" (click)="showNewComment = true"></button>
-                    <div *ngIf="showNewComment && !owned" class="custom-card d-flex flex-column">
+                        class="p-button-warning d-sm-none" (click)="showNewComment = true; redirectTo('/product', product.id, 'comentario')"></button>
+                    <div id="comentario" *ngIf="showNewComment && !owned" class="custom-card d-flex flex-column">
                         <form class="d-flex flex-column justify-content-around h-100" [formGroup]="commentForm"
                             (submit)="enviarComentario()">
                             <div>
@@ -134,7 +134,7 @@
                                 <div class="d-flex flex-column-reverse flex-sm-row justify-content-sm-end gap-2 mt-3">
                                     <button pButton pRipple label="Cancelar" icon="pi pi-times"
                                         [disabled]="sendingCommentForm" class="p-button-danger button-responsive"
-                                        (click)="showNewComment = false; submittedCommentForm = false; commentForm.reset();">
+                                        (click)="showNewComment = false; submittedCommentForm = false; commentForm.reset(); redirectTo('/product', product.id);">
                                     </button>
                                     <button pButton pRipple type="submit" icon="pi pi-check" label="Enviar"
                                         [disabled]="sendingCommentForm" [loading]="sendingCommentForm"
