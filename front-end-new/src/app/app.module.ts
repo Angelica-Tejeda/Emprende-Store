@@ -22,6 +22,10 @@ import { PaginatorModule } from 'primeng/paginator';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
+import {TableModule} from 'primeng/table';
+import {TabViewModule} from 'primeng/tabview';
+import {CalendarModule} from 'primeng/calendar';
+import {InputNumberModule} from 'primeng/inputnumber';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
@@ -86,7 +90,11 @@ import { ProductCardComponent } from './shared/product-card/product-card.compone
     PasswordModule,
     RippleModule,
     ToastModule,
+    TableModule,
+    TabViewModule,
     DragDropModule,
+    CalendarModule,
+    InputNumberModule
   ],
   providers: [],
   bootstrap: [AppComponent],

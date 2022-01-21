@@ -26,7 +26,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     PerfilUsuarioComponent,
     DetallesProfileComponent,
     ProductComponent,
-    CreateProductComponent
+    CreateProductComponent,
   ],
   imports: [
     BrowserModule,

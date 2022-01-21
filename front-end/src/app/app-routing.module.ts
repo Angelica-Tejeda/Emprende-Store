@@ -7,6 +7,7 @@ import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.componen
 import { DetallesProfileComponent } from './detalles-profile/detalles-profile.component';
 import { ProductComponent } from './product/product.component';
 import { CreateProductComponent } from './create-product/create-product.component';
+import { BusquedaProductComponent } from './busqueda-product/busqueda-product.component';
 const routes: Routes = [
   { path: '', redirectTo: 'landing-page', pathMatch: 'full' },
   { path: 'landing-page', component: LandingPageComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'detallesProfile', component: DetallesProfileComponent },
   { path: 'product', component: ProductComponent },
   { path: 'create-product', component: CreateProductComponent },
+  {path: 'search', component: BusquedaProductComponent }
 ];
 
 @NgModule({
