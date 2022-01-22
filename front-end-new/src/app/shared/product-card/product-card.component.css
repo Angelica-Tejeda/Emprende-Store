@@ -22,18 +22,18 @@ a:hover {
 }
 @media (min-width: 576px) {
   .image-galleria-template {
-    width: 15rem;
+    width: 15.4375rem;
   }
   .custom-card {
-    width: 15rem;
+    width: 15.4375rem;
   }
 }
 @media (min-width: 768px) {
   .image-galleria-template {
-    width: 13.5rem;
+    width: 13.708332rem;
   }
   .custom-card {
-    width: 13.5rem;
+    width: 13.708332rem;
   }
   .image-galleria-template.related-content {
     width: 20.5rem;
@@ -43,6 +43,12 @@ a:hover {
   }
 }
 @media (min-width: 992px) {
+  .image-galleria-template {
+    width: 13.40625rem;
+  }
+  .custom-card {
+    width: 13.40625rem;
+  }
   .image-galleria-template.related-content {
     width: 17rem;
   }
@@ -52,10 +58,10 @@ a:hover {
 }
 @media (min-width: 1200px) {
   .image-galleria-template {
-    width: 16rem;
+    width: 16.21875rem;
   }
   .custom-card {
-    width: 16rem;
+    width: 16.21875rem;
   }
   .image-galleria-template.related-content {
     width: 20.75rem;

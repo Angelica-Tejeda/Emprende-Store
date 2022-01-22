@@ -9,12 +9,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { GalleriaModule } from 'primeng/galleria';
 import { InputMaskModule } from 'primeng/inputmask';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
@@ -22,10 +24,9 @@ import { PaginatorModule } from 'primeng/paginator';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
-import {TableModule} from 'primeng/table';
-import {TabViewModule} from 'primeng/tabview';
-import {CalendarModule} from 'primeng/calendar';
-import {InputNumberModule} from 'primeng/inputnumber';
+import { TableModule } from 'primeng/table';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { TabViewModule } from 'primeng/tabview';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
@@ -77,12 +78,14 @@ import { ProductCardComponent } from './shared/product-card/product-card.compone
     AccordionModule,
     AutoCompleteModule,
     ButtonModule,
+    CalendarModule,
     CardModule,
     CarouselModule,
     ConfirmDialogModule,
     DropdownModule,
     GalleriaModule,
     InputMaskModule,
+    InputNumberModule,
     InputTextareaModule,
     InputTextModule,
     MessagesModule,
@@ -91,10 +94,9 @@ import { ProductCardComponent } from './shared/product-card/product-card.compone
     RippleModule,
     ToastModule,
     TableModule,
+    TabMenuModule,
     TabViewModule,
     DragDropModule,
-    CalendarModule,
-    InputNumberModule
   ],
   providers: [],
   bootstrap: [AppComponent],

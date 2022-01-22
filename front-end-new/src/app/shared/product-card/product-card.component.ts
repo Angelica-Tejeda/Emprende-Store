@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 export class ProductCardComponent implements OnInit {
   @Input() product: any;
   @Input() related: boolean = false;
+  @Input() showOwner: boolean = true;
   mediaUrl: string = environment.mediaURL;
 
   constructor() { }

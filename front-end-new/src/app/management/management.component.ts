@@ -40,7 +40,7 @@ export class ManagementComponent implements OnInit {
       },
     },
     {
-      label: 'Mi Información',
+      label: 'Información Personal',
       icon: 'pi pi-fw pi-id-card',
       command: (event: any) => {
         this.activeItem = this.items[3];
@@ -55,7 +55,7 @@ export class ManagementComponent implements OnInit {
   visitasProductos: any;
   visitasContacto: any;
   final: any = new Date();
-  inicio: any = new Date(this.final.getTime() - 1000 * 60 * 60 * 24 * 30);
+  inicio: any = new Date(this.final.getTime() - 1000 * 60 * 60 * 24 * 365);
 
   constructor(
     private router: Router,
@@ -80,7 +80,7 @@ export class ManagementComponent implements OnInit {
           this.unexpected = true;
         }
       });
-      this.publicacionService.getPublicacionesByUsuario(+this.cookieService.get('usuario_id')).subscribe({
+      this.publicacionService.getOwnPublicacionesByUsuario(+this.cookieService.get('usuario_id')).subscribe({
         next: (res) => {
           this.productos = res.result.rows;
         },
@@ -93,6 +93,26 @@ export class ManagementComponent implements OnInit {
           }
         } 
       });
+      this.visitaService.getVisitaPerfilByUsuario(+this.cookieService.get('usuario_id'), this.inicio, this.final).subscribe({
+        next: (res) => {
+          this.visitasPerfil = res.result;
+        }
+      })
+      this.visitaService.getVisitaPublicacionByUsuario(+this.cookieService.get('usuario_id'), this.inicio, this.final).subscribe({
+        next: (res) => {
+          this.visitasProductos = res.result;
+        }
+      })
+      this.visitaService.getContactoPublicacionByUsuario(+this.cookieService.get('usuario_id'), this.inicio, this.final).subscribe({
+        next: (res) => {
+          this.visitasContacto = res.result;
+        }
+      })
+      this.comentarioService.getAllComentariosByUsuario(+this.cookieService.get('usuario_id')).subscribe({
+        next: (res) => {
+          this.comentarios = res.result.rows;
+        }
+      })
       /*this.visitaService
         .getVisitaPerfilByUsuario(+this.cookieService.get('usuario_id'), this.inicio, this.final)
         .subscribe((data) => {

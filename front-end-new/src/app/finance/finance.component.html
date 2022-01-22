@@ -3,8 +3,8 @@
 <div class="bg-lighter container-full-height">
     <div class="container-sm py-3 py-sm-4 py-lg-5 d-flex flex-column justify-content-center align-items-center">
         <div class="custom-card balance-cont d-flex flex-column align-items-center w-75 mb-4">
-            <span class="title"> Balance</span>
-            <span class="balance font-weight-bold" [ngClass]="!responses.result.total('-') ? 'text-success': 'text-danger'">{{responses.result.total}}</span>
+            <span class="title">Balance</span>
+            <span class="balance font-weight-bold" [ngClass]="!responses.result.total.includes('-') ? 'text-success': 'text-danger'">{{responses.result.total}}</span>
             <div class="stats d-flex justify-content-between">
                 <span class="ingresos mr-5">Ingresos: <span class="text-success font-weight-bold">$ {{responses.result.ingresos}}
                     </span></span>

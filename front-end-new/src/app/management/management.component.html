@@ -6,23 +6,73 @@
 <div *ngIf="!notAllowed && !unexpected" class="bg-lighter container-full-height">
     <div class="container-sm pt-3">
         <p-tabMenu #tab [model]="items" [activeItem]="activeItem"></p-tabMenu>
-        <!--<div *ngIf="activeItem.label == 'Mis Publicaciones'">
-            <p>hola Publicaciones</p>
-        </div>
-        <div *ngIf="activeItem.label == 'Comentarios'">
-            <p>hola comentarios</p>
-        </div>-->
     </div>
-    <div *ngIf="activeItem.label == 'Mis Publicaciones'" class="container-sm py-3 py-sm-4 py-lg-5">
+
+    <div *ngIf="activeItem.label == 'Mis Publicaciones'" class="container-sm py-3 pt-lg-4 pb-lg-5">
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
             <input pInputText type="text" placeholder="Filtrar por titulo">
             <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
                 class="p-button button-responsive"></button>
         </div>
-        <div>
-
+        <div class="pt-3 pt-lg-4">
+            <div class="d-flex flex-wrap gap-3 gap-lg-4 justify-content-start align-items-stretch">
+                <app-product-card *ngFor="let product of productos" [product]="product" [showOwner]="false"></app-product-card>
+            </div>
         </div>
     </div>
+
+    <div *ngIf="activeItem.label == 'Estadísticas'" class="container-sm py-3 pt-lg-4 pb-lg-5">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+            <input pInputText type="text" placeholder="Filtrar por titulo">
+            <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
+                class="p-button button-responsive"></button>
+        </div>
+        <div class="pt-3 pt-lg-4">
+            <h4>Mostrando estadisticas desde {{inicio | date: 'dd/LL/YY'}} hasta {{final | date: 'dd/LL/YY'}}:</h4>
+        </div>
+        <div class="d-flex flex-column gap-3 text-center">
+            <div class="d-flex flex-column flex-sm-row gap-3">
+                <div class="custom-card w-100">
+                    <h1>{{ visitasPerfil }}</h1>
+                    <h5>Total de de visitas al perfil</h5>
+                </div>
+                <div class="custom-card w-100">
+                    <ng-template #t let-fill="fill">
+                        <span class="star" [class.full]="fill === 100">
+                            <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                        </span>
+                    </ng-template>
+                    <div class="d-flex gap-2 justify-content-center align-items-center mb-2">
+                        <ngb-rating [(rate)]="usuario.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
+                        </ngb-rating>
+                        <h1 *ngIf="usuario.puntuacion !== null" class="mb-0">{{ usuario.puntuacion }}
+                        </h1>
+                        <h6 *ngIf="usuario.puntuacion === null" class="mb-0 font-weight-normal">No hay datos</h6>
+                    </div>
+                    <h5>Promedio de Calificaciones</h5>
+                </div>
+            </div>
+            <div class="d-flex flex-column flex-sm-row gap-3">
+                <div class="custom-card w-100">
+                    <h1>{{ visitasProductos }}</h1>
+                    <h5>Total de visitas a productos/servicios</h5>
+                </div>
+                <div class="custom-card w-100">
+                    <h1>{{ visitasContacto }}</h1>
+                    <h5>Total de veces contactado</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="activeItem.label == 'Comentarios'" class="container-sm py-3 pt-lg-4 pb-lg-5">
+        <p>Comentarios</p>
+    </div>
+
+    <div *ngIf="activeItem.label == 'Información Personal'" class="container-sm py-3 pt-lg-4 pb-lg-5">
+        <p>Información Personal</p>
+    </div>
+
 </div>
 
 <!--<div *ngIf="!notAllowed" class="padding">
