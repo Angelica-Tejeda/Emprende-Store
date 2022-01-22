@@ -5,7 +5,10 @@ exports.createComentario = async (req, res) => {
     Comentario.create({
         publicacion_id: req.body.publicacion_id,
         usuario_id: req.body.usuario_id,
-        celular: req.body.celular !== null ? "593" + req.body.celular.substring(1) : undefined,
+        celular:
+            req.body.celular !== null
+                ? "593" + req.body.celular.substring(1)
+                : undefined,
         nombre: req.body.nombre !== null ? req.body.nombre : undefined,
         texto: req.body.texto,
         puntuacion: req.body.puntuacion,
@@ -48,6 +51,11 @@ exports.createComentario = async (req, res) => {
 
 exports.getAllComentariosByUsuario = async (req, res) => {
     Comentario.findAndCountAll({
+        limit: req.query.limit ? req.query.limit : undefined,
+        offset:
+            req.query.page && req.query.limit
+                ? req.query.page * req.query.limit
+                : undefined,
         order: [["id", "DESC"]],
         where: {
             usuario_id: req.params.userId,
@@ -122,6 +130,11 @@ exports.getAllComentariosByUsuario = async (req, res) => {
 
 exports.getOwnComentariosByNullPublicacion = async (req, res) => {
     Comentario.findAndCountAll({
+        limit: req.query.limit ? req.query.limit : undefined,
+        offset:
+            req.query.page && req.query.limit
+                ? req.query.page * req.query.limit
+                : undefined,
         order: [["id", "DESC"]],
         where: {
             usuario_id: req.params.userId,
@@ -157,6 +170,11 @@ exports.getOwnComentariosByNullPublicacion = async (req, res) => {
 
 exports.getOwnComentariosByPublicacion = async (req, res) => {
     Comentario.findAndCountAll({
+        limit: req.query.limit ? req.query.limit : undefined,
+        offset:
+            req.query.page && req.query.limit
+                ? req.query.page * req.query.limit
+                : undefined,
         order: [["id", "DESC"]],
         where: {
             usuario_id: req.params.userId,
@@ -194,6 +212,11 @@ exports.getOwnComentariosByPublicacion = async (req, res) => {
 
 exports.getComentariosByPublicacion = async (req, res) => {
     Comentario.findAndCountAll({
+        limit: req.query.limit ? req.query.limit : undefined,
+        offset:
+            req.query.page && req.query.limit
+                ? req.query.page * req.query.limit
+                : undefined,
         order: [["id", "DESC"]],
         where: {
             usuario_id: req.params.userId,

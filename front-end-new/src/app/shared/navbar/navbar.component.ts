@@ -105,7 +105,7 @@ export class NavbarComponent implements OnInit {
   buscarProductos() {
     if (this.searchForm.valid) {
       let b = this.searchForm.value;
-      this.redirectTo('search', b.busqueda);
+      this.router.navigate(['search', b.busqueda]);
     }
   }
 
@@ -117,19 +117,20 @@ export class NavbarComponent implements OnInit {
       accept: () => {
         this.authService.cerrarSesion().subscribe({
           next: (res) => {
-            this.cookieService.delete('usuario_act');
-            this.cookieService.delete('usuario_rol');
-            this.cookieService.delete('usuario_id');
-            this.isLogged = false;
-            this.router.navigate(['/login']);
-            this.messageService.clear('restrict');
-            this.messageService.clear('user');
-            this.messageService.add({
-              key: 'general',
-              severity: 'success',
-              summary: 'Sesión finalizada',
-              detail: res.message,
-              life: 3000,
+            this.router.navigate(['/login']).then(() => {
+              this.cookieService.delete('usuario_act');
+              this.cookieService.delete('usuario_rol');
+              this.cookieService.delete('usuario_id');
+              this.isLogged = false;
+              this.messageService.clear('restrict');
+              this.messageService.clear('user');
+              this.messageService.add({
+                key: 'general',
+                severity: 'success',
+                summary: 'Sesión finalizada',
+                detail: res.message,
+                life: 3000,
+              });
             });
           },
         });
@@ -137,21 +138,10 @@ export class NavbarComponent implements OnInit {
       reject: () => {},
     });
   }
-
-  redirectTo(uri: string, params?: any, fragment?: string) {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      if (fragment) {
-        this.router.navigate([uri, params], { fragment: fragment });
-      } else if (params) {
-        this.router.navigate([uri, params]);
-      } else {
-        this.router.navigate([uri]);
-      }
-    });
-  }
-  redirectToFragment(uri: string, fragment: string) {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([uri], { fragment: fragment });
+  
+  redirectTo(uri: string, params: string) {
+    this.router.navigateByUrl('.', { skipLocationChange: true }).then(() => {
+      this.router.navigate([uri, params]);
     });
   }
 }

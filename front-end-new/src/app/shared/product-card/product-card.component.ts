@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -11,7 +12,13 @@ export class ProductCardComponent implements OnInit {
   @Input() showOwner: boolean = true;
   mediaUrl: string = environment.mediaURL;
 
-  constructor() {}
+  constructor(public router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {}
+
+  redirectTo(uri: string, params: string) {
+    this.router.navigateByUrl('.', { skipLocationChange: true }).then(() => {
+      this.router.navigate([uri, params]);
+    });
+  }
 }

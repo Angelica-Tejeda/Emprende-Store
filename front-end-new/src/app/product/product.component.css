@@ -117,7 +117,3 @@ small.fecha {
 .ng-dirty.ng-invalid.comment-punt {
   border-color: var(--danger);
 }
-
-.opacity-50 {
-  opacity: 0.5;
-}

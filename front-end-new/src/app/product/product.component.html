@@ -18,10 +18,10 @@
         <div class="custom-card product-details">
             <div class="d-flex flex-column justify-content-around h-100">
                 <div>
-                    <a *ngIf="product.usuario.negocio" [routerLink]="['/profile', product.usuario.id]">
+                    <a *ngIf="product.usuario.negocio" [routerLink]="['/profile', product.usuario.id]" (click)="redirectTo('/profile', product.usuario.id)">
                         <small class="small-link">{{ product.usuario.negocio }}</small>
                     </a>
-                    <a *ngIf="!product.usuario.negocio" [routerLink]="['/profile', product.usuario.id]">
+                    <a *ngIf="!product.usuario.negocio" [routerLink]="['/profile', product.usuario.id]" (click)="redirectTo('/profile', product.usuario.id)">
                         <small class="small-link">{{ product.usuario.nombre }} {{ product.usuario.apellido }}</small>
                     </a>
                     <h3>{{ product.titulo }}</h3>
@@ -63,9 +63,9 @@
     </div>
 </div>
 <div *ngIf="!notFound && !unexpected" class="bg-lighter">
-    <div class="container-sm d-flex gap-lg-5 flex-column flex-lg-row">
+    <div class="container-sm py-3 py-sm-4 py-lg-5 d-flex gap-lg-5 flex-column flex-lg-row">
         <div>
-            <div class="product-info py-3 py-sm-4 py-lg-5">
+            <div class="product-info pb-2-5 pb-sm-3 pb-lg-4">
                 <h2>Descripción</h2>
                 <p class="mb-0 text-justify">{{ product.descripcion }} Lorem ipsum dolor sit amet consectetur
                     adipisicing elit.
@@ -77,16 +77,18 @@
                         consequatur dolorem dolore delectus laudantium quasi maxime? Libero!</p>
                 </div>-->
             </div>
-            <div id="comentario" class="product-info pb-3 pb-sm-4 pb-lg-5">
+            <div id="comments" class="product-info py-2-5 py-sm-3 pt-lg-4 pb-lg-0">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h2 class="mb-0">Comentarios</h2>
+                    <h2 class="mb-0">Comentarios<span *ngIf="comentarios !== null"> ({{comentarios.count}})</span></h2>
                     <button pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned || showNewComment"
-                        class="p-button-sm p-button-warning d-none d-sm-block" (click)="showNewComment = true; redirectTo('/product', product.id, 'comentario')"></button>
+                        class="p-button-sm p-button-warning d-none d-sm-block" [routerLink]="['.']" fragment="comments"
+                        (click)="showNewComment = true;"></button>
                 </div>
                 <div class="d-flex flex-column gap-3">
                     <button *ngIf="!showNewComment" pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned"
-                        class="p-button-warning d-sm-none" (click)="showNewComment = true; redirectTo('/product', product.id, 'comentario')"></button>
-                    <div id="comentario" *ngIf="showNewComment && !owned" class="custom-card d-flex flex-column">
+                        class="p-button-warning d-sm-none" [routerLink]="['.']" fragment="comments"
+                        (click)="showNewComment = true"></button>
+                    <div *ngIf="showNewComment && !owned" class="custom-card d-flex flex-column">
                         <form class="d-flex flex-column justify-content-around h-100" [formGroup]="commentForm"
                             (submit)="enviarComentario()">
                             <div>
@@ -134,7 +136,7 @@
                                 <div class="d-flex flex-column-reverse flex-sm-row justify-content-sm-end gap-2 mt-3">
                                     <button pButton pRipple label="Cancelar" icon="pi pi-times"
                                         [disabled]="sendingCommentForm" class="p-button-danger button-responsive"
-                                        (click)="showNewComment = false; submittedCommentForm = false; commentForm.reset(); redirectTo('/product', product.id);">
+                                        (click)="showNewComment = false; submittedCommentForm = false; commentForm.reset();">
                                     </button>
                                     <button pButton pRipple type="submit" icon="pi pi-check" label="Enviar"
                                         [disabled]="sendingCommentForm" [loading]="sendingCommentForm"
@@ -147,62 +149,94 @@
                     <div *ngIf="comentarios === null" class="custom-card text-center">
                         <h5 class="mb-0">Aún no hay comentarios.</h5>
                     </div>
-                    <div *ngFor="let coment of comentarios" class="custom-card"
-                        [ngClass]="coment.oculto ? 'opacity-50' : ''">
-                        <div class="d-flex gap-3 justify-content-between">
-                            <h5>{{ coment.nombre }}</h5>
-                            <div class="d-flex gap-1">
-                                <div class="d-flex flex-column">
-                                    <small class="text-right fecha">{{ coment.creado | date:'dd/LL/YYYY' }}</small>
-                                    <small class="text-right fecha">{{ coment.creado | date:'HH:mm' }}</small>
+                    <div *ngIf="comentarios !== null" class="d-flex flex-column gap-3">
+                        <div *ngFor="let coment of comentarios.rows" class="custom-card"
+                            [ngClass]="coment.oculto ? 'opacity-50' : ''">
+                            <div class="d-flex gap-3 justify-content-between">
+                                <h5>{{ coment.nombre }}</h5>
+                                <div class="d-flex gap-1">
+                                    <div class="d-flex flex-column">
+                                        <small class="text-right fecha">{{ coment.creado | date:'dd/LL/YYYY' }}</small>
+                                        <small class="text-right fecha">{{ coment.creado | date:'HH:mm' }}</small>
+                                    </div>
+                                    <button *ngIf="owned && !coment.oculto" pButton pRipple icon="pi pi-eye-slash"
+                                        class="d-sm-none p-button-sm xs-adapt-button"
+                                        (click)="cambiarEstadoComentario(coment)"
+                                        [disabled]="updatingComment == coment.id"
+                                        [loading]="updatingComment == coment.id"></button>
+                                    <button *ngIf="owned && !coment.oculto" pButton pRipple label="Ocultar"
+                                        icon="pi pi-eye-slash" class="d-none d-sm-block p-button-sm xs-adapt-button"
+                                        (click)="cambiarEstadoComentario(coment)"
+                                        [disabled]="updatingComment == coment.id"
+                                        [loading]="updatingComment == coment.id"></button>
+                                    <button *ngIf="owned && coment.oculto" pButton pRipple icon="pi pi-eye"
+                                        class="d-sm-none p-button-sm xs-adapt-button"
+                                        (click)="cambiarEstadoComentario(coment)"
+                                        [disabled]="updatingComment == coment.id"
+                                        [loading]="updatingComment == coment.id"></button>
+                                    <button *ngIf="owned && coment.oculto" pButton pRipple label="Mostrar"
+                                        icon="pi pi-eye" class="d-none d-sm-block p-button-sm xs-adapt-button"
+                                        (click)="cambiarEstadoComentario(coment)"
+                                        [disabled]="updatingComment == coment.id"
+                                        [loading]="updatingComment == coment.id"></button>
                                 </div>
-                                <button *ngIf="owned && !coment.oculto" pButton pRipple icon="pi pi-eye-slash"
-                                    class="d-sm-none p-button-sm xs-adapt-button"
-                                    (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
-                                    [loading]="updatingComment == coment.id"></button>
-                                <button *ngIf="owned && !coment.oculto" pButton pRipple label="Ocultar"
-                                    icon="pi pi-eye-slash" class="d-none d-sm-block p-button-sm xs-adapt-button"
-                                    (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
-                                    [loading]="updatingComment == coment.id"></button>
-                                <button *ngIf="owned && coment.oculto" pButton pRipple icon="pi pi-eye"
-                                    class="d-sm-none p-button-sm xs-adapt-button"
-                                    (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
-                                    [loading]="updatingComment == coment.id"></button>
-                                <button *ngIf="owned && coment.oculto" pButton pRipple label="Mostrar" icon="pi pi-eye"
-                                    class="d-none d-sm-block p-button-sm xs-adapt-button"
-                                    (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
-                                    [loading]="updatingComment == coment.id"></button>
                             </div>
+                            <ng-template #t let-fill="fill">
+                                <span class="star" [class.full]="fill === 100">
+                                    <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                </span>
+                            </ng-template>
+                            <ngb-rating [(rate)]="coment.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
+                            </ngb-rating>
+                            <p *ngIf="owned" class="mb-1"><span class="font-weight-bold">Celular:</span> {{
+                                coment.celular ?
+                                '+' + coment.celular.substring(0,3) + ' ' + coment.celular.substring(3, 5) + ' ' +
+                                coment.celular.substring(5, 8) + ' ' + coment.celular.substring(8) : 'No ingresado' }}
+                            </p>
+                            <p class="mb-0 text-justify">{{ coment.texto }}</p>
                         </div>
-                        <ng-template #t let-fill="fill">
-                            <span class="star" [class.full]="fill === 100">
-                                <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
-                            </span>
-                        </ng-template>
-                        <ngb-rating [(rate)]="coment.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
-                        </ngb-rating>
-                        <p *ngIf="owned" class="mb-1"><span class="font-weight-bold">Celular:</span> {{ coment.celular ?
-                            '+' + coment.celular.substring(0,3) + ' ' + coment.celular.substring(3, 5) + ' ' +
-                            coment.celular.substring(5, 8) + ' ' + coment.celular.substring(8) : 'No ingresado' }}
-                        </p>
-                        <p class="mb-0 text-justify">{{ coment.texto }}</p>
+                        <p-paginator class="d-sm-none"
+                            [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
+                            [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
+                            [rowsPerPageOptions]="[5,10,15]" [pageLinkSize]="1" [dropdownScrollHeight]="''"
+                            (onPageChange)="paginacionComentarios($event)">
+                        </p-paginator>
+                        <p-paginator class="d-sm-none" [ngClass]="loadingComments ? 'disable-pagination' : ''"
+                            [rows]="commentsRows" [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
+                            [rowsPerPageOptions]="[5,10,15]" [dropdownScrollHeight]="''" [showPageLinks]="false"
+                            [showJumpToPageDropdown]="true" [showFirstLastIcon]="false"
+                            currentPageReportTemplate="{currentPage} / {totalPages}"
+                            (onPageChange)="paginacionComentarios($event)">
+                        </p-paginator>
+                        <p-paginator class="d-none d-sm-block d-md-none d-lg-block d-xl-none"
+                            [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
+                            [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
+                            [rowsPerPageOptions]="[5,10,15]" [pageLinkSize]="3" [dropdownScrollHeight]="''"
+                            (onPageChange)="paginacionComentarios($event)">
+                        </p-paginator>
+                        <p-paginator class="d-none d-md-block d-lg-none d-xl-block"
+                            [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
+                            [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
+                            [rowsPerPageOptions]="[2,5,10,15]" [dropdownScrollHeight]="''"
+                            (onPageChange)="paginacionComentarios($event)">
+                        </p-paginator>
                     </div>
-                    <!--TODO: Agregar paginación a los comentarios-->
-                    <!--<p-paginator [rows]="10" [totalRecords]="120" [rowsPerPageOptions]="[10,20,30]"></p-paginator>-->
                 </div>
             </div>
         </div>
         <div class="d-flex flex-column">
-            <div class="py-3 py-sm-4 py-lg-5 relacionados">
+            <div class="py-2-5 py-sm-3 pt-lg-0 pb-lg-4">
                 <h3>Más del vendedor</h3>
                 <div class="d-flex flex-wrap gap-3 justify-content-start align-items-stretch">
-                    <app-product-card *ngFor="let product of productosVendedor" [product]="product" class="related-content"></app-product-card>
+                    <app-product-card *ngFor="let product of productosVendedor" [product]="product"
+                        class="related-content"></app-product-card>
                 </div>
             </div>
-            <div class="pb-3 pb-sm-4 pb-lg-5 relacionados">
+            <div class="pt-2-5 pt-sm-3 pt-lg-4">
                 <h3>Relacionado</h3>
                 <div class="d-flex flex-wrap gap-3 justify-content-start align-items-stretch">
-                    <app-product-card *ngFor="let product of productosRelacionados" [product]="product" class="related-content"></app-product-card>
+                    <app-product-card *ngFor="let product of productosRelacionados" [product]="product"
+                        class="related-content"></app-product-card>
                 </div>
             </div>
         </div>

@@ -1,14 +1,14 @@
 <p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="product.fotos.length > 1 ? true : false"
     [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
     <ng-template pTemplate="item" let-item>
-        <a [routerLink]="['/product', product.id]" class="w-100">
+        <a [routerLink]="['/product', product.id]" (click)="redirectTo('/product', product.id)" class="w-100">
             <div class="image-galleria-template d-flex justify-content-center align-items-center">
                 <img [src]="mediaUrl + item" />
             </div>
         </a>
     </ng-template>
 </p-galleria>
-<a [routerLink]="['/product', product.id]">
+<a [routerLink]="['/product', product.id]" (click)="redirectTo('/product', product.id)">
     <div class="custom-card p-md-4 d-flex flex-column">
         <h4 *ngIf="product.precio" class="text-nowrap">$ {{product.precio}}</h4>
         <h4 *ngIf="!product.precio" class="text-nowrap">$ 0.00</h4>

@@ -22,6 +22,9 @@ export class ProductComponent implements OnInit {
   publId: any;
   product: any;
   comentarios: any = null;
+  commentsCurrentPage: number = 0;
+  commentsRows: number = 5;
+  loadingComments: boolean = false;
   showNewComment: boolean = false;
   updatingComment: any = null;
   sendingCommentForm: boolean = false;
@@ -348,11 +351,12 @@ export class ProductComponent implements OnInit {
             this.comentarioService
               .getOwnComentariosByPublicacion(
                 this.product.usuario.id,
-                this.product.id
+                this.product.id,
+                { limit: this.commentsRows, page: 0 }
               )
               .subscribe({
                 next: (res) => {
-                  this.comentarios = res.result.rows;
+                  this.comentarios = res.result;
                 },
               });
           },
@@ -388,10 +392,14 @@ export class ProductComponent implements OnInit {
         }
         this.mensajeContacto = encodeURIComponent(this.mensajeContacto);
         this.comentarioService
-          .getComentariosByPublicacion(this.product.usuario.id, this.product.id)
+          .getComentariosByPublicacion(
+            this.product.usuario.id,
+            this.product.id,
+            { limit: this.commentsRows, page: 0 }
+          )
           .subscribe({
             next: (res) => {
-              this.comentarios = res.result.rows;
+              this.comentarios = res.result;
             },
           });
         this.ipService.getIPAddress().subscribe({
@@ -433,11 +441,6 @@ export class ProductComponent implements OnInit {
         texto: this.commentForm.get('texto')?.value,
         puntuacion: this.commentForm.get('puntuacion')?.value,
       };
-      /*if (this.commentForm.get('nombre')?.value !== null) {
-        Object.assign(payload, {
-          nombre: this.commentForm.get('nombre')?.value,
-        });
-      }*/
       this.commentForm.disable();
       this.comentarioService.createComentario(payload).subscribe({
         next: (res) => {
@@ -454,11 +457,10 @@ export class ProductComponent implements OnInit {
           this.showNewComment = false;
           if (this.comentarios === null) {
             this.comentarios = [];
-            this.comentarios.unshift(res.result);
-          } else {
-            this.comentarios.unshift(res.result);
           }
-          this.redirectTo('/product', this.product.id);
+          this.comentarios.rows.unshift(res.result);
+          this.comentarios.rows.pop();
+          this.comentarios.count += 1;
         },
         error: (err) => {
           console.error(err);
@@ -538,6 +540,71 @@ export class ProductComponent implements OnInit {
       });
   }
 
+  paginacionComentarios(event: any) {
+    this.loadingComments = true;
+    if (this.owned) {
+      this.comentarioService
+        .getOwnComentariosByPublicacion(
+          this.product.usuario.id,
+          this.product.id,
+          {
+            limit: event.rows,
+            page: event.page,
+          }
+        )
+        .subscribe({
+          next: (res) => {
+            this.comentarios = res.result;
+            this.commentsCurrentPage = event.first;
+            this.commentsRows = event.rows;
+            this.router.navigate(['/product', this.product.id], {
+              fragment: 'comments',
+            });
+            this.loadingComments = false;
+          },
+          error: (err) => {
+            this.messageService.add({
+              key: 'general',
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+              life: 3000,
+            });
+            this.loadingComments = false;
+          },
+        });
+    } else {
+      this.comentarioService
+        .getComentariosByPublicacion(this.product.usuario.id, this.product.id, {
+          limit: event.rows,
+          page: event.page,
+        })
+        .subscribe({
+          next: (res) => {
+            this.comentarios = res.result;
+            this.commentsCurrentPage = event.first;
+            this.commentsRows = event.rows;
+            this.router.navigate(['/product', this.product.id], {
+              fragment: 'comments',
+            });
+            this.loadingComments = false;
+          },
+          error: (err) => {
+            this.messageService.add({
+              key: 'general',
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+              life: 3000,
+            });
+            this.loadingComments = false;
+          },
+        });
+    }
+  }
+
   registrarCompra() {
     this.ipService.getIPAddress().subscribe({
       next: (resIp) => {
@@ -556,21 +623,10 @@ export class ProductComponent implements OnInit {
       },
     });
   }
-
-  redirectTo(uri: string, params?: any, fragment?: string) {
-    //this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-    if (fragment) {
-      this.router.navigate([uri, params], { fragment: fragment });
-    } else if (params) {
+  
+  redirectTo(uri: string, params: string) {
+    this.router.navigateByUrl('.', { skipLocationChange: true }).then(() => {
       this.router.navigate([uri, params]);
-    } else {
-      this.router.navigate([uri]);
-    }
-    //});
-  }
-  redirectToFragment(uri: string, fragment: string) {
-    //this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-    this.router.navigate([uri], { fragment: fragment });
-    //});
+    });
   }
 }

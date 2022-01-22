@@ -15,29 +15,42 @@ export class ComentarioService {
     return this.http.post(`${_apiUrl}`, data);
   }
 
-  getAllComentariosByUsuario(userId: number): Observable<any> {
+  getAllComentariosByUsuario(
+    userId: number,
+    queryParams?: any
+  ): Observable<any> {
     return this.http.get(`${_apiUrl}/user/own/${userId}`, {
+      params: queryParams ? queryParams : undefined,
       withCredentials: true,
     });
   }
 
   getOwnComentariosByPublicacion(
     userId: number,
-    publId: number | null
+    publId: number | null,
+    queryParams?: any
   ): Observable<any> {
     if (publId === null) {
       return this.http.get(`${_apiUrl}/publ/own/${userId}/null`, {
+        params: queryParams ? queryParams : undefined,
         withCredentials: true,
       });
     } else {
       return this.http.get(`${_apiUrl}/publ/own/${userId}/${publId}`, {
+        params: queryParams ? queryParams : undefined,
         withCredentials: true,
       });
     }
   }
 
-  getComentariosByPublicacion(userId: number, publId: number): Observable<any> {
-    return this.http.get(`${_apiUrl}/publ/${userId}/${publId}`);
+  getComentariosByPublicacion(
+    userId: number,
+    publId: number,
+    queryParams?: any
+  ): Observable<any> {
+    return this.http.get(`${_apiUrl}/publ/${userId}/${publId}`, {
+      params: queryParams ? queryParams : undefined,
+    });
   }
 
   updateComentarioOculto(
