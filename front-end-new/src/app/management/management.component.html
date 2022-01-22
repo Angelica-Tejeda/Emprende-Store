@@ -8,7 +8,7 @@
         <p-tabMenu #tab [model]="items" [activeItem]="activeItem"></p-tabMenu>
     </div>
 
-    <div *ngIf="activeItem.label == 'Mis Publicaciones'" class="container-sm py-3 pt-lg-4 pb-lg-5">
+    <div *ngIf="activeItem.id == '1'" class="container-sm py-3 pt-lg-4 pb-lg-5">
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
             <input pInputText type="text" placeholder="Filtrar por titulo">
             <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div *ngIf="activeItem.label == 'Estadísticas'" class="container-sm py-3 pt-lg-4 pb-lg-5">
+    <div *ngIf="activeItem.id == '2'" class="container-sm py-3 pt-lg-4 pb-lg-5">
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
             <input pInputText type="text" placeholder="Filtrar por titulo">
             <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
@@ -65,11 +65,11 @@
         </div>
     </div>
 
-    <div *ngIf="activeItem.label == 'Comentarios'" class="container-sm py-3 pt-lg-4 pb-lg-5">
+    <div *ngIf="activeItem.id == '3'" class="container-sm py-3 pt-lg-4 pb-lg-5">
         <p>Comentarios</p>
     </div>
 
-    <div *ngIf="activeItem.label == 'Información Personal'" class="container-sm py-3 pt-lg-4 pb-lg-5">
+    <div *ngIf="activeItem.id == '4'" class="container-sm py-3 pt-lg-4 pb-lg-5">
         <p>Información Personal</p>
     </div>
 

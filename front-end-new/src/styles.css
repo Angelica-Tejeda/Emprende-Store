@@ -119,22 +119,6 @@ button {
   }
 }
 
-app-product-card {
-  border-radius: 25px;
-  width: 100%;
-}
-app-product-card:hover {
-  box-shadow: 0 0 11px var(--primary);
-}
-.bg-primary app-product-card:hover {
-  box-shadow: 0 0 11px var(--lighter);
-}
-@media (min-width: 576px) {
-  app-product-card {
-    width: auto;
-  }
-}
-
 .p-accordion-header-link {
   box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%),
     0 1px 3px 0 rgb(0 0 0 / 12%);
@@ -300,13 +284,77 @@ app-product-card .p-galleria .p-galleria-item-nav .p-galleria-item-next-icon {
   font-size: 1rem;
 }
 
+app-product-card {
+  border-radius: 25px;
+  width: calc(50% - 0.5rem);
+}
+app-product-card:hover {
+  box-shadow: 0 0 11px var(--primary);
+}
+.bg-primary app-product-card:hover {
+  box-shadow: 0 0 11px var(--lighter);
+}
+@media (min-width: 768px) {
+  app-product-card {
+    width: calc(33.33333% - 0.66666rem);
+  }
+}
+@media (min-width: 992px) {
+  app-product-card {
+    width: calc(25% - 1.125rem);
+  }
+}
+@media (min-width: 1200px) {
+  app-product-card {
+    width: calc(20% - 1.2rem);
+  }
+}
+app-product-card.related-content {
+  width: calc(50% - 0.5rem);
+}
+@media (min-width: 768px) {
+  app-product-card.related-content {
+    width: calc(25% - 0.75rem);
+  }
+  app-product-card.related-content .image-galleria-template {
+    height: 8rem !important;
+  }
+  app-product-card.related-content .custom-card {
+  height: calc(100% - 8rem) !important;
+  padding: 1rem !important;
+  }
+}
+@media (min-width: 992px) {
+  app-product-card.related-content {
+    width: calc(50% - 0.5rem);
+  }
+}
+
 .p-tabmenu .p-tabmenu-nav {
   background-color: transparent;
+  justify-content: space-around;
 }
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
   background-color: transparent;
   white-space: nowrap;
+  justify-content: center;
 }
-.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
-  background-color: transparent;
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem {
+  width: 25%;
+}
+.p-menuitem-text {
+  display: none;
+}
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link .p-menuitem-icon {
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (min-width: 768px) {
+  .p-menuitem-text {
+    display: block;
+  }
+  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link .p-menuitem-icon {
+    margin-left: 0;
+    margin-right: 0.5rem;
+  }
 }

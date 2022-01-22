@@ -2,18 +2,18 @@
     [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
     <ng-template pTemplate="item" let-item>
         <a [routerLink]="['/product', product.id]" class="w-100">
-            <div class="image-galleria-template d-flex justify-content-center align-items-center" [ngClass]="related ? 'related-content' : ''">
+            <div class="image-galleria-template d-flex justify-content-center align-items-center">
                 <img [src]="mediaUrl + item" />
             </div>
         </a>
     </ng-template>
 </p-galleria>
 <a [routerLink]="['/product', product.id]">
-    <div class="custom-card p-4 d-flex flex-column" [ngClass]="related ? 'related-content' : ''">
-        <h2 *ngIf="product.precio">$ {{product.precio}}</h2>
-        <h2 *ngIf="!product.precio">$ 0.00</h2>
-        <h5 *ngIf="product.titulo" class="h-100">{{product.titulo}}</h5>
-        <h5 *ngIf="!product.titulo" class="h-100">Sin título</h5>
+    <div class="custom-card p-md-4 d-flex flex-column">
+        <h4 *ngIf="product.precio" class="text-nowrap">$ {{product.precio}}</h4>
+        <h4 *ngIf="!product.precio" class="text-nowrap">$ 0.00</h4>
+        <h6 *ngIf="product.titulo" class="h-100" [ngClass]="!showOwner ? 'mb-0' : ''">{{product.titulo}}</h6>
+        <h6 *ngIf="!product.titulo" class="h-100" [ngClass]="!showOwner ? 'mb-0' : ''">Sin título</h6>
         <small *ngIf="product.usuario.negocio && showOwner">{{product.usuario.negocio}}</small>
         <small *ngIf="!product.usuario.negocio && showOwner">{{product.usuario.nombre}} {{product.usuario.apellido}}</small>
         <!--TODO: Agregar funcinoalidad para editar, ocultar y eliminar productos.-->

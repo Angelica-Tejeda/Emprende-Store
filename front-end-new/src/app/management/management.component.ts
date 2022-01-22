@@ -19,13 +19,15 @@ export class ManagementComponent implements OnInit {
   unexpected: boolean = false;
   items: MenuItem[] = [
     {
-      label: 'Mis Publicaciones',
-      icon: 'pi pi-fw pi-briefcase',
+      id: '1',
+      label: 'Publicaciones',
+      icon: 'pi pi-fw pi-th-large',
       command: (event: any) => {
         this.activeItem = this.items[0];
       },
     },
     {
+      id: '2',
       label: 'Estadísticas',
       icon: 'pi pi-fw pi-chart-bar',
       command: (event: any) => {
@@ -33,6 +35,7 @@ export class ManagementComponent implements OnInit {
       },
     },
     {
+      id: '3',
       label: 'Comentarios',
       icon: 'pi pi-fw pi-comments',
       command: (event: any) => {
@@ -40,7 +43,8 @@ export class ManagementComponent implements OnInit {
       },
     },
     {
-      label: 'Información Personal',
+      id: '4',
+      label: 'Mis Datos',
       icon: 'pi pi-fw pi-id-card',
       command: (event: any) => {
         this.activeItem = this.items[3];
