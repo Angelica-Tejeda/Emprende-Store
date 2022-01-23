@@ -228,14 +228,14 @@ exports.getOwnPublicacionById = async (req, res) => {
                     "celular",
                     "activo",
                 ],
-                where: {
+                /*where: {
                     activo: true,
-                },
+                },*/
             },
         ],
         where: {
             id: req.params.publId,
-            activo: true,
+            //activo: true,
         },
     })
         .then((publicacion) => {

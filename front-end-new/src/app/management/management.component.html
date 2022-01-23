@@ -16,7 +16,8 @@
         </div>
         <div class="pt-3 pt-lg-4">
             <div class="d-flex flex-wrap gap-3 gap-lg-4 justify-content-start align-items-stretch">
-                <app-product-card *ngFor="let product of productos" [product]="product" [showOwner]="false"></app-product-card>
+                <app-product-card *ngFor="let product of productos" [product]="product" [showOwner]="false">
+                </app-product-card>
             </div>
         </div>
     </div>
@@ -65,8 +66,74 @@
         </div>
     </div>
 
-    <div *ngIf="activeItem.id == '3'" class="container-sm py-3 pt-lg-4 pb-lg-5">
-        <p>Comentarios</p>
+    <div *ngIf="activeItem.id == '3'" id="comments" class="container-sm py-3 pt-lg-4 pb-lg-5">
+        <!--TODO: Agregar filtros a los comentarios-->
+        <div *ngIf="comentarios === null" class="custom-card text-center">
+            <h5 class="mb-0">Aún no hay comentarios.</h5>
+        </div>
+        <div  *ngIf="comentarios !== null" class="d-flex flex-column flex-lg-row flex-lg-wrap gap-3">
+            <div *ngFor="let coment of comentarios.rows" class="custom-card comment-card"
+                [ngClass]="coment.oculto ? 'opacity-50' : ''">
+                <div class="d-flex gap-3 justify-content-between">
+                    <h5>{{ coment.nombre }}</h5>
+                    <div class="d-flex gap-1">
+                        <div class="d-flex flex-column">
+                            <small class="text-right fecha">{{ coment.creado | date:'dd/LL/YYYY' }}</small>
+                            <small class="text-right fecha">{{ coment.creado | date:'HH:mm' }}</small>
+                        </div>
+                        <button *ngIf="!coment.oculto" pButton pRipple icon="pi pi-eye-slash"
+                            class="d-sm-none p-button-sm xs-adapt-button" (click)="cambiarEstadoComentario(coment)"
+                            [disabled]="updatingComment == coment.id" [loading]="updatingComment == coment.id"></button>
+                        <button *ngIf="!coment.oculto" pButton pRipple label="Ocultar" icon="pi pi-eye-slash"
+                            class="d-none d-sm-block p-button-sm xs-adapt-button"
+                            (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
+                            [loading]="updatingComment == coment.id"></button>
+                        <button *ngIf="coment.oculto" pButton pRipple icon="pi pi-eye"
+                            class="d-sm-none p-button-sm xs-adapt-button" (click)="cambiarEstadoComentario(coment)"
+                            [disabled]="updatingComment == coment.id" [loading]="updatingComment == coment.id"></button>
+                        <button *ngIf="coment.oculto" pButton pRipple label="Mostrar" icon="pi pi-eye"
+                            class="d-none d-sm-block p-button-sm xs-adapt-button"
+                            (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
+                            [loading]="updatingComment == coment.id"></button>
+                    </div>
+                </div>
+                <ng-template #t let-fill="fill">
+                    <span class="star" [class.full]="fill === 100">
+                        <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                    </span>
+                </ng-template>
+                <ngb-rating [(rate)]="coment.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
+                </ngb-rating>
+                <p *ngIf="coment.publicacion" class="mb-1"><span class="font-weight-bold">Producto: </span><a [routerLink]="['/product', coment.publicacion.id]">{{ coment.publicacion.titulo }}</a>
+                </p>
+                <p class="mb-1"><span class="font-weight-bold">Celular:</span> {{
+                    coment.celular ?
+                    '+' + coment.celular.substring(0,3) + ' ' + coment.celular.substring(3, 5) + ' ' +
+                    coment.celular.substring(5, 8) + ' ' + coment.celular.substring(8) : 'No ingresado' }}
+                </p>
+                <p class="mb-0 text-justify">{{ coment.texto }}</p>
+            </div>
+            <!--<p-paginator class="d-sm-none w-100" [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
+                [first]="commentsCurrentPage" [totalRecords]="comentarios.count" [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]"
+                [pageLinkSize]="1" [dropdownScrollHeight]="''" (onPageChange)="paginacionComentarios($event)">
+            </p-paginator>-->
+            <p-paginator class="d-sm-none w-100" [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
+                [first]="commentsCurrentPage" [totalRecords]="comentarios.count" [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]"
+                [dropdownScrollHeight]="''" [showPageLinks]="false" [showJumpToPageDropdown]="true"
+                [showFirstLastIcon]="false" currentPageReportTemplate="{currentPage} / {totalPages}"
+                (onPageChange)="paginacionComentarios($event)">
+            </p-paginator>
+            <p-paginator class="d-none d-sm-block d-md-none w-100"
+                [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
+                [first]="commentsCurrentPage" [totalRecords]="comentarios.count" [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]"
+                [pageLinkSize]="3" [dropdownScrollHeight]="''" (onPageChange)="paginacionComentarios($event)">
+            </p-paginator>
+            <p-paginator class="d-none d-md-block w-100"
+                [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
+                [first]="commentsCurrentPage" [totalRecords]="comentarios.count" [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]"
+                [dropdownScrollHeight]="''" (onPageChange)="paginacionComentarios($event)">
+            </p-paginator>
+        </div>
     </div>
 
     <div *ngIf="activeItem.id == '4'" class="container-sm py-3 pt-lg-4 pb-lg-5">

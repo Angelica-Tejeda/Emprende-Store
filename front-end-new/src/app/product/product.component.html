@@ -6,8 +6,8 @@
 <div *ngIf="!notFound && !unexpected" class="bg-primary">
     <div class="container-sm py-3 py-sm-4 py-lg-5 d-flex gap-3 flex-column flex-lg-row">
         <div class="custom-card galeria-container bg-lighter p-0">
-            <p-galleria [value]="product.fotos" [circular]="true" [showThumbnails]="false" [showItemNavigators]="true"
-                [showIndicators]="true" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
+            <p-galleria [value]="product.fotos" [circular]="true" [showThumbnails]="false" [showItemNavigators]="product.fotos.length > 1 ? true : false"
+                [showIndicators]="product.fotos.length > 1 ? true : false" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
                 <ng-template pTemplate="item" let-item>
                     <div class="image-galleria-template d-flex justify-content-center align-items-center">
                         <img [src]="mediaUrl + item" />
@@ -15,7 +15,7 @@
                 </ng-template>
             </p-galleria>
         </div>
-        <div class="custom-card product-details">
+        <div class="custom-card product-details" [ngClass]="product.descuento ? 'discount-card' : ''">
             <div class="d-flex flex-column justify-content-around h-100">
                 <div>
                     <a *ngIf="product.usuario.negocio" [routerLink]="['/profile', product.usuario.id]" (click)="redirectTo('/profile', product.usuario.id)">
@@ -24,7 +24,8 @@
                     <a *ngIf="!product.usuario.negocio" [routerLink]="['/profile', product.usuario.id]" (click)="redirectTo('/profile', product.usuario.id)">
                         <small class="small-link">{{ product.usuario.nombre }} {{ product.usuario.apellido }}</small>
                     </a>
-                    <h3>{{ product.titulo }}</h3>
+                    <h3 *ngIf="product.titulo">{{ product.titulo }}</h3>
+                    <h3 *ngIf="!product.titulo">Sin título</h3>
                     <ng-template #t let-fill="fill">
                         <span class="star" [class.full]="fill === 100">
                             <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
@@ -38,7 +39,12 @@
                         <h6 *ngIf="product.puntuacion === null" class="mb-0 font-weight-normal">No hay datos</h6>
                     </div>
                 </div>
-                <h1>$ {{ product.precio }}</h1>
+                <h1 *ngIf="product.precio && !product.descuento" class="text-nowrap">$ {{ product.precio }}</h1>
+                <h1 *ngIf="!product.precio" class="text-nowrap">Sin precio</h1>
+                <div *ngIf="product.descuento && product.precio" class="d-flex align-items-center flex-wrap-reverse">
+                    <h1 class="text-success mr-3 text-nowrap">$ {{ product.precio - (product.precio * product.descuento / 100) | number: '1.2-2'}}</h1>
+                    <h6 class="text-danger mb-0 text-nowrap"><s>$ {{ product.precio }}</s></h6>
+                </div>
                 <a *ngIf="!owned" class="link-button align-self-sm-center" target="_blank"
                     href="https://wa.me/{{ product.usuario.celular }}?text={{ mensajeContacto }}">
                     <button pButton pRipple type="button" label="CONTACTAR" icon="pi pi-whatsapp"
@@ -56,6 +62,7 @@
                             <button pButton pRipple type="button" label="{{categoria}}"
                                 class="p-button-sm xs-button"></button>
                         </a>
+                        <h5 *ngIf="product.categoria.length === 0">No hay categorías</h5>
                     </div>
                 </div>
             </div>
@@ -67,15 +74,8 @@
         <div>
             <div class="product-info pb-2-5 pb-sm-3 pb-lg-4">
                 <h2>Descripción</h2>
-                <p class="mb-0 text-justify">{{ product.descripcion }} Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit.
-                    Quos temporibus at nesciunt quis sunt porro nisi unde pariatur culpa laboriosam cum nostrum,
-                    consequatur dolorem dolore delectus laudantium quasi maxime? Libero!</p>
-                <!--<div class="custom-card">
-                    <p class="mb-0">{{ product.descripcion }} Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Quos temporibus at nesciunt quis sunt porro nisi unde pariatur culpa laboriosam cum nostrum,
-                        consequatur dolorem dolore delectus laudantium quasi maxime? Libero!</p>
-                </div>-->
+                <p *ngIf="product.descripcion" class="mb-0 text-justify">{{ product.descripcion }}</p>
+                <h5 *ngIf="!product.descripcion" class="mb-0 text-center">No hay descripción</h5>
             </div>
             <div id="comments" class="product-info py-2-5 py-sm-3 pt-lg-4 pb-lg-0">
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -162,22 +162,22 @@
                                     <button *ngIf="owned && !coment.oculto" pButton pRipple icon="pi pi-eye-slash"
                                         class="d-sm-none p-button-sm xs-adapt-button"
                                         (click)="cambiarEstadoComentario(coment)"
-                                        [disabled]="updatingComment == coment.id"
+                                        [disabled]="updatingComment == coment.id || loadingComments"
                                         [loading]="updatingComment == coment.id"></button>
                                     <button *ngIf="owned && !coment.oculto" pButton pRipple label="Ocultar"
                                         icon="pi pi-eye-slash" class="d-none d-sm-block p-button-sm xs-adapt-button"
                                         (click)="cambiarEstadoComentario(coment)"
-                                        [disabled]="updatingComment == coment.id"
+                                        [disabled]="updatingComment == coment.id || loadingComments"
                                         [loading]="updatingComment == coment.id"></button>
                                     <button *ngIf="owned && coment.oculto" pButton pRipple icon="pi pi-eye"
                                         class="d-sm-none p-button-sm xs-adapt-button"
                                         (click)="cambiarEstadoComentario(coment)"
-                                        [disabled]="updatingComment == coment.id"
+                                        [disabled]="updatingComment == coment.id || loadingComments"
                                         [loading]="updatingComment == coment.id"></button>
                                     <button *ngIf="owned && coment.oculto" pButton pRipple label="Mostrar"
                                         icon="pi pi-eye" class="d-none d-sm-block p-button-sm xs-adapt-button"
                                         (click)="cambiarEstadoComentario(coment)"
-                                        [disabled]="updatingComment == coment.id"
+                                        [disabled]="updatingComment == coment.id || loadingComments"
                                         [loading]="updatingComment == coment.id"></button>
                                 </div>
                             </div>
@@ -195,15 +195,15 @@
                             </p>
                             <p class="mb-0 text-justify">{{ coment.texto }}</p>
                         </div>
-                        <p-paginator class="d-sm-none"
+                        <!--<p-paginator class="d-sm-none"
                             [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
                             [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
-                            [rowsPerPageOptions]="[5,10,15]" [pageLinkSize]="1" [dropdownScrollHeight]="''"
+                            [rowsPerPageOptions]="[5,10,15,{showAll:'Todos'}]" [pageLinkSize]="1" [dropdownScrollHeight]="''"
                             (onPageChange)="paginacionComentarios($event)">
-                        </p-paginator>
+                        </p-paginator>-->
                         <p-paginator class="d-sm-none" [ngClass]="loadingComments ? 'disable-pagination' : ''"
                             [rows]="commentsRows" [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
-                            [rowsPerPageOptions]="[5,10,15]" [dropdownScrollHeight]="''" [showPageLinks]="false"
+                            [rowsPerPageOptions]="[5,10,15,{showAll:'Todos'}]" [dropdownScrollHeight]="''" [showPageLinks]="false"
                             [showJumpToPageDropdown]="true" [showFirstLastIcon]="false"
                             currentPageReportTemplate="{currentPage} / {totalPages}"
                             (onPageChange)="paginacionComentarios($event)">
@@ -211,13 +211,13 @@
                         <p-paginator class="d-none d-sm-block d-md-none d-lg-block d-xl-none"
                             [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
                             [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
-                            [rowsPerPageOptions]="[5,10,15]" [pageLinkSize]="3" [dropdownScrollHeight]="''"
+                            [rowsPerPageOptions]="[5,10,15,{showAll:'Todos'}]" [pageLinkSize]="3" [dropdownScrollHeight]="''"
                             (onPageChange)="paginacionComentarios($event)">
                         </p-paginator>
                         <p-paginator class="d-none d-md-block d-lg-none d-xl-block"
                             [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
                             [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
-                            [rowsPerPageOptions]="[2,5,10,15]" [dropdownScrollHeight]="''"
+                            [rowsPerPageOptions]="[5,10,15,{showAll:'Todos'}]" [dropdownScrollHeight]="''"
                             (onPageChange)="paginacionComentarios($event)">
                         </p-paginator>
                     </div>

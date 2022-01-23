@@ -14,6 +14,11 @@
   color: var(--warning);
 }
 
+@media (min-width: 992px) {
+  .comment-card {
+    width: calc(50% - 0.5rem);
+  }
+}
 
 /*.underline-title {
   border-bottom: solid 3px #455a64;

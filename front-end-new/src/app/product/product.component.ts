@@ -459,7 +459,9 @@ export class ProductComponent implements OnInit {
             this.comentarios = [];
           }
           this.comentarios.rows.unshift(res.result);
-          this.comentarios.rows.pop();
+          if (this.comentarios.rows.lenght > 5) {
+            this.comentarios.rows.pop();
+          }
           this.comentarios.count += 1;
         },
         error: (err) => {

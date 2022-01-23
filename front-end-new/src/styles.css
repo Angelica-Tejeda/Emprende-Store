@@ -545,6 +545,18 @@ button {
   }
 }
 
+.discount-card {
+  border: solid 4px var(--warning);
+}
+.no-border-top {
+  border-top: none;
+  border-width: 2px;
+}
+.no-border-bottom {
+  border-bottom: none;
+  border-width: 2px;
+}
+
 .p-accordion p-accordiontab .p-accordion-tab {
   margin-bottom: 0.5rem;
 }
@@ -593,6 +605,13 @@ button {
 }
 .no-icon > .p-button-icon {
   display: none;
+}
+
+.p-button {
+  justify-content: center;
+}
+.p-button-label {
+  flex:none;
 }
 
 .p-toast.p-toast-bottom-center {
