@@ -13,19 +13,19 @@ a:hover {
   border-radius: 25px 25px 0 0;
   overflow: hidden;
   width: 100%;
-  height: 8rem;
+  height: calc(35vw);
 }
 .custom-card {
   border-radius: 0 0 25px 25px;
   width: 100%;
-  height: calc(100% - 8rem);
+  height: calc(100% - 35vw);
 }
 @media (min-width: 576px) {
   .image-galleria-template {
-    height: 10rem;
+    height: 11.5rem;
   }
   .custom-card {
-    height: calc(100% - 10rem);
+    height: calc(100% - 11.5rem);
   }
 }
 @media (min-width: 768px) {
@@ -34,5 +34,13 @@ a:hover {
   }
   .custom-card {
     height: calc(100% - 11rem);
+  }
+}
+@media (min-width: 1200px) {
+  .image-galleria-template {
+    height: 12.5rem;
+  }
+  .custom-card {
+    height: calc(100% - 12.5rem);
   }
 }

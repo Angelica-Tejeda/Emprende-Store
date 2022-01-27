@@ -32,6 +32,53 @@ const uploadImage = multer({
     fileFilter,
 });
 
+exports.createUsuario = async (req, res) => {
+    Usuario.create({
+        email: req.body.email,
+        nombre: req.body.nombre,
+        apellido: req.body.apellido,
+        fecha_nacimiento: req.body.fecha_nacimiento,
+        celular:
+            req.body.celular !== null
+                ? "593" + req.body.celular.substring(1)
+                : null,
+    })
+        .then((usuario) => {
+            res.status(200).json({
+                status: "success",
+                message: "El usuario ha sido creado con éxico.",
+                result: usuario,
+            });
+        })
+        .catch((err) => {
+            console.log("ERROR: " + err);
+            if (err.name === "SequelizeValidationError") {
+                res.status(400).json({
+                    status: "error",
+                    message:
+                        "El valor ingresado en el campo " +
+                        err.errors[0].path +
+                        " no es válido. Ingrese un valor válido e inténtelo nuevamente.",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeDatabaseError") {
+                res.status(400).json({
+                    status: "error",
+                    message:
+                        "Uno de los valores ingresados no es válido. Revise los valores ingresados e intentelo nuevamente.",
+                    error: err,
+                });
+            } else {
+                res.status(500).json({
+                    status: "error",
+                    message:
+                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                    error: err,
+                });
+            }
+        });
+};
+
 exports.getAllUsuarios = async (req, res) => {
     Usuario.findAndCountAll({
         where: { rol: false },

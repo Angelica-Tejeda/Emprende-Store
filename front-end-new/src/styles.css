@@ -748,11 +748,11 @@ app-product-card:hover {
     width: calc(25% - 1.125rem);
   }
 }
-@media (min-width: 1200px) {
+/*@media (min-width: 1200px) {
   app-product-card {
     width: calc(20% - 1.2rem);
   }
-}
+}*/
 app-product-card.related-content {
   width: calc(50% - 0.5rem);
 }
@@ -771,6 +771,20 @@ app-product-card.related-content {
 @media (min-width: 992px) {
   app-product-card.related-content {
     width: calc(50% - 0.5rem);
+  }
+  app-product-card.related-content .image-galleria-template {
+    height: 7.5rem !important;
+  }
+  app-product-card.related-content .custom-card {
+    height: calc(100% - 7.5rem) !important;
+  }
+}
+@media (min-width: 1200px) {
+  app-product-card.related-content .image-galleria-template {
+    height: 9rem !important;
+  }
+  app-product-card.related-content .custom-card {
+    height: calc(100% - 9rem) !important;
   }
 }
 

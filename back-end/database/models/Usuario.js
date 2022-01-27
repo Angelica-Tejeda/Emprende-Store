@@ -23,7 +23,7 @@ Usuario.init(
         },
         password: {
             type: Sequelize.STRING(63),
-            allowNull: false,
+            allowNull: true,
             validate: {
                 notEmpty: true,
             },
@@ -140,12 +140,12 @@ Usuario.init(
         rol: {
             type: Sequelize.BOOLEAN,
             allowNull: false,
-            defaultValue: "0",
+            defaultValue: false,
         },
         activo: {
             type: Sequelize.BOOLEAN,
             allowNull: false,
-            defaultValue: "1",
+            defaultValue: false,
         },
         creado: {
             type: Sequelize.DATE,
