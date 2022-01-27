@@ -1,0 +1,36 @@
+<app-navbar></app-navbar>
+<div class="bg-lighter container-full-height">
+    <div class="container-sm py-3 py-sm-4 py-lg-5  flex-column justify-content-center align-items-center">
+        <div class="text-center">
+            <h1>Foro</h1>
+        </div>
+        <div class="d-flex flex-column flex-md-row justify-content-between mb-4">
+            <p-dropdown [options]="options" [(ngModel)]="selectedOption"></p-dropdown>
+            <button [routerLink]="['/newQuestion']" pButton pRipple label="Nueva Pregunta" icon="pi pi-plus"
+                class="p-button button-responsive"></button>
+        </div>
+        <div class="preguntas-sect mb-4 d-flex flex-column flex-lg-row flex-lg-wrap gap-3">
+            <div *ngFor="let question of questions.rows" class="custom-card comment-card flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <small class="d-block user-name">{{question.usuario.nombre}} {{question.usuario.apellido}} </small>
+                    <p-chip [label]="question.categoria"></p-chip>
+                </div>
+                <h3 class="mb-3">{{question.titulo}}</h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="d-block user-name">Preguntado el: {{question.creado|date:'dd/LL/yy hh:mm'}}</small>
+                    <div class="d-flex align-items-center gap-2"><small class="user-name">5 respuestas </small><i
+                            *ngIf="question.activo" class="pi pi-check-circle text-success font-weight-bold"  pTooltip="Pregunta resuelta" tooltipPosition="top"></i>
+                            <i *ngIf="!question.activo" class="pi pi-question-circle text-warning font-weight-bold" pTooltip="Pregunta sin resolver" tooltipPosition="top"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <p-paginator class="d-none d-md-block w-100" [ngClass]="loadingQuestions ? 'disable-pagination' : ''"
+                [rows]="questionRows" [first]="questionsCurrentPage" [totalRecords]="questions.count"
+                [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]" [dropdownScrollHeight]="''"
+                (onPageChange)="paginacionQuestions($event)">
+            </p-paginator>
+        </div>
+    </div>
+</div>
+<app-footbar></app-footbar>

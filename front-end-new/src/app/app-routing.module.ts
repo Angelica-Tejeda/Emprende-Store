@@ -10,7 +10,7 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SearchComponent } from './search/search.component';
 import { StoreComponent } from './store/store.component';
-
+import { ForumComponent } from './forum/forum.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'finance', component: FinanceComponent },
@@ -22,6 +22,7 @@ const routes: Routes = [
   { path: 'profile/:userId', component: ProfileComponent },
   { path: 'store', component: StoreComponent },
   { path: 'search/:busqueda', component: SearchComponent },
+  { path: 'forum', component: ForumComponent },
   { path: '**', component: NotFoundPageComponent },
 ];
 
