@@ -1,0 +1,12 @@
+
+@media (min-width: 992px) {
+    .comment-card {
+      width: calc(50% - 0.5rem);
+    }
+  }
+  .user-name{
+      font-size: medium;
+  }
+.pi-check-circle, .pi-question-circle{
+    font-size: larger;
+}

@@ -28,6 +28,8 @@ import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TabViewModule } from 'primeng/tabview';
 import {DividerModule} from 'primeng/divider';
+import { ChipModule } from 'primeng/chip';
+import {TooltipModule} from 'primeng/tooltip';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
@@ -100,7 +102,9 @@ import { ForumComponent } from './forum/forum.component';
     TabMenuModule,
     TabViewModule,
     DragDropModule,
-    DividerModule
+    DividerModule,
+    ChipModule,
+    TooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent],
