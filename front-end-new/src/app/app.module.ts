@@ -27,6 +27,7 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TabViewModule } from 'primeng/tabview';
+import {DividerModule} from 'primeng/divider';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
@@ -46,6 +47,7 @@ import { UnexpectedErrorComponent } from './shared/unexpected-error/unexpected-e
 import { ProductEditComponent } from './product-edit/product-edit.component';
 import { FinanceComponent } from './finance/finance.component';
 import { ProductCardComponent } from './shared/product-card/product-card.component';
+import { ForumComponent } from './forum/forum.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,7 @@ import { ProductCardComponent } from './shared/product-card/product-card.compone
     ProductEditComponent,
     FinanceComponent,
     ProductCardComponent,
+    ForumComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -97,6 +100,7 @@ import { ProductCardComponent } from './shared/product-card/product-card.compone
     TabMenuModule,
     TabViewModule,
     DragDropModule,
+    DividerModule
   ],
   providers: [],
   bootstrap: [AppComponent],
