@@ -30,6 +30,7 @@ import { TabViewModule } from 'primeng/tabview';
 import {DividerModule} from 'primeng/divider';
 import { ChipModule } from 'primeng/chip';
 import {TooltipModule} from 'primeng/tooltip';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
@@ -50,6 +51,7 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
 import { FinanceComponent } from './finance/finance.component';
 import { ProductCardComponent } from './shared/product-card/product-card.component';
 import { ForumComponent } from './forum/forum.component';
+import { NewQuestionFormComponent } from './new-question-form/new-question-form.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +73,7 @@ import { ForumComponent } from './forum/forum.component';
     FinanceComponent,
     ProductCardComponent,
     ForumComponent,
+    NewQuestionFormComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -104,8 +107,12 @@ import { ForumComponent } from './forum/forum.component';
     DragDropModule,
     DividerModule,
     ChipModule,
-    TooltipModule
+    TooltipModule,
+    DynamicDialogModule
   ],
+  entryComponents: [
+    NewQuestionFormComponent
+],
   providers: [],
   bootstrap: [AppComponent],
 })
