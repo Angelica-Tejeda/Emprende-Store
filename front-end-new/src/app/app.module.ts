@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,8 +13,11 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
+import { ChipModule } from 'primeng/chip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { GalleriaModule } from 'primeng/galleria';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -27,53 +31,49 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TabViewModule } from 'primeng/tabview';
-import {DividerModule} from 'primeng/divider';
-import { ChipModule } from 'primeng/chip';
-import {TooltipModule} from 'primeng/tooltip';
-import {DynamicDialogModule} from 'primeng/dynamicdialog';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
+import { FinanceComponent } from './finance/finance.component';
+import { ForumComponent } from './forum/forum.component';
 import { FootbarComponent } from './shared/footbar/footbar.component';
-import { StoreComponent } from './store/store.component';
+import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { SearchComponent } from './search/search.component';
-import { ProfileComponent } from './profile/profile.component';
-import { ProductComponent } from './product/product.component';
 import { ManagementComponent } from './management/management.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { NewQuestionFormComponent } from './new-question-form/new-question-form.component';
+import { NotAllowedComponent } from './shared/not-allowed/not-allowed.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
-import { NotAllowedComponent } from './shared/not-allowed/not-allowed.component';
-import { UnexpectedErrorComponent } from './shared/unexpected-error/unexpected-error.component';
-import { ProductEditComponent } from './product-edit/product-edit.component';
-import { FinanceComponent } from './finance/finance.component';
+import { ProductComponent } from './product/product.component';
 import { ProductCardComponent } from './shared/product-card/product-card.component';
-import { ForumComponent } from './forum/forum.component';
-import { NewQuestionFormComponent } from './new-question-form/new-question-form.component';
+import { ProductEditComponent } from './product-edit/product-edit.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SearchComponent } from './search/search.component';
+import { StoreComponent } from './store/store.component';
+import { UnexpectedErrorComponent } from './shared/unexpected-error/unexpected-error.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    NavbarComponent,
+    FinanceComponent,
+    ForumComponent,
     FootbarComponent,
-    StoreComponent,
+    HomeComponent,
     LoginComponent,
-    SearchComponent,
-    ProfileComponent,
-    ProductComponent,
     ManagementComponent,
+    NavbarComponent,
+    NewQuestionFormComponent,
+    NotAllowedComponent,
     NotFoundComponent,
     NotFoundPageComponent,
-    NotAllowedComponent,
-    UnexpectedErrorComponent,
-    ProductEditComponent,
-    FinanceComponent,
+    ProductComponent,
     ProductCardComponent,
-    ForumComponent,
-    NewQuestionFormComponent,
+    ProductEditComponent,
+    ProfileComponent,
+    SearchComponent,
+    StoreComponent,
+    UnexpectedErrorComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -89,8 +89,11 @@ import { NewQuestionFormComponent } from './new-question-form/new-question-form.
     CalendarModule,
     CardModule,
     CarouselModule,
+    ChipModule,
     ConfirmDialogModule,
+    DividerModule,
     DropdownModule,
+    DynamicDialogModule,
     GalleriaModule,
     InputMaskModule,
     InputNumberModule,
@@ -104,15 +107,9 @@ import { NewQuestionFormComponent } from './new-question-form/new-question-form.
     TableModule,
     TabMenuModule,
     TabViewModule,
-    DragDropModule,
-    DividerModule,
-    ChipModule,
     TooltipModule,
-    DynamicDialogModule
   ],
-  entryComponents: [
-    NewQuestionFormComponent
-],
+  entryComponents: [NewQuestionFormComponent],
   providers: [],
   bootstrap: [AppComponent],
 })
