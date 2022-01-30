@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
+import {DialogService} from 'primeng/dynamicdialog';
+import { NewQuestionFormComponent } from '../new-question-form/new-question-form.component';
 @Component({
   selector: 'app-forum',
   templateUrl: './forum.component.html',
-  styleUrls: ['./forum.component.css']
+  styleUrls: ['./forum.component.css'],
+  providers: [DialogService]
 })
+ 
 export class ForumComponent implements OnInit {
   options: String[] = ["Todas las preguntas", "Mis preguntas", "Resueltas", "Sin resolver"];
   selectedOption: any;
@@ -91,10 +95,24 @@ export class ForumComponent implements OnInit {
       },
     ]
   }
-  constructor() { }
+  ref:any;
+  constructor(public dialogService: DialogService) { }
 
   ngOnInit(): void {
   }
   buscarPreguntas() { }
   paginacionQuestions(event: any) { }
+  show() {
+    this.ref = this.dialogService.open(NewQuestionFormComponent, {
+      header: 'Hacer nueva pregunta',
+      width: '40%',
+      height: '50%'
+  });
+}
+
+ngOnDestroy() {
+    if (this.ref) {
+        this.ref.close();
+    }
+}
 }

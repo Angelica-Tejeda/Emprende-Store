@@ -1,12 +1,12 @@
 <app-navbar></app-navbar>
 <div class="bg-lighter container-full-height">
-    <div class="container-sm py-3 py-sm-4 py-lg-5  flex-column justify-content-center align-items-center">
+    <div class="container-sm py-3 py-sm-4 py-lg-5 flex-column justify-content-center align-items-center">
         <div class="text-center">
             <h1>Foro</h1>
         </div>
         <div class="d-flex flex-column flex-md-row justify-content-between mb-4">
             <p-dropdown [options]="options" [(ngModel)]="selectedOption"></p-dropdown>
-            <button [routerLink]="['/newQuestion']" pButton pRipple label="Nueva Pregunta" icon="pi pi-plus"
+            <button (click)="show()" pButton pRipple label="Nueva Pregunta" icon="pi pi-plus"
                 class="p-button button-responsive"></button>
         </div>
         <div class="preguntas-sect mb-4 d-flex flex-column flex-lg-row flex-lg-wrap gap-3">
