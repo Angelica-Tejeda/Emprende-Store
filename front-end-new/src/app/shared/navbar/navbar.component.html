@@ -53,18 +53,18 @@
             </li>
             <div *ngIf="isHome" class="dropdown-divider d-lg-none"></div>
             <li *ngIf="isHome" class="nav-item m-auto">
-                <a class="nav-link" [routerLink]="['.']" fragment="sobrenosotros" (click)="isMenuCollapsed = true">
+                <a class="nav-link" [routerLink]="['']" fragment="about-us" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="SOBRE NOSOTROS"
                         class="p-button navbar-button"></button>
                 </a>
             </li>
             <li *ngIf="isHome" class="nav-item m-auto">
-                <a class="nav-link" [routerLink]="['.']" fragment="testimonios" (click)="isMenuCollapsed = true">
+                <a class="nav-link" [routerLink]="['.']" fragment="testimonials" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="TESTIMONIOS" class="p-button navbar-button"></button>
                 </a>
             </li>
             <li *ngIf="isHome" class="nav-item m-auto">
-                <a class="nav-link" [routerLink]="['.']" fragment="contacto" (click)="isMenuCollapsed = true">
+                <a class="nav-link" [routerLink]="['.']" fragment="contact" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="CONTACTO" class="p-button navbar-button"></button>
                 </a>
             </li>
@@ -89,7 +89,7 @@
                 <div ngbDropdownMenu aria-labelledby="profileDropDown" class="dropdown-menu bg-darker mt-3">
                     <a ngbDropdownItem [routerLink]="['/profile', usuario.id]"
                         [ngClass]="{'active': url == '/profile/' + usuario.id}"
-                        (click)="isMenuCollapsed = true; redirectTo('/profile', usuario.id)">
+                        (click)="isMenuCollapsed = true">
                         <button pButton pRipple type="button" label="Ver perfil"
                             class="p-button navbar-button my-1"></button>
                     </a>
@@ -117,7 +117,7 @@
             <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
                 <a class="nav-link" [routerLink]="['/profile', usuario.id]"
                     [ngClass]="{'active': url == '/profile/' + usuario.id}"
-                    (click)="isMenuCollapsed = true; redirectTo('/profile', usuario.id)">
+                    (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="VER PERFIL" class="p-button navbar-button"></button>
                 </a>
             </li>

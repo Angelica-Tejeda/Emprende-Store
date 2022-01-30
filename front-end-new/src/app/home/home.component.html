@@ -22,14 +22,16 @@
         </div>
     </div>
 </header>
-<section id="sobrenosotros" class="bg-lighter py-3 py-sm-4 py-lg-5">
+<section id="about-us" class="bg-lighter py-3 py-sm-4 py-lg-5">
     <div class="container-sm text-center">
         <h2>Sobre Nosotros</h2>
     </div>
     <div class="container-sm text-center d-flex flex-column gap-3">
         <p-accordion class="d-md-none" [multiple]="true">
+            <div class="custom-card w-100 mb-2">
+                <img class="apada-logo" src="../../assets/img/apada-logo-transparent.png" alt="APADA Guayas logo">
+            </div>
             <p-accordionTab header="¿Qué es APADA?">
-                <img class="apada-logo my-2" src="../../assets/img/apada-logo-transparent.png" alt="APADA Guayas logo">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices mauris quis sapien sagittis,
                     quis pretium nisl placerat. Quisque consectetur sagittis nunc quis sodales. Proin accumsan enim sit
@@ -116,7 +118,7 @@
 </section>
 <section class="bg-primary">
     <div class="container-sm text-center d-lg-flex gap-5">
-        <div id="testimonios" class="py-3 py-sm-4 py-lg-5 d-flex flex-column">
+        <div id="testimonials" class="py-3 py-sm-4 py-lg-5 d-flex flex-column">
             <h2 class="text-white">Testimonios</h2>
             <div class="d-flex flex-column gap-3 justify-content-between h-100">
                 <div class="custom-card">
@@ -163,7 +165,7 @@
                 </div>
             </div>
         </div>
-        <div id="contacto" class="py-3 py-sm-4 py-lg-5 d-flex flex-column">
+        <div id="contact" class="py-3 py-sm-4 py-lg-5 d-flex flex-column">
             <h2 class="text-white">Contáctanos</h2>
             <div class="custom-card bg-lighter h-100 d-flex flex-column">
                 <form class="d-flex flex-column justify-content-around h-100" [formGroup]="contactForm"

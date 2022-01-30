@@ -663,8 +663,27 @@ button {
   }
 }
 
+a p-chip:hover .p-chip-text {
+  color: var(--primary);
+}
+
+.product-category-chip {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.product-category-chip:hover {
+  background-color: var(--lighter);
+}
+
+.product-category-chip .p-chip-text {
+  font-size: 0.92rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
 .small-link {
-  font-size: small;
+  font-size: 1rem;
   color: #495057;
 }
 

@@ -226,6 +226,7 @@ exports.getOwnPublicacionById = async (req, res) => {
                     "apellido",
                     "negocio",
                     "celular",
+                    "foto_perfil",
                     "activo",
                 ],
                 /*where: {
@@ -460,6 +461,7 @@ exports.getPublicacionById = async (req, res) => {
                     "apellido",
                     "negocio",
                     "celular",
+                    "foto_perfil",
                     "activo",
                 ],
                 where: {

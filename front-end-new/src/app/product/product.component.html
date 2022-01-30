@@ -3,7 +3,7 @@
 <app-not-found *ngIf="notFound"></app-not-found>
 <app-unexpected-error *ngIf="unexpected"></app-unexpected-error>
 
-<div *ngIf="!notFound && !unexpected" class="bg-primary">
+<div *ngIf="!notFound && !unexpected && product" class="bg-primary">
     <div class="container-sm py-3 py-sm-4 py-lg-5 d-flex gap-3 flex-column flex-lg-row">
         <div class="custom-card galeria-container bg-lighter p-0">
             <p-galleria [value]="product.fotos" [circular]="true" [showThumbnails]="false" [showItemNavigators]="product.fotos.length > 1 ? true : false"
@@ -18,11 +18,8 @@
         <div class="custom-card product-details" [ngClass]="product.descuento ? 'discount-card' : ''">
             <div class="d-flex flex-column justify-content-around h-100">
                 <div>
-                    <a *ngIf="product.usuario.negocio" [routerLink]="['/profile', product.usuario.id]" (click)="redirectTo('/profile', product.usuario.id)">
-                        <small class="small-link">{{ product.usuario.negocio }}</small>
-                    </a>
-                    <a *ngIf="!product.usuario.negocio" [routerLink]="['/profile', product.usuario.id]" (click)="redirectTo('/profile', product.usuario.id)">
-                        <small class="small-link">{{ product.usuario.nombre }} {{ product.usuario.apellido }}</small>
+                    <a [routerLink]="['/profile', product.usuario.id]">
+                        <p-chip [label]="product.usuario.negocio ? product.usuario.negocio : product.usuario.nombre + ' ' + product.usuario.apellido" [image]="mediaUrl + product.usuario.foto_perfil"></p-chip>
                     </a>
                     <h3 *ngIf="product.titulo">{{ product.titulo }}</h3>
                     <h3 *ngIf="!product.titulo">Sin título</h3>
@@ -59,8 +56,7 @@
                     <div class="d-flex flex-wrap gap-2 justify-content-center">
                         <a *ngFor="let categoria of product.categoria" class="link-button align-self-sm-center"
                             [routerLink]="'.'">
-                            <button pButton pRipple type="button" label="{{categoria}}"
-                                class="p-button-sm xs-button"></button>
+                            <p-chip [label]="categoria" styleClass="product-category-chip"></p-chip>
                         </a>
                         <h5 *ngIf="product.categoria.length === 0">No hay categorías</h5>
                     </div>

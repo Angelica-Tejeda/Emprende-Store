@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+//import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-product-edit',
   templateUrl: './product-edit.component.html',
@@ -64,9 +64,9 @@ export class ProductEditComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  drop(event: CdkDragDrop<string[]>) {
+  /*drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.fotos, event.previousIndex, event.currentIndex);
-  }
+  }*/
   removePhoto(pos:number){
     
   }

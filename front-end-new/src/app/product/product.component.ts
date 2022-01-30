@@ -20,7 +20,8 @@ export class ProductComponent implements OnInit {
   unexpected: boolean = false;
   owned: boolean = false;
   publId: any;
-  product: any;
+  product: any = null;
+  mensajeContacto: string = '';
   comentarios: any = null;
   commentsCurrentPage: number = 0;
   commentsRows: number = 5;
@@ -42,7 +43,6 @@ export class ProductComponent implements OnInit {
     },
     { updateOn: 'submit' }
   );
-  mensajeContacto: string = '';
   //TODO: Cargar productos relacionados y productos del mismo vendedor desde backend
   productosVendedor: any = [
     {
@@ -322,8 +322,48 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(({ publId }) => {
+      this.notFound = false;
+      this.unexpected = false;
+      this.owned = false;
+      this.product = null;
+      this.mensajeContacto = '';
+      this.comentarios = null;
+      this.commentsCurrentPage = 0;
+      this.commentsRows = 5;
+      this.loadingComments = false;
+      this.showNewComment = false;
+      this.updatingComment = null;
+      this.sendingCommentForm = false;
+      this.submittedCommentForm = false;
+      this.commentForm = new FormGroup(
+        {
+          nombre: new FormControl(null, null),
+          //email: new FormControl(null, [Validators.required, Validators.email]),
+          celular: new FormControl(null, [
+            Validators.minLength(10),
+            Validators.pattern('^[0][9][0-9]+'),
+          ]),
+          puntuacion: new FormControl(null, Validators.required),
+          texto: new FormControl(null, Validators.required),
+        },
+        { updateOn: 'submit' }
+      );
       this.publId = publId;
+      this.getPublicacionOwn();
     });
+  }
+
+  ngAfterViewInit() {
+    this.route.fragment.subscribe((next) => {
+      if (next) {
+        this.router.navigate(['/product', this.product.id], {
+          fragment: next,
+        });
+      }
+    });
+  }
+
+  getPublicacionOwn() {
     if (this.cookieService.check('usuario_id')) {
       this.publicacionService
         .getOwnPublicacionById(
@@ -623,12 +663,6 @@ export class ProductComponent implements OnInit {
         };
         this.visitaService.createContactoPublicacion(payload).subscribe();
       },
-    });
-  }
-  
-  redirectTo(uri: string, params: string) {
-    this.router.navigateByUrl('.', { skipLocationChange: true }).then(() => {
-      this.router.navigate([uri, params]);
     });
   }
 }

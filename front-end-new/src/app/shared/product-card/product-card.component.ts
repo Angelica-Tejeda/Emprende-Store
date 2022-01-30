@@ -15,10 +15,4 @@ export class ProductCardComponent implements OnInit {
   constructor(public router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {}
-
-  redirectTo(uri: string, params: string) {
-    this.router.navigateByUrl('.', { skipLocationChange: true }).then(() => {
-      this.router.navigate([uri, params]);
-    });
-  }
 }

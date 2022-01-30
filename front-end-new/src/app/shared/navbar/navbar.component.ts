@@ -42,8 +42,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     if (
       this.cookieService.check('usuario_id') &&
-      this.cookieService.get('usuario_id') !== null &&
-      !this.router.url.includes('login')
+      this.cookieService.get('usuario_id') !== null
     ) {
       this.usuarioService
         .getMinUsuarioById(+this.cookieService.get('usuario_id'))
@@ -63,30 +62,7 @@ export class NavbarComponent implements OnInit {
               });
             }
           },
-          error: (err) => {
-            this.messageService.add({
-              key: 'general',
-              severity: 'error',
-              summary: 'Error',
-              detail:
-                'Ha ocurrido un error inesperado. Por favor, inicie sesión nuevamente.',
-              life: 3000,
-            });
-            this.router
-              .navigate(['/login'], {
-                queryParams: { redirect: true },
-              })
-              .then(() => {
-                this.cookieService.delete('usuario_act');
-                this.cookieService.delete('usuario_rol');
-                if (
-                  this.cookieService.check('usuario_id') &&
-                  this.cookieService.get('usuario_id') === null
-                ) {
-                  this.cookieService.delete('usuario_id');
-                }
-              });
-          },
+          error: (err) => {},
         });
     }
     if (this.isSearch) {
@@ -136,12 +112,6 @@ export class NavbarComponent implements OnInit {
         });
       },
       reject: () => {},
-    });
-  }
-  
-  redirectTo(uri: string, params: string) {
-    this.router.navigateByUrl('.', { skipLocationChange: true }).then(() => {
-      this.router.navigate([uri, params]);
     });
   }
 }
