@@ -20,101 +20,11 @@
   }
 }
 
-/*.underline-title {
-  border-bottom: solid 3px #455a64;
+@media (min-width: 768px) {
+  .comment-input-product {
+    width: calc(100% - 12.1rem - 282.5px);
+  }
+  .comment-input-field {
+    width: 10.1rem;
+  }
 }
-.estadistica {
-  margin: 0;
-  padding: 25px 0;
-  background-color: rgb(174, 192, 228);
-  border: solid 1px #455a64;
-}
-.info-producto {
-  margin: 0 0 3em 0;
-}
-.grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-gap: 80px;
-  margin-top: 100px;
-  margin-bottom: 50px;
-}
-.v-container-1,
-.v-container-2 {
-  display: flex;
-  flex-direction: column;
-}
-.descripcion {
-  margin-top: 2em;
-  margin-bottom: 1.5em;
-}
-.card {
-  padding: 1.5em;
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-}
-.info {
-  display: flex;
-  justify-content: space-between;
-}
-.comment-text {
-  margin-top: 0.6em;
-}
-.vendedor {
-  display: block;
-  font-weight: 400;
-  font-style: italic;
-  font-size: 1.2rem;
-  margin-bottom: 0.3em !important;
-  color: var(--secondary);
-}
-.vendedor:hover {
-  text-decoration: underline;
-}
-.nombre-product {
-  margin-bottom: 0.2em;
-}
-.rating {
-  display: flex;
-  margin-bottom: 1.5em;
-}
-.puntuacion {
-  margin-right: 0.8em;
-  font-size: larger;
-}
-.icon {
-  font-size: larger;
-}
-.bi-whatsapp {
-  color: white;
-  margin-left: 0.4em;
-}
-.precio {
-  font-weight: 600;
-}
-.btn-primary {
-  width: 45%;
-  font-weight: bold;
-  font-size: large;
-}
-.galeria {
-  margin-top: 45px;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto;
-  grid-gap: 10px;
-}
-.card.relacionados {
-  transition: box-shadow 0.3s;
-}
-.card.relacionados:hover {
-  box-shadow: 0 0 11px var(--secondary);
-  cursor: pointer;
-}
-.foto-rel {
-  margin-bottom: 1em;
-}
-.bold {
-  font-size: larger;
-}
-*/

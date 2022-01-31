@@ -22,7 +22,111 @@
         </div>
     </div>
 
-    <div *ngIf="activeItem.id == '2'" class="container-sm py-3 pt-lg-4 pb-lg-5">
+    <div *ngIf="activeItem.id == '2'" id="comments" class="container-sm py-3 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="mb-0">Comentarios<span *ngIf="comentarios !== null"> ({{comentarios.count}})</span></h2>
+            </div>
+            <button pButton pRipple [label]="showCommentFilters ? 'Ocultar filtros' : 'Mostrar filtros'"
+                [icon]="showCommentFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                class="p-button-sm d-none d-sm-block" (click)="showCommentFilters = !showCommentFilters;"></button>
+            <button pButton pRipple [icon]="showCommentFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                class="p-button-sm d-sm-none" (click)="showCommentFilters = !showCommentFilters;"></button>
+        </div>
+        <form *ngIf="showCommentFilters" class="d-flex flex-column gap-3" [formGroup]="commentFilterForm"
+            (submit)="cargarComentarios()">
+            <div class="d-flex flex-column flex-md-row justify-content-between gap-3 flex-wrap mt-2">
+                <span class="p-input-filled p-float-label text-left comment-input-product">
+                    <p-dropdown [options]="commentFilterProducto" optionLabel="titulo" optionValue="id" id="producto"
+                        formControlName="producto" placeholder=" " [style]="{'height': '50px'}" [styleClass]="'w-100'"
+                        [scrollHeight]="''">
+                    </p-dropdown>
+                    <label [style]="{'margin-top': '-0.1rem'}" for="producto">Publicación</label>
+                </span>
+                <span class="p-input-filled p-float-label text-left comment-input-field">
+                    <p-dropdown [options]="commentFilterCampo" optionLabel="label" optionValue="value" id="campo"
+                        formControlName="campo" placeholder=" " [style]="{'height': '50px'}" [styleClass]="'w-100'"
+                        [scrollHeight]="''">
+                    </p-dropdown>
+                    <label [style]="{'margin-top': '-0.1rem'}" for="campo">Ordenar por</label>
+                </span>
+                <p-selectButton class="select-button-2" [options]="commentFilterOrden" formControlName="orden"
+                    optionLabel="label" optionValue="value" [styleClass]="'w-100'"></p-selectButton>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="submit" pButton pRipple label="Aplicar" icon="pi pi-search"
+                    class="p-button button-responsive"></button>
+            </div>
+        </form>
+        <div *ngIf="comentarios === null" class="custom-card text-center">
+            <h5 class="mb-0">Aún no hay comentarios.</h5>
+        </div>
+        <div *ngIf="comentarios !== null" class="d-flex flex-column flex-lg-row flex-lg-wrap gap-3">
+            <div *ngFor="let coment of comentarios.rows" class="custom-card comment-card"
+                [ngClass]="coment.oculto ? 'opacity-50' : ''">
+                <div class="d-flex gap-3 justify-content-between">
+                    <h5>{{ coment.nombre }}</h5>
+                    <div class="d-flex gap-1">
+                        <div class="d-flex flex-column">
+                            <small class="text-right fecha">{{ coment.creado | date:'dd/LL/YYYY' }}</small>
+                            <small class="text-right fecha">{{ coment.creado | date:'HH:mm' }}</small>
+                        </div>
+                        <button *ngIf="!coment.oculto" pButton pRipple icon="pi pi-eye-slash"
+                            class="d-sm-none p-button-sm xs-adapt-button" (click)="cambiarEstadoComentario(coment)"
+                            [disabled]="updatingComment == coment.id" [loading]="updatingComment == coment.id"></button>
+                        <button *ngIf="!coment.oculto" pButton pRipple label="Ocultar" icon="pi pi-eye-slash"
+                            class="d-none d-sm-block p-button-sm xs-adapt-button"
+                            (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
+                            [loading]="updatingComment == coment.id"></button>
+                        <button *ngIf="coment.oculto" pButton pRipple icon="pi pi-eye"
+                            class="d-sm-none p-button-sm xs-adapt-button" (click)="cambiarEstadoComentario(coment)"
+                            [disabled]="updatingComment == coment.id" [loading]="updatingComment == coment.id"></button>
+                        <button *ngIf="coment.oculto" pButton pRipple label="Mostrar" icon="pi pi-eye"
+                            class="d-none d-sm-block p-button-sm xs-adapt-button"
+                            (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
+                            [loading]="updatingComment == coment.id"></button>
+                    </div>
+                </div>
+                <ng-template #t let-fill="fill">
+                    <span class="star" [class.full]="fill === 100">
+                        <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                    </span>
+                </ng-template>
+                <ngb-rating [(rate)]="coment.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
+                </ngb-rating>
+                <p class="mb-1"><span class="font-weight-bold">Publicación: </span>
+                    <a *ngIf="coment.publicacion" [routerLink]="['/product', coment.publicacion.id]">{{
+                        coment.publicacion.titulo }}</a>
+                    <span *ngIf="!coment.publicacion">Eliminada</span>
+                </p>
+                <p class="mb-1"><span class="font-weight-bold">Celular:</span> {{
+                    coment.celular ?
+                    '+' + coment.celular.substring(0,3) + ' ' + coment.celular.substring(3, 5) + ' ' +
+                    coment.celular.substring(5, 8) + ' ' + coment.celular.substring(8) : 'No ingresado' }}
+                </p>
+                <p class="mb-0 text-justify">{{ coment.texto }}</p>
+            </div>
+            <p-paginator class="d-sm-none w-100" [ngClass]="loadingComments ? 'disable-pagination' : ''"
+                [rows]="commentsRows" [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
+                [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]" [dropdownScrollHeight]="''" [showPageLinks]="false"
+                [showJumpToPageDropdown]="true" [showFirstLastIcon]="false"
+                currentPageReportTemplate="{currentPage} / {totalPages}" (onPageChange)="paginacionComentarios($event)">
+            </p-paginator>
+            <p-paginator class="d-none d-sm-block d-md-none w-100"
+                [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
+                [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
+                [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]" [pageLinkSize]="3" [dropdownScrollHeight]="''"
+                (onPageChange)="paginacionComentarios($event)">
+            </p-paginator>
+            <p-paginator class="d-none d-md-block w-100" [ngClass]="loadingComments ? 'disable-pagination' : ''"
+                [rows]="commentsRows" [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
+                [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]" [dropdownScrollHeight]="''"
+                (onPageChange)="paginacionComentarios($event)">
+            </p-paginator>
+        </div>
+    </div>
+
+    <div *ngIf="activeItem.id == '3'" class="container-sm py-3 pt-lg-4 pb-lg-5">
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
             <input pInputText type="text" placeholder="Filtrar por titulo">
             <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
@@ -66,152 +170,10 @@
         </div>
     </div>
 
-    <div *ngIf="activeItem.id == '3'" id="comments" class="container-sm py-3 pt-lg-4 pb-lg-5">
-        <!--TODO: Agregar filtros a los comentarios-->
-        <div *ngIf="comentarios === null" class="custom-card text-center">
-            <h5 class="mb-0">Aún no hay comentarios.</h5>
-        </div>
-        <div  *ngIf="comentarios !== null" class="d-flex flex-column flex-lg-row flex-lg-wrap gap-3">
-            <div *ngFor="let coment of comentarios.rows" class="custom-card comment-card"
-                [ngClass]="coment.oculto ? 'opacity-50' : ''">
-                <div class="d-flex gap-3 justify-content-between">
-                    <h5>{{ coment.nombre }}</h5>
-                    <div class="d-flex gap-1">
-                        <div class="d-flex flex-column">
-                            <small class="text-right fecha">{{ coment.creado | date:'dd/LL/YYYY' }}</small>
-                            <small class="text-right fecha">{{ coment.creado | date:'HH:mm' }}</small>
-                        </div>
-                        <button *ngIf="!coment.oculto" pButton pRipple icon="pi pi-eye-slash"
-                            class="d-sm-none p-button-sm xs-adapt-button" (click)="cambiarEstadoComentario(coment)"
-                            [disabled]="updatingComment == coment.id" [loading]="updatingComment == coment.id"></button>
-                        <button *ngIf="!coment.oculto" pButton pRipple label="Ocultar" icon="pi pi-eye-slash"
-                            class="d-none d-sm-block p-button-sm xs-adapt-button"
-                            (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
-                            [loading]="updatingComment == coment.id"></button>
-                        <button *ngIf="coment.oculto" pButton pRipple icon="pi pi-eye"
-                            class="d-sm-none p-button-sm xs-adapt-button" (click)="cambiarEstadoComentario(coment)"
-                            [disabled]="updatingComment == coment.id" [loading]="updatingComment == coment.id"></button>
-                        <button *ngIf="coment.oculto" pButton pRipple label="Mostrar" icon="pi pi-eye"
-                            class="d-none d-sm-block p-button-sm xs-adapt-button"
-                            (click)="cambiarEstadoComentario(coment)" [disabled]="updatingComment == coment.id"
-                            [loading]="updatingComment == coment.id"></button>
-                    </div>
-                </div>
-                <ng-template #t let-fill="fill">
-                    <span class="star" [class.full]="fill === 100">
-                        <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
-                    </span>
-                </ng-template>
-                <ngb-rating [(rate)]="coment.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
-                </ngb-rating>
-                <p *ngIf="coment.publicacion" class="mb-1"><span class="font-weight-bold">Producto: </span><a [routerLink]="['/product', coment.publicacion.id]">{{ coment.publicacion.titulo }}</a>
-                </p>
-                <p class="mb-1"><span class="font-weight-bold">Celular:</span> {{
-                    coment.celular ?
-                    '+' + coment.celular.substring(0,3) + ' ' + coment.celular.substring(3, 5) + ' ' +
-                    coment.celular.substring(5, 8) + ' ' + coment.celular.substring(8) : 'No ingresado' }}
-                </p>
-                <p class="mb-0 text-justify">{{ coment.texto }}</p>
-            </div>
-            <!--<p-paginator class="d-sm-none w-100" [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
-                [first]="commentsCurrentPage" [totalRecords]="comentarios.count" [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]"
-                [pageLinkSize]="1" [dropdownScrollHeight]="''" (onPageChange)="paginacionComentarios($event)">
-            </p-paginator>-->
-            <p-paginator class="d-sm-none w-100" [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
-                [first]="commentsCurrentPage" [totalRecords]="comentarios.count" [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]"
-                [dropdownScrollHeight]="''" [showPageLinks]="false" [showJumpToPageDropdown]="true"
-                [showFirstLastIcon]="false" currentPageReportTemplate="{currentPage} / {totalPages}"
-                (onPageChange)="paginacionComentarios($event)">
-            </p-paginator>
-            <p-paginator class="d-none d-sm-block d-md-none w-100"
-                [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
-                [first]="commentsCurrentPage" [totalRecords]="comentarios.count" [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]"
-                [pageLinkSize]="3" [dropdownScrollHeight]="''" (onPageChange)="paginacionComentarios($event)">
-            </p-paginator>
-            <p-paginator class="d-none d-md-block w-100"
-                [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
-                [first]="commentsCurrentPage" [totalRecords]="comentarios.count" [rowsPerPageOptions]="[6,12,24,{showAll:'Todos'}]"
-                [dropdownScrollHeight]="''" (onPageChange)="paginacionComentarios($event)">
-            </p-paginator>
-        </div>
-    </div>
-
     <div *ngIf="activeItem.id == '4'" class="container-sm py-3 pt-lg-4 pb-lg-5">
         <p>Información Personal</p>
     </div>
 
 </div>
-
-<!--<div *ngIf="!notAllowed" class="padding">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body little-profile text-center">
-                <div class="underline-title">
-                    <h3 class="fs-2">Buen día, {{ usuario.nombre }}</h3>
-                </div>
-                <div>
-                    <h4>Estas son tus estadísticas de los últimos 30 días:</h4>
-                </div>
-                <div class="row text-center mt-5">
-                    <div class="col-lg-6 col-md-6 m-t-20 text-center estadistica">
-                        <small class="fw-bold fs-4">Total de de visitas al perfil</small>
-                        <h3 class="mt-4 m-b-0 font-light fs-1 text-center">{{ visitasPerfil }}</h3>
-                    </div>
-                    <div class="col-lg-6 col-md-6 m-t-20 text-center estadistica">
-                        <small class="fw-bold fs-4">Promedio de Calificaciones</small>
-                        <h3 class="mt-4 m-b-0 font-light fs-1 text-center">{{ usuario.puntuacion }}</h3>
-                    </div>
-                    <div class="col-lg-6 col-md-6 m-t-20 text-center estadistica">
-                        <small class="fw-bold fs-4">Total de visitas a productos/servicios</small>
-                        <h3 class="mt-4 m-b-0 font-light fs-1 text-center">{{ visitasProductos }}</h3>
-                    </div>
-                    <div class="col-lg-6 col-md-6 m-t-20 text-center estadistica">
-                        <small class="fw-bold fs-4">Total de veces contactado</small>
-                        <h3 class="mt-4 m-b-0 font-light fs-1 text-center">{{ visitasContacto }}</h3>
-                    </div>
-
-                    <div>
-                        <h4>Últimos comentarios en tus productos:</h4>
-                        <div class="card">
-                            <div class="wrapper info">
-                                <span>Anonimo</span>
-                                <span>11/12/2021</span>
-                            </div>
-                            <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                            <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae
-                                venenatis ex. Nulla odio tortor, mattis ac odio ut, varius gravida dui. Aliquam in nisl
-                                vitae orci commodo semper ac quis elit. Quisque volutpat dui et cursus eleifend. Aliquam
-                                laoreet, elit in pharetra ultrices, sapien magna ultrices diam, non porta tellus odio
-                                tempor nisi.</p>
-                        </div>
-                        <div class="card">
-                            <div class="wrapper info">
-                                <span>Anonimo</span>
-                                <span>11/12/2021</span>
-                            </div>
-                            <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                            <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae
-                                venenatis ex. Nulla odio tortor, mattis ac odio ut, varius gravida dui. Aliquam in nisl
-                                vitae orci commodo semper ac quis elit. Quisque volutpat dui et cursus eleifend. Aliquam
-                                laoreet, elit in pharetra ultrices, sapien magna ultrices diam, non porta tellus odio
-                                tempor nisi.</p>
-                        </div>
-                    </div>
-                    <div>
-                        <h4>Actividad reciente en el foro:</h4>
-                    </div>
-                    <div>
-                        <h4>Mis Publicaciones:</h4>
-                        <div *ngFor="let producto of productos" ; class="card relacionados">
-                            <img class="foto-rel" src="{{producto.fotos[0]}}" alt="">
-                            <span class="bold">{{producto.titulo}}</span>
-                            <span>${{producto.precio}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
 
 <app-footbar></app-footbar>

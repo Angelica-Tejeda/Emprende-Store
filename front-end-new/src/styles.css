@@ -611,7 +611,17 @@ button {
   justify-content: center;
 }
 .p-button-label {
-  flex:none;
+  flex: none !important;
+}
+
+.select-button-2 .p-button {
+  width: 50%;
+}
+.select-button-3 .p-button {
+  width: 33.333%;
+}
+.select-button-4 .p-button {
+  width: 25%;
 }
 
 .p-toast.p-toast-bottom-center {

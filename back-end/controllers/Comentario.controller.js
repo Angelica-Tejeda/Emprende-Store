@@ -56,91 +56,34 @@ exports.getAllComentariosByUsuario = async (req, res) => {
             req.query.page && req.query.limit
                 ? req.query.page * req.query.limit
                 : undefined,
-        order: [["id", "DESC"]],
+        order:
+            req.query.field == "publicacion"
+                ? [
+                      [
+                          Publicacion,
+                          "titulo",
+                          req.query.order ? req.query.order : "DESC",
+                      ],
+                      ["creado", req.query.order ? req.query.order : "DESC"],
+                      ["id", req.query.order ? req.query.order : "DESC"],
+                  ]
+                : [
+                      [
+                          req.query.field ? req.query.field : "creado",
+                          req.query.order ? req.query.order : "DESC",
+                      ],
+                      ["id", req.query.order ? req.query.order : "DESC"],
+                  ],
         where: {
             usuario_id: req.params.userId,
         },
+        attributes: { exclude: ["publicacion_id", "usuario_id"] },
         include: [
             {
                 model: Publicacion,
                 attributes: ["id", "titulo"],
             },
         ],
-    })
-        .then((comentarios) => {
-            if (comentarios.count > 0) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Comentarios obtenidos con éxito.",
-                    result: comentarios,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Comentarios no encontrados.",
-                    result: comentarios,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message:
-                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
-                error: err,
-            });
-        });
-};
-
-/*exports.getComentariosByUsuario = async (req, res) => {
-    Comentario.findAndCountAll({
-        order: [["id", "DESC"]],
-        where: {
-            usuario_id: req.params.userId,
-            oculto: false,
-        },
-        attributes: { exclude: ["celular"] },
-    })
-        .then((comentarios) => {
-            if (comentarios.count > 0) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Comentarios obtenidos con éxito.",
-                    result: comentarios,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Comentarios no encontrados.",
-                    result: comentarios,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message:
-                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
-                error: err,
-            });
-        });
-};*/
-
-exports.getOwnComentariosByNullPublicacion = async (req, res) => {
-    Comentario.findAndCountAll({
-        limit: req.query.limit ? req.query.limit : undefined,
-        offset:
-            req.query.page && req.query.limit
-                ? req.query.page * req.query.limit
-                : undefined,
-        order: [["id", "DESC"]],
-        where: {
-            usuario_id: req.params.userId,
-            publicacion_id: null,
-        },
-        attributes: { exclude: ["modificado", "publicacion_id", "usuario_id"] },
     })
         .then((comentarios) => {
             if (comentarios.count > 0) {
@@ -175,14 +118,37 @@ exports.getOwnComentariosByPublicacion = async (req, res) => {
             req.query.page && req.query.limit
                 ? req.query.page * req.query.limit
                 : undefined,
-        order: [["id", "DESC"]],
+        order:
+            req.query.field == "publicacion"
+                ? [
+                      [
+                          Publicacion,
+                          "titulo",
+                          req.query.order ? req.query.order : "DESC",
+                      ],
+                      ["creado", req.query.order ? req.query.order : "DESC"],
+                      ["id", req.query.order ? req.query.order : "DESC"],
+                  ]
+                : [
+                      [
+                          req.query.field ? req.query.field : "creado",
+                          req.query.order ? req.query.order : "DESC",
+                      ],
+                      ["id", req.query.order ? req.query.order : "DESC"],
+                  ],
         where: {
             usuario_id: req.params.userId,
-            publicacion_id: req.params.publId,
+            publicacion_id: req.params.publId > 0 ? req.params.publId : null,
         },
         attributes: {
-            exclude: ["modificado", "publicacion_id", "usuario_id"],
+            exclude: ["publicacion_id", "usuario_id"],
         },
+        include: [
+            {
+                model: Publicacion,
+                attributes: ["id", "titulo"],
+            },
+        ],
     })
         .then((comentarios) => {
             if (comentarios.count > 0) {
@@ -217,7 +183,24 @@ exports.getComentariosByPublicacion = async (req, res) => {
             req.query.page && req.query.limit
                 ? req.query.page * req.query.limit
                 : undefined,
-        order: [["id", "DESC"]],
+        order:
+            req.query.field == "publicacion"
+                ? [
+                      [
+                          Publicacion,
+                          "titulo",
+                          req.query.order ? req.query.order : "DESC",
+                      ],
+                      ["creado", req.query.order ? req.query.order : "DESC"],
+                      ["id", req.query.order ? req.query.order : "DESC"],
+                  ]
+                : [
+                      [
+                          req.query.field ? req.query.field : "creado",
+                          req.query.order ? req.query.order : "DESC",
+                      ],
+                      ["id", req.query.order ? req.query.order : "DESC"],
+                  ],
         where: {
             usuario_id: req.params.userId,
             publicacion_id: req.params.publId,

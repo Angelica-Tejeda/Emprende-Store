@@ -14,15 +14,15 @@ import { ForumComponent } from './forum/forum.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'finance', component: FinanceComponent },
+  { path: 'forum', component: ForumComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'management', component: ManagementComponent },
   { path: 'product/:publId', component: ProductComponent },
   { path: 'product/edit/:publId', component: ProductEditComponent },
   { path: 'profile/:userId', component: ProfileComponent },
-  { path: 'store', component: StoreComponent },
   { path: 'search/:busqueda', component: SearchComponent },
-  { path: 'forum', component: ForumComponent },
+  { path: 'store', component: StoreComponent },
   { path: '**', component: NotFoundPageComponent },
 ];
 

@@ -450,7 +450,7 @@ export class ProductComponent implements OnInit {
             });
             this.visitaService.createVisitaPublicacion(resIp).subscribe();
           },
-          error: (errIp) => {
+          error: () => {
             let payload = {
               usuario_id: this.product.usuario.id,
               publicacion_id: this.product.id,

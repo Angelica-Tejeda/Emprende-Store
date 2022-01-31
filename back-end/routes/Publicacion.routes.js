@@ -12,6 +12,7 @@ router.get("/categ", controller.getCategorias);
 
 router.get("/all", auth, admin, controller.getAllPublicaciones);
 router.get("/own/user/:userId", auth, emprend, owned, controller.getOwnPublicacionesByUsuario);
+router.get("/min/user/:userId", auth, emprend, owned, controller.getMinPublicacionesByUsuario);
 router.get("/own/:userId/:publId", auth, emprend, owned, controller.getOwnPublicacionById);
 router.get("/user/:userId", controller.getPublicacionesByUsuario);
 router.get("/search/:search", controller.getPublicacionesBySearch);

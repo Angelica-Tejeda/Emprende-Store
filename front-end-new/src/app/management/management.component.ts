@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { UsuarioService } from 'src/services/usuario.service';
 import { VisitaService } from 'src/services/visita.service';
 import { PublicacionService } from 'src/services/publicacion.service';
 import { ComentarioService } from 'src/services/comentario.service';
 import { MessageService } from 'primeng/api';
+import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { MenuItem } from 'primeng/api';
 
@@ -24,23 +25,23 @@ export class ManagementComponent implements OnInit {
       label: 'Publicaciones',
       icon: 'pi pi-fw pi-th-large',
       command: (event: any) => {
-        this.activeItem = this.items[0];
+        this.router.navigate(['/management'], { fragment: 'products' });
       },
     },
     {
       id: '2',
-      label: 'Estadísticas',
-      icon: 'pi pi-fw pi-chart-bar',
+      label: 'Comentarios',
+      icon: 'pi pi-fw pi-comments',
       command: (event: any) => {
-        this.activeItem = this.items[1];
+        this.router.navigate(['/management'], { fragment: 'comments' });
       },
     },
     {
       id: '3',
-      label: 'Comentarios',
-      icon: 'pi pi-fw pi-comments',
+      label: 'Estadísticas',
+      icon: 'pi pi-fw pi-chart-bar',
       command: (event: any) => {
-        this.activeItem = this.items[2];
+        this.router.navigate(['/management'], { fragment: 'statistics' });
       },
     },
     {
@@ -48,7 +49,7 @@ export class ManagementComponent implements OnInit {
       label: 'Mis Datos',
       icon: 'pi pi-fw pi-id-card',
       command: (event: any) => {
-        this.activeItem = this.items[3];
+        this.router.navigate(['/management'], { fragment: 'personalInfo' });
       },
     },
   ];
@@ -66,9 +67,31 @@ export class ManagementComponent implements OnInit {
   commentsRows: number = 6;
   loadingComments: boolean = false;
   updatingComment: any = null;
+  showCommentFilters: boolean = false;
+  commentFilterForm: FormGroup = new FormGroup(
+    {
+      producto: new FormControl(-1),
+      campo: new FormControl('creado'),
+      orden: new FormControl('DESC'),
+    },
+    { updateOn: 'submit' }
+  );
+  commentFilterProducto: any = [];
+  commentFilterCampo: any = [
+    { label: 'Fecha', value: 'creado' },
+    { label: 'Publicación', value: 'publicacion' },
+    { label: 'Puntuación', value: 'puntuacion' },
+    { label: 'Ocultos', value: 'oculto' },
+    { label: 'Celular', value: 'celular' },
+  ];
+  commentFilterOrden: any = [
+    { label: 'Ascendente', value: 'ASC' },
+    { label: 'Descendente', value: 'DESC' },
+  ];
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private cookieService: CookieService,
     private usuarioService: UsuarioService,
     private publicacionService: PublicacionService,
@@ -78,6 +101,17 @@ export class ManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.route.fragment.subscribe((frag) => {
+      if (frag == 'personalInfo') {
+        this.activeItem = this.items[3];
+      } else if (frag == 'statistics') {
+        this.activeItem = this.items[2];
+      } else if (frag == 'comments') {
+        this.activeItem = this.items[1];
+      } else {
+        this.activeItem = this.items[0];
+      }
+    });
     if (
       this.cookieService.check('usuario_id') &&
       this.cookieService.get('usuario_id') !== null
@@ -106,6 +140,13 @@ export class ManagementComponent implements OnInit {
             } else {
               this.unexpected = true;
             }
+          },
+        });
+        this.publicacionService
+        .getMinPublicacionesByUsuario(+this.cookieService.get('usuario_id'))
+        .subscribe({
+          next: (res) => {
+            this.commentFilterProducto = res.result;
           },
         });
       this.visitaService
@@ -141,16 +182,7 @@ export class ManagementComponent implements OnInit {
             this.visitasContacto = res.result;
           },
         });
-      this.comentarioService
-        .getAllComentariosByUsuario(+this.cookieService.get('usuario_id'), {
-          limit: this.commentsRows,
-          page: 0,
-        })
-        .subscribe({
-          next: (res) => {
-            this.comentarios = res.result;
-          },
-        });
+      this.cargarComentarios();
     } else {
       this.notAllowed = true;
     }
@@ -204,29 +236,57 @@ export class ManagementComponent implements OnInit {
       });
   }
 
-  paginacionComentarios(event: any, publId?: string | null) {
+  cargarComentarios() {
+    this.commentsCurrentPage = 0;
     this.loadingComments = true;
-    if (publId !== undefined) {
+    let publId = this.commentFilterForm.get('producto')?.value;
+    if (publId >= 0) {
       this.comentarioService
         .getOwnComentariosByPublicacion(
-          this.usuario.id,
-          publId ? +publId : null,
+          +this.cookieService.get('usuario_id'),
+          publId,
           {
-            limit: event.rows,
-            page: event.page,
+            field: this.commentFilterForm.get('campo')?.value,
+            order: this.commentFilterForm.get('orden')?.value,
+            limit: this.commentsRows,
+            page: this.commentsCurrentPage,
           }
         )
         .subscribe({
           next: (res) => {
             this.comentarios = res.result;
-            this.commentsCurrentPage = event.first;
-            this.commentsRows = event.rows;
-            this.router.navigate(['/management'], {
-              fragment: 'comments',
-            });
             this.loadingComments = false;
           },
           error: (err) => {
+            if (err.status == "404") {
+              this.comentarios = null;
+            } else {
+              this.messageService.add({
+                key: 'general',
+                severity: 'error',
+                summary: 'Error',
+                detail:
+                  'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+                life: 3000,
+              });
+            }
+            this.loadingComments = false;
+          },
+        });
+    } else {
+      this.comentarioService
+        .getOwnComentariosByUsuario(+this.cookieService.get('usuario_id'), {
+          field: this.commentFilterForm.get('campo')?.value,
+          order: this.commentFilterForm.get('orden')?.value,
+          limit: this.commentsRows,
+          page: this.commentsCurrentPage,
+        })
+        .subscribe({
+          next: (res) => {
+            this.comentarios = res.result;
+            this.loadingComments = false;
+          },
+          error: () => {
             this.messageService.add({
               key: 'general',
               severity: 'error',
@@ -238,9 +298,17 @@ export class ManagementComponent implements OnInit {
             this.loadingComments = false;
           },
         });
-    } else {
+    }
+  }
+
+  paginacionComentarios(event: any) {
+    let publId = this.commentFilterForm.get('producto')?.value;
+    this.loadingComments = true;
+    if (publId && publId >= 0) {
       this.comentarioService
-        .getAllComentariosByUsuario(this.usuario.id, {
+        .getOwnComentariosByPublicacion(this.usuario.id, publId, {
+          field: this.commentFilterForm.get('campo')?.value,
+          order: this.commentFilterForm.get('orden')?.value,
           limit: event.rows,
           page: event.page,
         })
@@ -254,7 +322,37 @@ export class ManagementComponent implements OnInit {
             });
             this.loadingComments = false;
           },
-          error: (err) => {
+          error: () => {
+            this.messageService.add({
+              key: 'general',
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+              life: 3000,
+            });
+            this.loadingComments = false;
+          },
+        });
+    } else {
+      this.comentarioService
+        .getOwnComentariosByUsuario(this.usuario.id, {
+          field: this.commentFilterForm.get('campo')?.value,
+          order: this.commentFilterForm.get('orden')?.value,
+          limit: event.rows,
+          page: event.page,
+        })
+        .subscribe({
+          next: (res) => {
+            this.comentarios = res.result;
+            this.commentsCurrentPage = event.first;
+            this.commentsRows = event.rows;
+            this.router.navigate(['/management'], {
+              fragment: 'comments',
+            });
+            this.loadingComments = false;
+          },
+          error: () => {
             this.messageService.add({
               key: 'general',
               severity: 'error',

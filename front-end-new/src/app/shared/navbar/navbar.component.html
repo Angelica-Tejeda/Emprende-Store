@@ -88,8 +88,7 @@
                 </a>
                 <div ngbDropdownMenu aria-labelledby="profileDropDown" class="dropdown-menu bg-darker mt-3">
                     <a ngbDropdownItem [routerLink]="['/profile', usuario.id]"
-                        [ngClass]="{'active': url == '/profile/' + usuario.id}"
-                        (click)="isMenuCollapsed = true">
+                        [ngClass]="{'active': url == '/profile/' + usuario.id}" (click)="isMenuCollapsed = true">
                         <button pButton pRipple type="button" label="Ver perfil"
                             class="p-button navbar-button my-1"></button>
                     </a>
@@ -103,10 +102,10 @@
                         <button pButton pRipple type="button" label="Finanzas"
                             class="p-button navbar-button my-1"></button>
                     </a>
-                    <!--<a ngbDropdownItem [routerLink]="'.'" [ngClass]="{'active': url == '/forum'}"
+                    <a ngbDropdownItem [routerLink]="'/forum'" [ngClass]="{'active': url == '/forum'}"
                         (click)="isMenuCollapsed = true">
                         <button pButton pRipple type="button" label="Foro" class="p-button navbar-button my-1"></button>
-                    </a>-->
+                    </a>
                     <div class="dropdown-divider"></div>
                     <a ngbDropdownItem (click)="cerrarSesion()">
                         <button pButton pRipple type="button" label="Cerrar sesión"
@@ -116,8 +115,7 @@
             </li>
             <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
                 <a class="nav-link" [routerLink]="['/profile', usuario.id]"
-                    [ngClass]="{'active': url == '/profile/' + usuario.id}"
-                    (click)="isMenuCollapsed = true">
+                    [ngClass]="{'active': url == '/profile/' + usuario.id}" (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="VER PERFIL" class="p-button navbar-button"></button>
                 </a>
             </li>
@@ -134,12 +132,12 @@
                     <button pButton pRipple type="button" label="FINANZAS" class="p-button navbar-button"></button>
                 </a>
             </li>
-            <!--<li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
-                <a class="nav-link" [routerLink]="'.'" [ngClass]="{'active': url == '/forum'}"
+            <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
+                <a class="nav-link" [routerLink]="'/forum'" [ngClass]="{'active': url == '/forum'}"
                     (click)="isMenuCollapsed = true">
                     <button pButton pRipple type="button" label="FORO" class="p-button navbar-button"></button>
                 </a>
-            </li>-->
+            </li>
             <div *ngIf="isLogged" class="dropdown-divider d-lg-none"></div>
             <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
                 <a class="nav-link" [routerLink]="'.'" (click)="cerrarSesion(); isMenuCollapsed = true">

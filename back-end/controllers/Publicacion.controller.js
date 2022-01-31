@@ -214,6 +214,43 @@ exports.getOwnPublicacionesByUsuario = async (req, res) => {
         });
 };
 
+exports.getMinPublicacionesByUsuario = async (req, res) => {
+    Publicacion.findAndCountAll({
+        where: { usuario_id: req.params.userId, titulo: { [Op.not]: null } },
+        attributes: ["id", "titulo"],
+        order: [["titulo", "ASC"]],
+    })
+        .then((publicaciones) => {
+            let finalResult = [{ id: -1, titulo: "Todas las publicaciones" }];
+            for (let prod of publicaciones.rows) {
+                finalResult.push(prod);
+            }
+            finalResult.push({ id: 0, titulo: "Publicaciones eliminadas" });
+            if (publicaciones.count > 0) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Publicaciones obtenidas con éxito.",
+                    result: finalResult,
+                });
+            } else {
+                res.status(404).json({
+                    status: "error",
+                    message: "Publicaciones no encontradas.",
+                    result: finalResult,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
+            });
+        });
+};
+
 exports.getOwnPublicacionById = async (req, res) => {
     Publicacion.findOne({
         attributes: { exclude: ["usuario_id"] },

@@ -1,8 +1,12 @@
 <app-navbar></app-navbar>
 
-<div class="padding">
+<app-not-found *ngIf="notFound"></app-not-found>
+<app-unexpected-error *ngIf="unexpected"></app-unexpected-error>
+
+
+
+<!--<div class="padding">
     <div class="col-md-12">
-        <!-- Column -->
         <div class="card"> <img class="card-img-top" src="{{ mediaUrl }}{{ usuario.foto_portada }}"
                 alt="Card image cap">
             <div class="card-body little-profile text-center">
@@ -48,6 +52,6 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 <app-footbar></app-footbar>

@@ -27,6 +27,7 @@ import { MessagesModule } from 'primeng/messages';
 import { PaginatorModule } from 'primeng/paginator';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -103,6 +104,7 @@ import { UnexpectedErrorComponent } from './shared/unexpected-error/unexpected-e
     PaginatorModule,
     PasswordModule,
     RippleModule,
+    SelectButtonModule,
     ToastModule,
     TableModule,
     TabMenuModule,

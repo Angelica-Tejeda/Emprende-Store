@@ -25,6 +25,12 @@ export class PublicacionService {
     });
   }
 
+  getMinPublicacionesByUsuario(userId: number): Observable<any> {
+    return this.http.get(`${_apiUrl}/min/user/${userId}`, {
+      withCredentials: true,
+    });
+  }
+
   getPublicacionesBySearch(search: string): Observable<any> {
     return this.http.get(`${_apiUrl}/search/${search}`);
   }

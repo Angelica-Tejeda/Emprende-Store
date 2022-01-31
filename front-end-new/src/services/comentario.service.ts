@@ -15,7 +15,7 @@ export class ComentarioService {
     return this.http.post(`${_apiUrl}`, data);
   }
 
-  getAllComentariosByUsuario(
+  getOwnComentariosByUsuario(
     userId: number,
     queryParams?: any
   ): Observable<any> {
@@ -27,20 +27,13 @@ export class ComentarioService {
 
   getOwnComentariosByPublicacion(
     userId: number,
-    publId: number | null,
+    publId: number,
     queryParams?: any
   ): Observable<any> {
-    if (publId === null) {
-      return this.http.get(`${_apiUrl}/publ/own/${userId}/null`, {
-        params: queryParams ? queryParams : undefined,
-        withCredentials: true,
-      });
-    } else {
-      return this.http.get(`${_apiUrl}/publ/own/${userId}/${publId}`, {
-        params: queryParams ? queryParams : undefined,
-        withCredentials: true,
-      });
-    }
+    return this.http.get(`${_apiUrl}/publ/own/${userId}/${publId}`, {
+      params: queryParams ? queryParams : undefined,
+      withCredentials: true,
+    });
   }
 
   getComentariosByPublicacion(
