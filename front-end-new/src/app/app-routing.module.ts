@@ -11,6 +11,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { SearchComponent } from './search/search.component';
 import { StoreComponent } from './store/store.component';
 import { ForumComponent } from './forum/forum.component';
+import { QuestionViewComponent } from './question-view/question-view.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'finance', component: FinanceComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'profile/:userId', component: ProfileComponent },
   { path: 'search/:busqueda', component: SearchComponent },
   { path: 'store', component: StoreComponent },
+  { path: 'question/:id', component: QuestionViewComponent },
   { path: '**', component: NotFoundPageComponent },
 ];
 

@@ -12,10 +12,10 @@
         <div class="preguntas-sect mb-4 d-flex flex-column flex-lg-row flex-lg-wrap gap-3">
             <div *ngFor="let question of questions.rows" class="custom-card comment-card flex-column">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <small class="d-block user-name">{{question.usuario.nombre}} {{question.usuario.apellido}} </small>
+                    <small class="d-block user-name hover" [routerLink]="['/profile',question.usuario.id]">{{question.usuario.nombre}} {{question.usuario.apellido}} </small>
                     <p-chip [label]="question.categoria"></p-chip>
                 </div>
-                <h3 class="mb-3">{{question.titulo}}</h3>
+                <h3 class="mb-3 hover" [routerLink]="['/question',question.id]">{{question.titulo}}</h3>
                 <div class="d-flex justify-content-between align-items-center">
                     <small class="d-block user-name">Preguntado el: {{question.creado|date:'dd/LL/yy hh:mm'}}</small>
                     <div class="d-flex align-items-center gap-2"><small class="user-name">5 respuestas </small><i
