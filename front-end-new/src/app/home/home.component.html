@@ -170,7 +170,7 @@
             <div class="custom-card bg-lighter h-100 d-flex flex-column">
                 <form class="d-flex flex-column justify-content-around h-100" [formGroup]="contactForm"
                     (submit)="enviarFormulario()">
-                    <div>
+                    <div class="font-italic">
                         <p class="mb-0">¿Tienes dudas, sugerencias o quiéres formar parte de esta iniciativa?</p>
                         <p>Llena el siguiente formulario y nos pondremos en contacto contigo.</p>
                     </div>
@@ -208,7 +208,7 @@
                         </span>
                         <div>
                             <button pButton pRipple type="submit" label="Enviar" [disabled]="sendingContactForm"
-                                [loading]="sendingContactForm" class="p-button w-100 mt-3">
+                                [loading]="sendingContactForm" icon="pi pi-send" class="p-button w-100 mt-3">
                             </button>
                         </div>
                     </div>

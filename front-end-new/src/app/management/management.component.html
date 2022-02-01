@@ -8,15 +8,30 @@
         <p-tabMenu #tab [model]="items" [activeItem]="activeItem"></p-tabMenu>
     </div>
 
-    <div *ngIf="activeItem.id == '1'" class="container-sm py-3 pt-lg-4 pb-lg-5">
-        <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+    <div *ngIf="activeItem.id == '1'" class="container-sm py-3 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="mb-0">Publicaciones<span *ngIf="productos !== null"> ({{productos.count}})</span></h3>
+            </div>
+            <div class="d-flex gap-3">
+                <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
+                    class="p-button-sm d-none d-md-block"></button>
+                <button pButton pRipple icon="pi pi-plus" class="p-button-sm d-md-none"></button>
+                <button pButton pRipple [label]="showProductFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'"
+                    [icon]="showProductFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                    class="p-button-sm d-none d-md-block" (click)="showProductFilters = !showProductFilters;"></button>
+                <button pButton pRipple [icon]="showProductFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                    class="p-button-sm d-md-none" (click)="showProductFilters = !showProductFilters;"></button>
+            </div>
+        </div>
+        <!--<div class="d-flex flex-column flex-md-row justify-content-between gap-3">
             <input pInputText type="text" placeholder="Filtrar por titulo">
             <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
                 class="p-button button-responsive"></button>
-        </div>
-        <div class="pt-3 pt-lg-4">
+        </div>-->
+        <div>
             <div class="d-flex flex-wrap gap-3 gap-lg-4 justify-content-start align-items-stretch">
-                <app-product-card *ngFor="let product of productos" [product]="product" [showOwner]="false">
+                <app-product-card *ngFor="let product of productos.rows" [product]="product" [showOwner]="false">
                 </app-product-card>
             </div>
         </div>
@@ -25,9 +40,9 @@
     <div *ngIf="activeItem.id == '2'" id="comments" class="container-sm py-3 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h2 class="mb-0">Comentarios<span *ngIf="comentarios !== null"> ({{comentarios.count}})</span></h2>
+                <h3 class="mb-0">Comentarios<span *ngIf="comentarios !== null"> ({{comentarios.count}})</span></h3>
             </div>
-            <button pButton pRipple [label]="showCommentFilters ? 'Ocultar filtros' : 'Mostrar filtros'"
+            <button pButton pRipple [label]="showCommentFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'"
                 [icon]="showCommentFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
                 class="p-button-sm d-none d-sm-block" (click)="showCommentFilters = !showCommentFilters;"></button>
             <button pButton pRipple [icon]="showCommentFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
@@ -35,7 +50,7 @@
         </div>
         <form *ngIf="showCommentFilters" class="d-flex flex-column gap-3" [formGroup]="commentFilterForm"
             (submit)="cargarComentarios()">
-            <div class="d-flex flex-column flex-md-row justify-content-between gap-3 flex-wrap mt-2">
+            <div class="d-flex flex-column flex-md-row justify-content-between gap-3 flex-wrap">
                 <span class="p-input-filled p-float-label text-left comment-input-product">
                     <p-dropdown [options]="commentFilterProducto" optionLabel="titulo" optionValue="id" id="producto"
                         formControlName="producto" placeholder=" " [style]="{'height': '50px'}" [styleClass]="'w-100'"
@@ -43,7 +58,7 @@
                     </p-dropdown>
                     <label [style]="{'margin-top': '-0.1rem'}" for="producto">Publicación</label>
                 </span>
-                <span class="p-input-filled p-float-label text-left comment-input-field">
+                <span class="p-input-filled p-float-label text-left comment-input-field mt-2 mt-md-0">
                     <p-dropdown [options]="commentFilterCampo" optionLabel="label" optionValue="value" id="campo"
                         formControlName="campo" placeholder=" " [style]="{'height': '50px'}" [styleClass]="'w-100'"
                         [scrollHeight]="''">
@@ -171,7 +186,106 @@
     </div>
 
     <div *ngIf="activeItem.id == '4'" class="container-sm py-3 pt-lg-4 pb-lg-5">
-        <p>Información Personal</p>
+        <div class="custom-card">
+            <form action="" [formGroup]="userEditForm" (submit)="actualizarDatosUsuario()">
+                <div class="d-flex flex-column flex-md-row justify-content-center gap-md-3">
+                    <div class="d-flex flex-column align-items-stretch w-100">
+                        <h5 class="text-center mb-0">Datos Personales</h5>
+                        <span class="p-input-filled p-float-label mt-4">
+                            <input pInputText id="nombre" type="text" formControlName="nombre" name="nombre"
+                                class="w-100"
+                                [ngClass]="(submittedUserEditForm && userEditForm.get('nombre')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                            <label for="nombre">Nombre</label>
+                        </span>
+                        <span class="p-input-filled p-float-label mt-4-5">
+                            <input pInputText id="apellido" type="text" formControlName="apellido" name="apellido"
+                                class="w-100"
+                                [ngClass]="(submittedUserEditForm && userEditForm.get('apellido')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                            <label for="apellido">Apellido</label>
+                        </span>
+                        <span class="p-input-filled p-float-label mt-4-5">
+                            <p-calendar inputId="fecha_nacimiento" formControlName="fecha_nacimiento" name="fecha_nacimiento"
+                            [maxDate]="maxDateValue" styleClass="w-100">
+                            </p-calendar>
+                            <label for="fecha_nacimiento">Fecha de nacimiento</label>
+                        </span>
+                        <span class="p-input-filled p-float-label mt-4-5">
+                            <input pInputText id="email" type="text" formControlName="email" name="email" class="w-100"
+                                [ngClass]="(submittedUserEditForm && userEditForm.get('email')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                            <label for="email">E-mail</label>
+                        </span>
+                        <span class="p-input-filled p-float-label mt-4-5">
+                            <p-inputMask id="celular" type="tel" formControlName="celular" name="celular"
+                                mask="9999999999" [autoClear]="false"
+                                [styleClass]="(submittedUserEditForm && userEditForm.get('celular')?.invalid) ? 'w-100 ng-dirty ng-invalid' : 'w-100'">
+                            </p-inputMask>
+                            <label for="celular">Número celular</label>
+                        </span>
+                        <span class="p-input-filled p-float-label mt-4-5">
+                            <textarea pInputTextarea id="bio" [rows]="5" [cols]="35" formControlName="bio" name="bio"
+                                class="w-100"
+                                [ngClass]="(submittedUserEditForm && userEditForm.get('bio')?.invalid) ? 'ng-dirty ng-invalid' : ''"></textarea>
+                            <label for="bio">Descripción</label>
+                        </span>
+                    </div>
+                    <p-divider class="d-none d-md-block" layout="vertical"></p-divider>
+                    <p-divider class="d-md-none"></p-divider>
+                    <div class="d-flex flex-column gap-md-3 align-items-stretch w-100">
+                        <div>
+                            <h5 class="text-center mb-0">Datos del Negocio</h5>
+                            <span class="p-input-filled p-float-label mt-4">
+                                <input pInputText id="negocio" type="text" formControlName="negocio" name="negocio"
+                                    class="w-100"
+                                    [ngClass]="(submittedUserEditForm && userEditForm.get('negocio')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                <label for="negocio">Nombre del negocio</label>
+                            </span>
+                            <span class="p-input-filled p-float-label mt-4-5">
+                                <p-calendar inputId="fecha_inicio" formControlName="fecha_inicio" name="fecha_inicio"
+                                [maxDate]="maxDateValue" styleClass="w-100">
+                                </p-calendar>
+                                <label for="fecha_inicio">Fecha de inauguración</label>
+                            </span>
+                        </div>
+                        <p-divider></p-divider>
+                        <div>
+                            <h5 class="text-center mb-0">Redes Sociales</h5>
+                            <span class="p-input-filled p-float-label mt-4">
+                                <input pInputText id="facebook" type="text" formControlName="facebook" name="facebook"
+                                    class="w-100"
+                                    [ngClass]="(submittedUserEditForm && userEditForm.get('facebook')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                <label for="facebook">Facebook</label>
+                            </span>
+                            <span class="p-input-filled p-float-label mt-4-5">
+                                <input pInputText id="instagram" type="text" formControlName="instagram"
+                                    name="instagram" class="w-100"
+                                    [ngClass]="(submittedUserEditForm && userEditForm.get('instagram')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                <label for="instagram">Instagram</label>
+                            </span>
+                            <span class="p-input-filled p-float-label mt-4-5">
+                                <input pInputText id="twitter" type="text" formControlName="twitter" name="twitter"
+                                    class="w-100"
+                                    [ngClass]="(submittedUserEditForm && userEditForm.get('twitter')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                <label for="twitter">Twitter</label>
+                            </span>
+                            <span class="p-input-filled p-float-label mt-4-5">
+                                <input pInputText id="linkedin" type="text" formControlName="linkedin" name="linkedin"
+                                    class="w-100"
+                                    [ngClass]="(submittedUserEditForm && userEditForm.get('linkedin')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                <label for="linkedin">Linkedin</label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-column-reverse flex-sm-row gap-3 justify-content-end mt-3">
+                    <button pButton pRipple type="button" label="Reestablecer" icon="pi pi-times" [disabled]="sendingUserEditForm"
+                        class="p-button p-button-danger" (click)="cargarUserEditForm()">
+                    </button>
+                    <button pButton pRipple type="submit" label="Guardar Cambios" icon="pi pi-save"
+                        [disabled]="sendingUserEditForm" [loading]="sendingUserEditForm" class="p-button">
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
 </div>

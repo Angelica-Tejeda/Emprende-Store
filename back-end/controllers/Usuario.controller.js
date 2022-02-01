@@ -1,4 +1,5 @@
 const Usuario = require("../database/models/Usuario");
+const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const fs = require("fs");
@@ -81,8 +82,31 @@ exports.createUsuario = async (req, res) => {
 
 exports.getAllUsuarios = async (req, res) => {
     Usuario.findAndCountAll({
-        where: { rol: false },
-        attributes: { exclude: ["password"] },
+        limit: req.query.limit ? req.query.limit : undefined,
+        offset:
+            req.query.page && req.query.limit
+                ? req.query.page * req.query.limit
+                : undefined,
+        order: [
+            [
+                req.query.field ? req.query.field : "creado",
+                req.query.order ? req.query.order : "DESC",
+            ],
+            ["id", req.query.order ? req.query.order : "DESC"],
+        ],
+        where: {
+            rol: false,
+            activo:
+                req.query.isActivo !== undefined && req.query.isActivo !== null
+                    ? req.query.isActivo
+                    : undefined,
+            verificado:
+                req.query.isVerificado !== undefined &&
+                req.query.isVerificado !== null
+                    ? req.query.isVerificado
+                    : undefined,
+        },
+        attributes: { exclude: ["password", "rol"] },
     })
         .then((usuarios) => {
             if (usuarios.count > 0) {
@@ -96,67 +120,6 @@ exports.getAllUsuarios = async (req, res) => {
                     status: "error",
                     message: "Usuarios no encontrados.",
                     result: usuarios,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message:
-                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
-                error: err,
-            });
-        });
-};
-
-exports.getUsuariosAdmin = async (req, res) => {
-    Usuario.findAndCountAll({
-        where: { rol: true },
-        attributes: { exclude: ["password"] },
-    })
-        .then((usuarios) => {
-            if (usuarios.count > 0) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Usuarios obtenidos con éxito.",
-                    result: usuarios,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Usuarios no encontrados.",
-                    result: usuarios,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message:
-                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
-                error: err,
-            });
-        });
-};
-
-exports.getOwnUsuarioById = async (req, res) => {
-    Usuario.findByPk(req.params.userId, {
-        attributes: { exclude: ["password"] },
-    })
-        .then((usuario) => {
-            if (usuario) {
-                res.status(200).json({
-                    status: "success",
-                    message: "Usuario obtenido con éxito.",
-                    result: usuario,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Usuario no encontrado.",
-                    result: usuario,
                 });
             }
         })
@@ -201,10 +164,9 @@ exports.getMinUsuarioById = async (req, res) => {
         });
 };
 
-exports.getUsuarioById = async (req, res) => {
-    Usuario.findOne({
-        where: { id: req.params.userId, rol: false, activo: true },
-        attributes: { exclude: ["password"] },
+exports.getOwnUsuarioById = async (req, res) => {
+    Usuario.findByPk(req.params.userId, {
+        attributes: { exclude: ["password", "rol"] },
     })
         .then((usuario) => {
             if (usuario) {
@@ -232,23 +194,25 @@ exports.getUsuarioById = async (req, res) => {
         });
 };
 
-/*exports.getUsuarios = async (req, res) => {
-    Usuario.findAndCountAll({
-        where: { rol: false, activo: true },
-        attributes: { exclude: ["password"] },
+exports.getUsuarioById = async (req, res) => {
+    Usuario.findOne({
+        where: { id: req.params.userId, rol: false, activo: true, password: { [Op.not]: null } },
+        attributes: {
+            exclude: ["password", "rol", "activo", "creado", "modificado"],
+        },
     })
-        .then((usuarios) => {
-            if (usuarios.count > 0) {
+        .then((usuario) => {
+            if (usuario) {
                 res.status(200).json({
                     status: "success",
-                    message: "Usuarios obtenidos con éxito.",
-                    result: usuarios,
+                    message: "Usuario obtenido con éxito.",
+                    result: usuario,
                 });
             } else {
                 res.status(404).json({
                     status: "error",
-                    message: "Usuarios no encontrados.",
-                    result: usuarios,
+                    message: "Usuario no encontrado.",
+                    result: usuario,
                 });
             }
         })
@@ -261,7 +225,7 @@ exports.getUsuarioById = async (req, res) => {
                 error: err,
             });
         });
-};*/
+};
 
 exports.updateUsuarioActivo = async (req, res) => {
     Usuario.update(

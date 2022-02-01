@@ -8,9 +8,8 @@ const admin = require("../middlwares/admin")
 router.post("/", auth, admin, controller.createUsuario);
 
 router.get("/all", auth, admin, controller.getAllUsuarios);
-router.get("/admin", auth, admin, controller.getUsuariosAdmin);
-router.get("/own/:userId", auth, owned, controller.getOwnUsuarioById);
 router.get("/min/:userId", auth, owned, controller.getMinUsuarioById);
+router.get("/own/:userId", auth, owned, controller.getOwnUsuarioById);
 router.get("/:userId", controller.getUsuarioById);
 
 router.patch("/activo/:userId", auth, admin, controller.updateUsuarioActivo);

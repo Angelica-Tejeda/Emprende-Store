@@ -69,27 +69,27 @@
     <div class="container-sm py-3 py-sm-4 py-lg-5 d-flex gap-lg-5 flex-column flex-lg-row">
         <div>
             <div class="product-info pb-2-5 pb-sm-3 pb-lg-4">
-                <h2>Descripción</h2>
+                <h3>Descripción</h3>
                 <p *ngIf="product.descripcion" class="mb-0 text-justify">{{ product.descripcion }}</p>
                 <h5 *ngIf="!product.descripcion" class="mb-0 text-center">No hay descripción</h5>
             </div>
             <div id="comments" class="product-info py-2-5 py-sm-3 pt-lg-4 pb-lg-0">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h2 class="mb-0">Comentarios<span *ngIf="comentarios !== null"> ({{comentarios.count}})</span></h2>
+                    <h3 class="mb-0">Comentarios<span *ngIf="comentarios !== null"> ({{comentarios.count}})</span></h3>
                     <button pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned || showNewComment"
                         class="p-button-sm p-button-warning d-none d-sm-block" [routerLink]="['.']" fragment="comments"
                         (click)="showNewComment = true;"></button>
                 </div>
                 <div class="d-flex flex-column gap-3">
                     <button *ngIf="!showNewComment" pButton pRipple label="COMENTAR Y PUNTUAR" [disabled]="owned"
-                        class="p-button-warning d-sm-none" [routerLink]="['.']" fragment="comments"
+                        class="p-button-sm p-button-warning d-sm-none" [routerLink]="['.']" fragment="comments"
                         (click)="showNewComment = true"></button>
                     <div *ngIf="showNewComment && !owned" class="custom-card d-flex flex-column">
                         <form class="d-flex flex-column justify-content-around h-100" [formGroup]="commentForm"
                             (submit)="enviarComentario()">
                             <div>
-                                <p class="text-justify">
-                                    Recuerda que una vez envíado, el comentario no se podrá modificar ni eliminar. Se
+                                <p class="text-justify font-italic">
+                                    Recuerda que una vez envíado, el comentario no se podrá modificar ni eliminar. Sé
                                     amable y educado, y que tus críticas sean constructivas.
                                 </p>
                             </div>

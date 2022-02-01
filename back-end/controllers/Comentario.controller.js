@@ -9,7 +9,7 @@ exports.createComentario = async (req, res) => {
             req.body.celular !== null
                 ? "593" + req.body.celular.substring(1)
                 : undefined,
-        nombre: req.body.nombre !== null ? req.body.nombre : undefined,
+        nombre: req.body.nombre ? req.body.nombre : undefined,
         texto: req.body.texto,
         puntuacion: req.body.puntuacion,
     })
