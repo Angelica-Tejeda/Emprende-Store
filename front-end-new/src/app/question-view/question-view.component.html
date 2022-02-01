@@ -1,0 +1,104 @@
+<app-navbar></app-navbar>
+<div class="bg-lighter container-full-height">
+    <div class="container-sm py-3 py-sm-4 py-lg-5 flex-column justify-content-center align-items-center">
+        <div class="custom-card mb-4">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="icon d-flex flex-column align-items-center" [routerLink]="['/profile',question.usuario.id]">
+                    <p-avatar [image]="mediaUrl+question.usuario.foto_perfil" shape="circle" size="xlarge" class="mb-1">
+                    </p-avatar>
+                    <p-chip [label]="question.usuario.nombre+' '+question.usuario.apellido"></p-chip>
+                </div>
+                <div class="questionContent d-flex flex-column">
+                    <div class="d-flex align-items-center mb-3" *ngIf="!question.activo">
+                        <h5 class="text-success mb-0 mr-2">Pregunta resuelta</h5>
+                        <i class="pi pi-check-circle text-success font-weight-bold" pTooltip="Pregunta resuelta"
+                            tooltipPosition="top"></i>
+                    </div>
+                    <div class="d-flex align-items-center mb-3" *ngIf="question.activo">
+                        <h5 class="text-warning mb-0 mr-2">Pregunta sin resolver</h5>
+                        <i class="pi pi-question-circle text-warning font-weight-bold" pTooltip="Pregunta sin resolver"
+                            tooltipPosition="top"></i>
+                    </div>
+                    <h2 class="mb-3">{{question.titulo}}</h2>
+                    <p class="text-justify">{{question.texto}}</p>
+                    <small class="font-weight-bold date">{{question.creado|date:'dd/LL/yy hh:mm'}}</small>
+                    <div class="text-center">
+                        <button *ngIf="!showNewAnswer && question.activo" pButton pRipple label="Responder"
+                            class="p-button-warning button-responsive" [routerLink]="['.']" fragment="answerForm"
+                            (click)="showNewAnswer = true"></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="custom-card mb-4 d-flex flex-column" id="answerForm" *ngIf="showNewAnswer">
+            <form class="d-flex flex-column justify-content-around h-100" [formGroup]="answerForm"
+                (submit)="enviarNuevaRespuesta()">
+                <div>
+                    <p class="font-italic text-center">
+                        Recuerda que una vez enviada, la respuesta no se podrá modificar ni eliminar. Sé
+                        amable y educado.
+                    </p>
+                </div>
+                <div class="d-flex flex-column align-items-stretch">
+                    <span class="p-input-filled p-float-label mt-3">
+                        <textarea pInputTextarea id="texto" [rows]="4" formControlName="answer" name="texto"
+                            class="w-100"
+                            [ngClass]="(submittedAnswerForm && answerForm.get('texto')?.invalid) ? 'ng-dirty ng-invalid' : ''"></textarea>
+                        <label for="texto">Respuesta</label>
+                    </span>
+                    <div class="d-flex flex-column-reverse flex-sm-row justify-content-sm-end gap-2 mt-3">
+                        <button pButton pRipple label="Cancelar" icon="pi pi-times" [disabled]="sendingAnswerForm"
+                            class="p-button-danger button-responsive"
+                            (click)="showNewAnswer = false; submittedAnswerForm = false; answerForm.reset();">
+                        </button>
+                        <button pButton pRipple type="submit" icon="pi pi-check" label="Enviar"
+                            [disabled]="sendingAnswerForm" [loading]="sendingAnswerForm"
+                            class="p-button button-responsive">
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="custom-card mb-4 best-response" *ngIf="!question.activo">
+            <div class="d-flex flex-column mb-4">
+                <p-divider align="center" class="mb-3">
+                    <span class="p-tag">Mejor respuesta</span>
+                </p-divider>
+                <div class="respuesta d-flex align-items-center justify-content-between">
+                    <div class="icon d-flex flex-column align-items-center" [routerLink]="['/profile',question.mejor_respuesta.usuario.id]">
+                        <p-avatar [image]="mediaUrl+question.mejor_respuesta.usuario.foto_perfil" shape="circle"
+                            size="xlarge" class="mb-1">
+                        </p-avatar>
+                        <p-chip
+                            [label]="question.mejor_respuesta.usuario.nombre+' '+question.mejor_respuesta.usuario.apellido">
+                        </p-chip>
+                    </div>
+                    <div class="questionContent d-flex flex-column">
+                        <p class="text-justify">{{question.texto}}</p>
+                        <small class="font-weight-bold date">{{question.creado|date:'dd/LL/yy hh:mm'}}</small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="custom-card">
+            <div *ngFor="let respuesta of question.respuestas" class="d-flex flex-column mb-4 respuesta-container">
+                <div class="respuesta d-flex align-items-center justify-content-between mb-4">
+                    <div class="icon d-flex flex-column align-items-center" [routerLink]="['/profile',respuesta.usuario.id]">
+                        <p-avatar [image]="mediaUrl+respuesta.usuario.foto_perfil" shape="circle" size="xlarge"
+                            class="mb-1">
+                        </p-avatar>
+                        <p-chip [label]="respuesta.usuario.nombre+' '+respuesta.usuario.apellido"></p-chip>
+                    </div>
+                    <div class="questionContent d-flex flex-column">
+                        <p class="text-justify">{{question.texto}}</p>
+                        <small class="font-weight-bold date">{{question.creado|date:'dd/LL/yy hh:mm'}}</small>
+                    </div>
+                </div>
+                <p-divider class="divider"></p-divider>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footbar></app-footbar>

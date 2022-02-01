@@ -1,0 +1,26 @@
+.icon{
+    flex-basis: calc(20% - 8px);
+}
+.icon:hover{
+    cursor: pointer;
+}
+.questionContent{
+    flex-basis: calc(80% - 8px);   
+}
+.date{
+    font-size: medium;
+}
+
+.respuesta-container:first-child{
+    margin-top: 2rem;
+}
+.respuesta-container:last-child .divider{
+    display: none;
+}
+.p-tag{
+    font-size: medium;
+    padding: 0.8rem;
+}
+.best-response{
+    border: 2.5px solid #28a745;
+}

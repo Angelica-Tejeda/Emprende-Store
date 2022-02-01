@@ -33,6 +33,7 @@ import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
+import {AvatarModule} from 'primeng/avatar';
 
 import { AppComponent } from './app.component';
 import { FinanceComponent } from './finance/finance.component';
@@ -53,6 +54,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { SearchComponent } from './search/search.component';
 import { StoreComponent } from './store/store.component';
 import { UnexpectedErrorComponent } from './shared/unexpected-error/unexpected-error.component';
+import { QuestionViewComponent } from './question-view/question-view.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +77,7 @@ import { UnexpectedErrorComponent } from './shared/unexpected-error/unexpected-e
     SearchComponent,
     StoreComponent,
     UnexpectedErrorComponent,
+    QuestionViewComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -110,6 +113,7 @@ import { UnexpectedErrorComponent } from './shared/unexpected-error/unexpected-e
     TabMenuModule,
     TabViewModule,
     TooltipModule,
+    AvatarModule
   ],
   entryComponents: [NewQuestionFormComponent],
   providers: [],
