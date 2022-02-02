@@ -57,7 +57,7 @@ Usuario.init(
             allowNull: true,
             validate: {
                 notEmpty: true,
-                len: [4,60],
+                len: [3,60],
             },
         },
         foto_perfil: {
@@ -75,7 +75,7 @@ Usuario.init(
             allowNull: true,
             validate: {
                 notEmpty: true,
-                len: [20,1500],
+                len: [3,2500],
             },
         },
         celular: {

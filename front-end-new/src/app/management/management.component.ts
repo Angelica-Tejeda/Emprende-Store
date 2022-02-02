@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
+
 import { UsuarioService } from 'src/services/usuario.service';
 import { VisitaService } from 'src/services/visita.service';
 import { PublicacionService } from 'src/services/publicacion.service';
 import { ComentarioService } from 'src/services/comentario.service';
-import { MessageService } from 'primeng/api';
-import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { environment } from '../../environments/environment';
-import { MenuItem } from 'primeng/api';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-management',
@@ -98,45 +101,79 @@ export class ManagementComponent implements OnInit {
   final: any = new Date();
   inicio: any = new Date(this.final.getTime() - 1000 * 60 * 60 * 24 * 365);
 
-  usuario: any;
+  usuario: any = {};
   submittedUserEditForm: boolean = false;
   sendingUserEditForm: boolean = false;
   userEditForm: FormGroup = new FormGroup(
     {
-      nombre: new FormControl(null, Validators.required),
-      apellido: new FormControl(null, Validators.required),
+      nombre: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(30),
+      ]),
+      apellido: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(30),
+      ]),
       fecha_nacimiento: new FormControl(null, Validators.required),
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      email: new FormControl(null, [
+        Validators.required,
+        Validators.email,
+        Validators.minLength(8),
+        Validators.maxLength(125),
+      ]),
       celular: new FormControl(null, [
         Validators.required,
         Validators.minLength(10),
         Validators.maxLength(10),
         Validators.pattern('^[0][9][0-9]+'),
       ]),
-      bio: new FormControl(null, null),
-      negocio: new FormControl(null, null),
+      bio: new FormControl(null, [
+        Validators.minLength(3),
+        Validators.maxLength(2500),
+      ]),
+      negocio: new FormControl(null, [
+        Validators.minLength(3),
+        Validators.maxLength(60),
+      ]),
       fecha_inicio: new FormControl(null, null),
-      facebook: new FormControl(null, null),
-      instagram: new FormControl(null, null),
-      twitter: new FormControl(null, null),
-      linkedin: new FormControl(null, null),
+      facebook: new FormControl(null, [
+        Validators.minLength(5),
+        Validators.maxLength(125),
+      ]),
+      instagram: new FormControl(null, [
+        Validators.minLength(5),
+        Validators.maxLength(125),
+      ]),
+      twitter: new FormControl(null, [
+        Validators.minLength(5),
+        Validators.maxLength(125),
+      ]),
+      linkedin: new FormControl(null, [
+        Validators.minLength(5),
+        Validators.maxLength(125),
+      ]),
     },
     { updateOn: 'submit' }
-  )
+  );
+  originalUserFormValue: any = null;
   maxDateValue: Date = new Date();
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private cookieService: CookieService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
     private usuarioService: UsuarioService,
     private publicacionService: PublicacionService,
     private comentarioService: ComentarioService,
-    private visitaService: VisitaService,
-    private messageService: MessageService
+    private visitaService: VisitaService
   ) {}
 
   ngOnInit(): void {
+    this.userEditForm.disable();
     this.route.fragment.subscribe((frag) => {
       if (frag == 'personalInfo') {
         this.activeItem = this.items[3];
@@ -157,7 +194,8 @@ export class ManagementComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.usuario = res.result;
-            this.cargarUserEditForm();
+            this.cargarUserEditInfo();
+            this.userEditForm.enable();
             this.maxDateValue = new Date(this.usuario.creado);
           },
           error: (err) => {
@@ -180,7 +218,7 @@ export class ManagementComponent implements OnInit {
             }
           },
         });
-        this.publicacionService
+      this.publicacionService
         .getMinPublicacionesByUsuario(+this.cookieService.get('usuario_id'))
         .subscribe({
           next: (res) => {
@@ -296,7 +334,7 @@ export class ManagementComponent implements OnInit {
             this.loadingComments = false;
           },
           error: (err) => {
-            if (err.status == "404") {
+            if (err.status == '404') {
               this.comentarios = null;
             } else {
               this.messageService.add({
@@ -405,26 +443,148 @@ export class ManagementComponent implements OnInit {
     }
   }
 
-  cargarUserEditForm() {
-    this.userEditForm.get('nombre')?.setValue(this.usuario.nombre);
-    this.userEditForm.get('apellido')?.setValue(this.usuario.apellido);
-    this.userEditForm.get('fecha_nacimiento')?.setValue(new Date(this.usuario.fecha_nacimiento));
-    this.userEditForm.get('email')?.setValue(this.usuario.email);
-    this.userEditForm.get('celular')?.setValue("0" + this.usuario.celular.substring(3));
-    this.userEditForm.get('bio')?.setValue(this.usuario.bio);
-    this.userEditForm.get('negocio')?.setValue(this.usuario.negocio);
-    this.userEditForm.get('fecha_inicio')?.setValue(new Date(this.usuario.fecha_inicio));
-    this.userEditForm.get('facebook')?.setValue(this.usuario.facebook);
-    this.userEditForm.get('instagram')?.setValue(this.usuario.instagram);
-    this.userEditForm.get('twitter')?.setValue(this.usuario.twitter);
-    this.userEditForm.get('linkedin')?.setValue(this.usuario.linkedin);
+  resetUserEditForm() {
+    //this.userEditForm.controls['nombre'].updateValueAndValidity();
+    //alert(this.userEditForm.valid)
+    //this.validateEditUserForm();
+    //alert(this.userEditForm.valid)
+    //if (JSON.stringify(this.userEditForm.value) !== JSON.stringify(this.originalUserFormValue)) {
+      this.confirmationService.confirm({
+        message:
+          'Al hacer esto perderás los cambios realizados y se cargarán nuevamente los datos actuales del usuario.',
+        header: 'Reestablecer Formulario',
+        icon: 'pi pi-exclamation-circle',
+        accept: () => {
+          this.cargarUserEditInfo();
+        },
+        reject: () => {},
+      });
+    //}
   }
 
-  //TODO: Añadir un CormfirmDialog altes de reestablecer los datos
+  cargarUserEditInfo() {
+    let userData = {
+      nombre: this.usuario.nombre,
+      apellido: this.usuario.apellido,
+      fecha_nacimiento: new Date(this.usuario.fecha_nacimiento),
+      email: this.usuario.email,
+      celular: '0' + this.usuario.celular.substring(3),
+      bio: this.usuario.bio,
+      negocio: this.usuario.negocio,
+      fecha_inicio: new Date(this.usuario.fecha_inicio),
+      facebook: this.usuario.facebook,
+      instagram: this.usuario.instagram,
+      twitter: this.usuario.twitter,
+      linkedin: this.usuario.linkedin,
+    }
+    this.originalUserFormValue = userData;
+    this.userEditForm.setValue(userData);
+  }
 
-  //TODO: Sanitizar los datos con espacios y datos vacíos antes de envíar el formulario
+  sanitizeUserEditForm() {
+    let nombreClean = this.userEditForm.get('nombre')?.value?.trim();
+    this.userEditForm
+      .get('nombre')
+      ?.setValue(nombreClean === '' ? null : nombreClean);
+    let apellidoClean = this.userEditForm.get('apellido')?.value?.trim();
+    this.userEditForm
+      .get('apellido')
+      ?.setValue(apellidoClean === '' ? null : apellidoClean);
+    let emailClean = this.userEditForm.get('email')?.value?.trim();
+    this.userEditForm
+      .get('email')
+      ?.setValue(emailClean === '' ? null : emailClean);
+    let celularClean = this.userEditForm.get('celular')?.value?.trim();
+    this.userEditForm
+      .get('celular')
+      ?.setValue(celularClean === '' ? null : celularClean);
+    let bioClean = this.userEditForm.get('bio')?.value?.trim();
+    this.userEditForm.get('bio')?.setValue(bioClean === '' ? null : bioClean);
+    let negocioClean = this.userEditForm.get('negocio')?.value?.trim();
+    this.userEditForm
+      .get('negocio')
+      ?.setValue(negocioClean === '' ? null : negocioClean);
+    let facebookClean = this.userEditForm.get('facebook')?.value?.trim();
+    this.userEditForm
+      .get('facebook')
+      ?.setValue(facebookClean === '' ? null : facebookClean);
+    let instagramClean = this.userEditForm.get('instagram')?.value?.trim();
+    this.userEditForm
+      .get('instagram')
+      ?.setValue(instagramClean === '' ? null : instagramClean);
+    let twitterClean = this.userEditForm.get('twitter')?.value?.trim();
+    this.userEditForm
+      .get('twitter')
+      ?.setValue(twitterClean === '' ? null : twitterClean);
+    let linkedinClean = this.userEditForm.get('linkedin')?.value?.trim();
+    this.userEditForm
+      .get('linkedin')
+      ?.setValue(linkedinClean === '' ? null : linkedinClean);
+    this.userEditForm.updateValueAndValidity();
+  }
 
   actualizarDatosUsuario() {
-    //TODO: Realizar mecanizmo para enviar los datos
+    this.submittedUserEditForm = true;
+    this.sendingUserEditForm = true;
+    if (
+      this.userEditForm.valid /*&&
+      JSON.stringify(this.userEditForm.value) !==
+        JSON.stringify(this.originalUserFormValue)*/
+    ) {
+      this.userEditForm.disable();
+      this.usuarioService
+        .updateUsuario(
+          +this.cookieService.get('usuario_id'),
+          this.userEditForm.value
+        )
+        .subscribe({
+          next: (res) => {
+            this.messageService.add({
+              key: 'general',
+              severity: 'success',
+              summary: 'Comentario enviado',
+              detail: res.message,
+              life: 3000,
+            });
+            this.sendingUserEditForm = false;
+            this.usuario = res.data;
+            this.cargarUserEditInfo;
+            this.userEditForm.enable();
+          },
+          error: (err) => {
+            console.error(err);
+            if (err.status == '400' || err.status == '403') {
+              this.messageService.add({
+                key: 'general',
+                severity: 'error',
+                summary: 'Error',
+                detail: err.error.message,
+                life: 3000,
+              });
+            } else {
+              this.messageService.add({
+                key: 'general',
+                severity: 'error',
+                summary: 'Error',
+                detail:
+                  'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+                life: 3000,
+              });
+            }
+            this.sendingUserEditForm = false;
+            this.userEditForm.enable();
+          },
+        });
+    } else {
+      this.sendingUserEditForm = false;
+    }
   }
+
+  /*validateEditUserForm() {
+    Object.keys(this.userEditForm.controls).forEach(field => {
+      let control = this.userEditForm.controls[field];
+      control.;
+      control.updateValueAndValidity();
+    });
+  }*/
 }

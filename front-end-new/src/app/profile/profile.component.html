@@ -81,7 +81,7 @@
             <p-divider class="d-md-none"></p-divider>
             <p-divider class="d-none d-md-block" layout="vertical"></p-divider>
             <div class="text-center">
-                <h2>{{ usuario.fecha_inicio | date: 'LL/YYYY' }}</h2>
+                <h2>{{ usuario.fecha_inicio ? usuario.fecha_inicio : usuario.creado | date: 'LL/YYYY' }}</h2>
                 <h6>Vendiendo Desde</h6>
             </div>
         </div>
@@ -116,10 +116,7 @@
                         class="p-button-sm d-sm-none" (click)="showProductFilters = !showProductFilters;"></button>
                 </div>
             </div>
-            <!--<button pButton pRipple label="Mostrar Filtros" [icon]="showProductFilters ? 'pi pi-filter-slash' : 'pi pi-filter'" class="p-button p-button-sm button-responsive mb-2"></button>
-            <a class="link-button link-button-responsive d-sm-none" [routerLink]="['/management']" fragment="products">
-                <button pButton pRipple label="Administrar Publicaciones" icon="pi pi-th-large" class="p-button p-button-sm button-responsive mb-2"></button>
-            </a>-->
+            <!--TODO: agregar filtros avanzados a esta sección-->
             <div class="d-flex flex-wrap gap-3 gap-lg-4 justify-content-start align-items-stretch">
                 <app-product-card *ngFor="let product of productos.rows" [product]="product" [showOwner]="false">
                 </app-product-card>

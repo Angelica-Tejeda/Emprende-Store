@@ -50,12 +50,15 @@ export class LoginComponent implements OnInit {
   iniciarSesion(): void {
     this.sendingLoginForm = true;
     this.submittedLoginForm = true;
+    let emailClean = this.loginForm.get('email')?.value?.trim();
+    this.loginForm.get('email')?.setValue(emailClean === "" ? null : emailClean);
+    this.loginForm.updateValueAndValidity()
     this.messagePassword = '';
     this.messageEmail = '';
     if (this.loginForm.valid) {
       this.loginForm.disable();
       this.authService.iniciarSesionEmpr(this.loginForm.value).subscribe({
-        next: (res) => {
+        next: () => {
           if (this.redirect) {
             this.location.back();
           } else {
@@ -94,7 +97,6 @@ export class LoginComponent implements OnInit {
       });
     } else {
       this.sendingLoginForm = false;
-      this.loginForm.enable();
     }
   }
 }

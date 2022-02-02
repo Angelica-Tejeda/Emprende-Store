@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const fs = require("fs");
+const { CommandCompleteMessage } = require("pg-protocol/dist/messages");
 
 //TODO: Revisar los endpoint que devuelven más datos de los necesarios
 
@@ -196,9 +197,14 @@ exports.getOwnUsuarioById = async (req, res) => {
 
 exports.getUsuarioById = async (req, res) => {
     Usuario.findOne({
-        where: { id: req.params.userId, rol: false, activo: true, password: { [Op.not]: null } },
+        where: {
+            id: req.params.userId,
+            rol: false,
+            activo: true,
+            password: { [Op.not]: null },
+        },
         attributes: {
-            exclude: ["password", "rol", "activo", "creado", "modificado"],
+            exclude: ["password", "rol", "activo", "modificado"],
         },
     })
         .then((usuario) => {
@@ -459,7 +465,9 @@ exports.updateUsuario = async (req, res) => {
             fecha_nacimiento: req.body.fecha_nacimiento,
             negocio: req.body.negocio,
             bio: req.body.bio,
-            celular: req.body.celular,
+            celular: req.body.celular
+                ? "593" + req.body.celular.substring(1)
+                : null,
             facebook: req.body.facebook,
             instagram: req.body.instagram,
             twitter: req.body.twitter,
@@ -469,20 +477,45 @@ exports.updateUsuario = async (req, res) => {
         },
         {
             where: { id: req.params.userId },
+            returning: [
+                "id",
+                "email",
+                "nombre",
+                "apellido",
+                "fecha_nacimiento",
+                "negocio",
+                "foto_perfil",
+                "foto_portada",
+                "bio",
+                "celular",
+                "facebook",
+                "instagram",
+                "twitter",
+                "tiktok",
+                "linkedin",
+                "fecha_inicio",
+                "puntuacion",
+                "activo",
+                "creado",
+                "modificado",
+                "verificado",
+            ],
         }
     )
         .then((result) => {
-            if (result == 1) {
+            if (result[0] == 1) {
                 res.status(200).json({
                     status: "success",
-                    message: "El usuario se ha actualizado con éxito.",
-                    result: result,
+                    message:
+                        "Los datos del usuario han sido actualizados con éxito.",
+                    result: result[0],
+                    data: result[1][0],
                 });
             } else {
                 res.status(403).json({
                     status: "error",
                     message:
-                        "El usuario no se ha podido actualizar. Inténtenlo nuevamente después de un momento.",
+                        "Los datos del usuario no se han podido actualizar. Inténtenlo nuevamente después de un momento.",
                     result: result,
                 });
             }

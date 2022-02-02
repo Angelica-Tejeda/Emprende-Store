@@ -19,8 +19,17 @@ export class HomeComponent implements OnInit {
   submittedContactForm: boolean = false;
   contactForm: FormGroup = new FormGroup(
     {
-      nombre: new FormControl(null, Validators.required),
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      nombre: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(62),
+      ]),
+      email: new FormControl(null, [
+        Validators.required,
+        Validators.email,
+        Validators.minLength(8),
+        Validators.maxLength(125),
+      ]),
       celular: new FormControl(null, [
         Validators.required,
         Validators.minLength(10),
@@ -41,6 +50,7 @@ export class HomeComponent implements OnInit {
     //TODO: Hacer el servicio y la infraestructura para enviar el formulario
     this.sendingContactForm = true;
     this.submittedContactForm = true;
+    this.sanitizeContactForm();
     if (this.contactForm.valid) {
       this.contactForm.disable();
       setTimeout(() => {
@@ -53,12 +63,31 @@ export class HomeComponent implements OnInit {
           life: 5000,
         });
         this.sendingContactForm = false;
-        this.contactForm.reset();
-        this.contactForm.enable();
+        //this.contactForm.reset();
+        //this.contactForm.enable();
       }, 1500);
     } else {
       this.sendingContactForm = false;
-      this.contactForm.enable();
     }
+  }
+
+  sanitizeContactForm() {
+    let nombreClean = this.contactForm.get('nombre')?.value?.trim();
+    this.contactForm
+      .get('nombre')
+      ?.setValue(nombreClean === '' ? null : nombreClean);
+    let emailClean = this.contactForm.get('email')?.value?.trim();
+    this.contactForm
+      .get('email')
+      ?.setValue(emailClean === '' ? null : emailClean);
+    let celularClean = this.contactForm.get('celular')?.value?.trim();
+    this.contactForm
+      .get('celular')
+      ?.setValue(celularClean === '' ? null : celularClean);
+    let mensajeClean = this.contactForm.get('mensaje')?.value?.trim();
+    this.contactForm
+      .get('mensaje')
+      ?.setValue(mensajeClean === '' ? null : mensajeClean);
+    this.contactForm.updateValueAndValidity();
   }
 }

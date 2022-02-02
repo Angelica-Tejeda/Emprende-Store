@@ -6,8 +6,10 @@
 <div *ngIf="!notFound && !unexpected && product" class="bg-primary">
     <div class="container-sm py-3 py-sm-4 py-lg-5 d-flex gap-3 flex-column flex-lg-row">
         <div class="custom-card galeria-container bg-lighter p-0">
-            <p-galleria [value]="product.fotos" [circular]="true" [showThumbnails]="false" [showItemNavigators]="product.fotos.length > 1 ? true : false"
-                [showIndicators]="product.fotos.length > 1 ? true : false" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
+            <p-galleria [value]="product.fotos" [circular]="true" [showThumbnails]="false"
+                [showItemNavigators]="product.fotos.length > 1 ? true : false"
+                [showIndicators]="product.fotos.length > 1 ? true : false" [changeItemOnIndicatorHover]="true"
+                [showIndicatorsOnItem]="true">
                 <ng-template pTemplate="item" let-item>
                     <div class="image-galleria-template d-flex justify-content-center align-items-center">
                         <img [src]="mediaUrl + item" />
@@ -19,7 +21,9 @@
             <div class="d-flex flex-column justify-content-around h-100">
                 <div>
                     <a [routerLink]="['/profile', product.usuario.id]">
-                        <p-chip [label]="product.usuario.negocio ? product.usuario.negocio : product.usuario.nombre + ' ' + product.usuario.apellido" [image]="mediaUrl + product.usuario.foto_perfil"></p-chip>
+                        <p-chip
+                            [label]="product.usuario.negocio ? product.usuario.negocio : product.usuario.nombre + ' ' + product.usuario.apellido"
+                            [image]="mediaUrl + product.usuario.foto_perfil"></p-chip>
                     </a>
                     <h3 *ngIf="product.titulo">{{ product.titulo }}</h3>
                     <h3 *ngIf="!product.titulo">Sin título</h3>
@@ -39,7 +43,8 @@
                 <h1 *ngIf="product.precio && !product.descuento" class="text-nowrap">$ {{ product.precio }}</h1>
                 <h1 *ngIf="!product.precio" class="text-nowrap">Sin precio</h1>
                 <div *ngIf="product.descuento && product.precio" class="d-flex align-items-center flex-wrap-reverse">
-                    <h1 class="text-success mr-3 text-nowrap">$ {{ product.precio - (product.precio * product.descuento / 100) | number: '1.2-2'}}</h1>
+                    <h1 class="text-success mr-3 text-nowrap">$ {{ product.precio - (product.precio * product.descuento
+                        / 100) | number: '1.2-2'}}</h1>
                     <h6 class="text-danger mb-0 text-nowrap"><s>$ {{ product.precio }}</s></h6>
                 </div>
                 <a *ngIf="!owned" class="link-button align-self-sm-center" target="_blank"
@@ -85,33 +90,30 @@
                         class="p-button-sm p-button-warning d-sm-none" [routerLink]="['.']" fragment="comments"
                         (click)="showNewComment = true"></button>
                     <div *ngIf="showNewComment && !owned" class="custom-card d-flex flex-column">
-                        <form class="d-flex flex-column justify-content-around h-100" [formGroup]="commentForm"
-                            (submit)="enviarComentario()">
+                        <form [formGroup]="commentForm" (submit)="enviarComentario()">
                             <div>
                                 <p class="text-justify font-italic">
                                     Recuerda que una vez envíado, el comentario no se podrá modificar ni eliminar. Sé
                                     amable y educado, y que tus críticas sean constructivas.
                                 </p>
                             </div>
-                            <div class="d-flex flex-column align-items-stretch">
+                            <div class="d-flex flex-column">
                                 <span class="p-input-filled p-float-label mt-4">
-                                    <input pInputText id="nombre" type="text" formControlName="nombre" name="nombre"
-                                        class="w-100"
+                                    <input pInputText id="nombre" type="text" formControlName="nombre" class="w-100"
+                                        maxlength="62"
                                         [ngClass]="(submittedCommentForm && commentForm.get('nombre')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                                     <label for="nombre">Nombre</label>
                                 </span>
-                                <small class="ml-2">*Campo no obligatorio</small>
                                 <span class="p-input-filled p-float-label mt-4-5">
-                                    <p-inputMask id="celular" type="tel" formControlName="celular" name="celular"
-                                        mask="9999999999" [autoClear]="false"
-                                        [styleClass]="(submittedCommentForm && commentForm.get('celular')?.invalid) ? 'w-100 ng-dirty ng-invalid' : 'w-100'">
-                                    </p-inputMask>
+                                    <input pInputText id="celular" type="tel" formControlName="celular" class="w-100"
+                                        maxlength="10"
+                                        [ngClass]="(submittedCommentForm && commentForm.get('celular')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                                     <label for="celular">Número celular</label>
                                 </span>
-                                <small class="ml-2">*Campo no obligatorio</small>
                                 <span class="mt-4-5 position-relative">
                                     <label class="comment-punt-label mb-0" for="puntuacion"
-                                        [ngClass]="(submittedCommentForm && commentForm.get('puntuacion')?.invalid) ? 'ng-dirty ng-invalid' : ''">Puntuación</label>
+                                        [ngClass]="(submittedCommentForm && commentForm.get('puntuacion')?.invalid) ? 'ng-dirty ng-invalid' : ''">Puntuación
+                                        <span class="text-danger">*</span></label>
                                     <div class="comment-punt"
                                         [ngClass]="(submittedCommentForm && commentForm.get('puntuacion')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                                         <ngb-rating id="puntuacion" formControlName="puntuacion" name="puntuacion"
@@ -124,17 +126,21 @@
                                     </div>
                                 </span>
                                 <span class="p-input-filled p-float-label mt-4-5">
-                                    <textarea pInputTextarea id="texto" [rows]="4" formControlName="texto" name="texto"
-                                        class="contact-form-textarea w-100"
+                                    <textarea pInputTextarea id="texto" [rows]="4" formControlName="texto" class="w-100"
+                                        maxlength="500"
                                         [ngClass]="(submittedCommentForm && commentForm.get('texto')?.invalid) ? 'ng-dirty ng-invalid' : ''"></textarea>
-                                    <label for="texto">Mensaje</label>
+                                    <label for="texto">Mensaje <span class="text-danger">*</span></label>
                                 </span>
+                                <div>
+                                    <small class="font-italic"><span class="text-danger">*</span> Estos campos no pueden
+                                        estar vacios.</small>
+                                </div>
                                 <div class="d-flex flex-column-reverse flex-sm-row justify-content-sm-end gap-2 mt-3">
-                                    <button pButton pRipple label="Cancelar" icon="pi pi-times"
+                                    <button pButton pRipple type="button" label="Cancelar" icon="pi pi-times"
                                         [disabled]="sendingCommentForm" class="p-button-danger button-responsive"
                                         (click)="showNewComment = false; submittedCommentForm = false; commentForm.reset();">
                                     </button>
-                                    <button pButton pRipple type="submit" icon="pi pi-check" label="Enviar"
+                                    <button pButton pRipple type="submit" label="Enviar" icon="pi pi-send"
                                         [disabled]="sendingCommentForm" [loading]="sendingCommentForm"
                                         class="p-button button-responsive">
                                     </button>
@@ -199,16 +205,16 @@
                         </p-paginator>-->
                         <p-paginator class="d-sm-none" [ngClass]="loadingComments ? 'disable-pagination' : ''"
                             [rows]="commentsRows" [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
-                            [rowsPerPageOptions]="[5,10,15,{showAll:'Todos'}]" [dropdownScrollHeight]="''" [showPageLinks]="false"
-                            [showJumpToPageDropdown]="true" [showFirstLastIcon]="false"
+                            [rowsPerPageOptions]="[5,10,15,{showAll:'Todos'}]" [dropdownScrollHeight]="''"
+                            [showPageLinks]="false" [showJumpToPageDropdown]="true" [showFirstLastIcon]="false"
                             currentPageReportTemplate="{currentPage} / {totalPages}"
                             (onPageChange)="paginacionComentarios($event)">
                         </p-paginator>
                         <p-paginator class="d-none d-sm-block d-md-none d-lg-block d-xl-none"
                             [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"
                             [first]="commentsCurrentPage" [totalRecords]="comentarios.count"
-                            [rowsPerPageOptions]="[5,10,15,{showAll:'Todos'}]" [pageLinkSize]="3" [dropdownScrollHeight]="''"
-                            (onPageChange)="paginacionComentarios($event)">
+                            [rowsPerPageOptions]="[5,10,15,{showAll:'Todos'}]" [pageLinkSize]="3"
+                            [dropdownScrollHeight]="''" (onPageChange)="paginacionComentarios($event)">
                         </p-paginator>
                         <p-paginator class="d-none d-md-block d-lg-none d-xl-block"
                             [ngClass]="loadingComments ? 'disable-pagination' : ''" [rows]="commentsRows"

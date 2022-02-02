@@ -53,15 +53,13 @@
             <div class="d-flex flex-column flex-md-row justify-content-between gap-3 flex-wrap">
                 <span class="p-input-filled p-float-label text-left comment-input-product">
                     <p-dropdown [options]="commentFilterProducto" optionLabel="titulo" optionValue="id" id="producto"
-                        formControlName="producto" placeholder=" " [style]="{'height': '50px'}" [styleClass]="'w-100'"
-                        [scrollHeight]="''">
+                        formControlName="producto" [styleClass]="'w-100'" [scrollHeight]="'504px'">
                     </p-dropdown>
                     <label [style]="{'margin-top': '-0.1rem'}" for="producto">Publicación</label>
                 </span>
                 <span class="p-input-filled p-float-label text-left comment-input-field mt-2 mt-md-0">
                     <p-dropdown [options]="commentFilterCampo" optionLabel="label" optionValue="value" id="campo"
-                        formControlName="campo" placeholder=" " [style]="{'height': '50px'}" [styleClass]="'w-100'"
-                        [scrollHeight]="''">
+                        formControlName="campo" [styleClass]="'w-100'" [scrollHeight]="'504px'">
                     </p-dropdown>
                     <label [style]="{'margin-top': '-0.1rem'}" for="campo">Ordenar por</label>
                 </span>
@@ -187,46 +185,47 @@
 
     <div *ngIf="activeItem.id == '4'" class="container-sm py-3 pt-lg-4 pb-lg-5">
         <div class="custom-card">
-            <form action="" [formGroup]="userEditForm" (submit)="actualizarDatosUsuario()">
+            <form action="" [formGroup]="userEditForm" (submit)="sanitizeUserEditForm(); actualizarDatosUsuario()">
                 <div class="d-flex flex-column flex-md-row justify-content-center gap-md-3">
                     <div class="d-flex flex-column align-items-stretch w-100">
                         <h5 class="text-center mb-0">Datos Personales</h5>
                         <span class="p-input-filled p-float-label mt-4">
-                            <input pInputText id="nombre" type="text" formControlName="nombre" name="nombre"
-                                class="w-100"
+                            <input pInputText id="nombre" type="text" formControlName="nombre" class="w-100"
+                                maxlength="30"
                                 [ngClass]="(submittedUserEditForm && userEditForm.get('nombre')?.invalid) ? 'ng-dirty ng-invalid' : ''">
-                            <label for="nombre">Nombre</label>
+                            <label for="nombre">Nombre <span class="text-danger">*</span></label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
-                            <input pInputText id="apellido" type="text" formControlName="apellido" name="apellido"
-                                class="w-100"
+                            <input pInputText id="apellido" type="text" formControlName="apellido" class="w-100"
+                                maxlength="30"
                                 [ngClass]="(submittedUserEditForm && userEditForm.get('apellido')?.invalid) ? 'ng-dirty ng-invalid' : ''">
-                            <label for="apellido">Apellido</label>
+                            <label for="apellido">Apellido <span class="text-danger">*</span></label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
-                            <p-calendar inputId="fecha_nacimiento" formControlName="fecha_nacimiento" name="fecha_nacimiento"
-                            [maxDate]="maxDateValue" styleClass="w-100">
+                            <p-calendar inputId="fecha_nacimiento" formControlName="fecha_nacimiento"
+                                [maxDate]="maxDateValue" styleClass="w-100">
                             </p-calendar>
-                            <label for="fecha_nacimiento">Fecha de nacimiento</label>
+                            <label for="fecha_nacimiento">Fecha de nacimiento *</label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
-                            <input pInputText id="email" type="text" formControlName="email" name="email" class="w-100"
+                            <input pInputText id="email" type="text" formControlName="email" class="w-100" maxlength="125"
                                 [ngClass]="(submittedUserEditForm && userEditForm.get('email')?.invalid) ? 'ng-dirty ng-invalid' : ''">
-                            <label for="email">E-mail</label>
+                            <label for="email">E-mail <span class="text-danger">*</span></label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
-                            <p-inputMask id="celular" type="tel" formControlName="celular" name="celular"
-                                mask="9999999999" [autoClear]="false"
-                                [styleClass]="(submittedUserEditForm && userEditForm.get('celular')?.invalid) ? 'w-100 ng-dirty ng-invalid' : 'w-100'">
-                            </p-inputMask>
-                            <label for="celular">Número celular</label>
+                            <input pInputText id="celular" type="tel" formControlName="celular" class="w-100"
+                                maxlength="10"
+                                [ngClass]="(submittedUserEditForm && userEditForm.get('celular')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                            <label for="celular">Número celular <span class="text-danger">*</span></label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
-                            <textarea pInputTextarea id="bio" [rows]="5" [cols]="35" formControlName="bio" name="bio"
-                                class="w-100"
-                                [ngClass]="(submittedUserEditForm && userEditForm.get('bio')?.invalid) ? 'ng-dirty ng-invalid' : ''"></textarea>
+                            <textarea pInputTextarea id="bio" [rows]="4" formControlName="bio" class="w-100" maxlength="2500"></textarea>
                             <label for="bio">Descripción</label>
                         </span>
+                        <div>
+                            <small class="font-italic"><span class="text-danger">*</span> Estos campos no pueden estar
+                                vacios.</small>
+                        </div>
                     </div>
                     <p-divider class="d-none d-md-block" layout="vertical"></p-divider>
                     <p-divider class="d-md-none"></p-divider>
@@ -234,15 +233,12 @@
                         <div>
                             <h5 class="text-center mb-0">Datos del Negocio</h5>
                             <span class="p-input-filled p-float-label mt-4">
-                                <input pInputText id="negocio" type="text" formControlName="negocio" name="negocio"
-                                    class="w-100"
-                                    [ngClass]="(submittedUserEditForm && userEditForm.get('negocio')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                <input pInputText id="negocio" type="text" formControlName="negocio" class="w-100" maxlength="60">
                                 <label for="negocio">Nombre del negocio</label>
                             </span>
                             <span class="p-input-filled p-float-label mt-4-5">
-                                <p-calendar inputId="fecha_inicio" formControlName="fecha_inicio" name="fecha_inicio"
-                                [maxDate]="maxDateValue" styleClass="w-100">
-                                </p-calendar>
+                                <p-calendar inputId="fecha_inicio" formControlName="fecha_inicio"
+                                    [maxDate]="maxDateValue" styleClass="w-100"></p-calendar>
                                 <label for="fecha_inicio">Fecha de inauguración</label>
                             </span>
                         </div>
@@ -250,35 +246,27 @@
                         <div>
                             <h5 class="text-center mb-0">Redes Sociales</h5>
                             <span class="p-input-filled p-float-label mt-4">
-                                <input pInputText id="facebook" type="text" formControlName="facebook" name="facebook"
-                                    class="w-100"
-                                    [ngClass]="(submittedUserEditForm && userEditForm.get('facebook')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                <input pInputText id="facebook" type="text" formControlName="facebook" class="w-100" maxlength="125">
                                 <label for="facebook">Facebook</label>
                             </span>
                             <span class="p-input-filled p-float-label mt-4-5">
-                                <input pInputText id="instagram" type="text" formControlName="instagram"
-                                    name="instagram" class="w-100"
-                                    [ngClass]="(submittedUserEditForm && userEditForm.get('instagram')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                <input pInputText id="instagram" type="text" formControlName="instagram" class="w-100" maxlength="125">
                                 <label for="instagram">Instagram</label>
                             </span>
                             <span class="p-input-filled p-float-label mt-4-5">
-                                <input pInputText id="twitter" type="text" formControlName="twitter" name="twitter"
-                                    class="w-100"
-                                    [ngClass]="(submittedUserEditForm && userEditForm.get('twitter')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                <input pInputText id="twitter" type="text" formControlName="twitter" class="w-100" maxlength="125">
                                 <label for="twitter">Twitter</label>
                             </span>
                             <span class="p-input-filled p-float-label mt-4-5">
-                                <input pInputText id="linkedin" type="text" formControlName="linkedin" name="linkedin"
-                                    class="w-100"
-                                    [ngClass]="(submittedUserEditForm && userEditForm.get('linkedin')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                                <input pInputText id="linkedin" type="text" formControlName="linkedin" class="w-100" maxlength="125">
                                 <label for="linkedin">Linkedin</label>
                             </span>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex flex-column-reverse flex-sm-row gap-3 justify-content-end mt-3">
-                    <button pButton pRipple type="button" label="Reestablecer" icon="pi pi-times" [disabled]="sendingUserEditForm"
-                        class="p-button p-button-danger" (click)="cargarUserEditForm()">
+                    <button pButton pRipple type="button" label="Reestablecer" icon="pi pi-times"
+                        [disabled]="sendingUserEditForm" class="p-button p-button-danger" (click)="resetUserEditForm()">
                     </button>
                     <button pButton pRipple type="submit" label="Guardar Cambios" icon="pi pi-save"
                         [disabled]="sendingUserEditForm" [loading]="sendingUserEditForm" class="p-button">

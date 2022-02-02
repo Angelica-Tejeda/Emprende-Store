@@ -79,15 +79,18 @@ export class NavbarComponent implements OnInit {
   }
 
   buscarProductos() {
+    let busquedaClean = this.searchForm.get('busqueda')?.value?.trim();
+    this.searchForm.get('busqueda')?.setValue(busquedaClean === "" ? null : busquedaClean);
+    this.searchForm.updateValueAndValidity()
+    alert(this.searchForm.valid);
     if (this.searchForm.valid) {
-      let b = this.searchForm.value;
-      this.router.navigate(['search', b.busqueda]);
+      this.router.navigate(['search', busquedaClean]);
     }
   }
 
   cerrarSesion(): void {
     this.confirmationService.confirm({
-      message: '¿Seguro que quieres de cerrar tu sesión?',
+      message: '¿Seguro que deseas cerrar tu sesión?',
       header: 'Cerrar sesión',
       icon: 'pi pi-exclamation-circle',
       accept: () => {

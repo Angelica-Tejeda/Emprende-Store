@@ -91,26 +91,5 @@ export class ProfileComponent implements OnInit {
         error: () => {},
       })
     });
-    /*if (
-      this.cookieService.check('usuario_id') &&
-      this.cookieService.get('usuario_id') == this.userId
-    ) {
-      this.usuario_own = true;
-    }
-    if (this.usuario_own) {
-      this.usuarioService.getOwnUsuarioById(this.userId).subscribe((data) => {
-        this.usuario = data.result;
-      });
-    } else {
-      this.usuarioService.getUsuarioById(this.userId).subscribe((data) => {
-        this.usuario = data.result;
-      });
-    }
-    this.publicacionService
-      .getPublicacionesByUsuario(this.userId)
-      .subscribe((data) => {
-        this.nProductos = data.result.count;
-        this.productos = data.result.rows;
-      });*/
   }
 }

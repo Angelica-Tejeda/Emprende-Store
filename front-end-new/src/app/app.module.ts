@@ -9,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
@@ -33,7 +34,6 @@ import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
-import {AvatarModule} from 'primeng/avatar';
 
 import { AppComponent } from './app.component';
 import { FinanceComponent } from './finance/finance.component';
@@ -89,6 +89,7 @@ import { QuestionViewComponent } from './question-view/question-view.component';
     NgbModule,
     AccordionModule,
     AutoCompleteModule,
+    AvatarModule,
     ButtonModule,
     CalendarModule,
     CardModule,
@@ -113,7 +114,6 @@ import { QuestionViewComponent } from './question-view/question-view.component';
     TabMenuModule,
     TabViewModule,
     TooltipModule,
-    AvatarModule
   ],
   entryComponents: [NewQuestionFormComponent],
   providers: [],

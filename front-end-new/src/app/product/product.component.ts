@@ -35,13 +35,21 @@ export class ProductComponent implements OnInit {
   submittedCommentForm: boolean = false;
   commentForm: FormGroup = new FormGroup(
     {
-      nombre: new FormControl(null, null),
+      nombre: new FormControl(null, [
+        Validators.minLength(3),
+        Validators.maxLength(62),
+      ]),
       celular: new FormControl(null, [
         Validators.minLength(10),
+        Validators.maxLength(10),
         Validators.pattern('^[0][9][0-9]+'),
       ]),
       puntuacion: new FormControl(null, Validators.required),
-      texto: new FormControl(null, Validators.required),
+      texto: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(500),
+      ]),
     },
     { updateOn: 'submit' }
   );
@@ -337,31 +345,9 @@ export class ProductComponent implements OnInit {
       this.updatingComment = null;
       this.sendingCommentForm = false;
       this.submittedCommentForm = false;
-      this.commentForm = new FormGroup(
-        {
-          nombre: new FormControl(null, null),
-          celular: new FormControl(null, [
-            Validators.minLength(10),
-            Validators.maxLength(10),
-            Validators.pattern('^[0][9][0-9]+'),
-          ]),
-          puntuacion: new FormControl(null, Validators.required),
-          texto: new FormControl(null, Validators.required),
-        },
-        { updateOn: 'submit' }
-      );
+      this.commentForm.reset();
       this.publId = publId;
       this.getPublicacionOwn();
-    });
-  }
-
-  ngAfterViewInit() {
-    this.route.fragment.subscribe((next) => {
-      if (next) {
-        this.router.navigate(['/product', this.product.id], {
-          fragment: next,
-        });
-      }
     });
   }
 
@@ -471,19 +457,33 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  sanitizeCommentForm() {
+    let nombreClean = this.commentForm.get('nombre')?.value?.trim();
+    this.commentForm
+      .get('nombre')
+      ?.setValue(nombreClean === '' || !nombreClean ? null : nombreClean);
+    let celularClean = this.commentForm.get('celular')?.value?.trim();
+    this.commentForm
+      .get('celular')
+      ?.setValue(celularClean === '' || !celularClean ? null : celularClean);
+    let textoClean = this.commentForm.get('texto')?.value?.trim();
+    this.commentForm
+      .get('texto')
+      ?.setValue(textoClean === '' || !textoClean ? null : textoClean);
+    this.commentForm.updateValueAndValidity();
+  }
+
   enviarComentario() {
     this.submittedCommentForm = true;
     this.sendingCommentForm = true;
+    this.sanitizeCommentForm();
     if (this.commentForm.valid) {
+      this.commentForm.disable();
       let payload = {
         publicacion_id: this.product.id,
         usuario_id: this.product.usuario.id,
-        celular: this.commentForm.get('celular')?.value,
-        nombre: this.commentForm.get('nombre')?.value,
-        texto: this.commentForm.get('texto')?.value,
-        puntuacion: this.commentForm.get('puntuacion')?.value,
       };
-      this.commentForm.disable();
+      Object.assign(payload, this.commentForm.value)
       this.comentarioService.createComentario(payload).subscribe({
         next: (res) => {
           this.messageService.add({
@@ -501,7 +501,7 @@ export class ProductComponent implements OnInit {
             this.comentarios = [];
           }
           this.comentarios.rows.unshift(res.result);
-          if (this.comentarios.rows.lenght > 5) {
+          if (this.comentarios.rows.lenght > this.commentsRows) {
             this.comentarios.rows.pop();
           }
           this.comentarios.count += 1;
@@ -532,7 +532,6 @@ export class ProductComponent implements OnInit {
       });
     } else {
       this.sendingCommentForm = false;
-      this.commentForm.enable();
     }
   }
 
