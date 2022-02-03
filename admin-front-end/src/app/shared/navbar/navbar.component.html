@@ -1,0 +1,149 @@
+<div class="close-navbar-toggler fixed-top" *ngIf="!isMenuCollapsed" (click)="isMenuCollapsed = true"></div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-darker fixed-top">
+    <a *ngIf="!isHome && !isLogin" class="navbar-brand mr-0" [routerLink]="['/store']">
+        <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
+    </a>
+    <a *ngIf="isHome" class="navbar-brand mr-0" [routerLink]="['/home']" fragment="header">
+        <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
+    </a>
+    <a *ngIf="isLogin" class="navbar-brand mr-0" [routerLink]="['/home']">
+        <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
+    </a>
+    <a *ngIf="!isLogin" [ngClass]="{'active': !isMenuCollapsed}">
+        <button pButton pRipple class="navbar-toggler p-button navbar-button no-label" type="button"
+            (click)="isMenuCollapsed = !isMenuCollapsed">
+            <img *ngIf="isLogged" class="rounded-circle mr-2" src="{{ mediaUrl }}{{ usuario.foto_perfil }}"
+                alt="Foto de perfil">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </a>
+    <div *ngIf="!isLogin" [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse"
+        [ngClass]="!isMenuCollapsed ? 'collapse-scrollable' : ''">
+        <div *ngIf="!isHome" class="dropdown-divider d-lg-none"></div>
+        <div *ngIf="!isHome" class="w-100">
+            <form [formGroup]="searchForm" (submit)="buscarProductos()" class="navbar-search-form">
+                <!--<p-autoComplete class="navbar-input" [style]="{'width':'100%'}" placeholder="Búsqueda"
+                        formControlName="busqueda" [suggestions]="productosFiltrados"
+                        (completeMethod)="filtrarProductos($event)" [minLength]="3" (onKeyUp)="isSearchFilled = true" ></p-autoComplete>
+                    <button *ngIf="isSearchFilled" type="button" pButton pRipple icon="pi pi-times" class="p-button bg-ligther" (click)="searchForm.setValue({busqueda: null});isSearchFilled = false"></button>-->
+                <span class="p-input-icon-right navbar-search-span">
+                    <i *ngIf="searchForm.valid" class="c-pointer pi pi-times"
+                        (click)="searchForm.setValue({busqueda: null})"></i>
+                    <input class="navbar-search-input" [ngClass]="{'ng-invalid': false}" type="text" pInputText
+                        placeholder="Búsqueda" formControlName="busqueda" />
+                </span>
+                <button type="submit" pButton pRipple icon="pi pi-search" class="p-button navbar-search-button">
+                </button>
+            </form>
+        </div>
+        <ul class="navbar-nav ml-auto">
+            <div class="dropdown-divider d-lg-none"></div>
+            <li class="nav-item m-auto">
+                <a class="nav-link" [routerLink]="['/store']" [ngClass]="{'active': url == '/store'}"
+                    (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="TIENDA" class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <li *ngIf="!isHome" class="nav-item m-auto">
+                <a class="nav-link" [routerLink]="'/home'" (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="¿QUIÉNES SOMOS?"
+                        class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <div *ngIf="isHome" class="dropdown-divider d-lg-none"></div>
+            <li *ngIf="isHome" class="nav-item m-auto">
+                <a class="nav-link" [routerLink]="['']" fragment="about-us" (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="SOBRE NOSOTROS"
+                        class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <li *ngIf="isHome" class="nav-item m-auto">
+                <a class="nav-link" [routerLink]="['.']" fragment="testimonials" (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="TESTIMONIOS" class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <li *ngIf="isHome" class="nav-item m-auto">
+                <a class="nav-link" [routerLink]="['.']" fragment="contact" (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="CONTACTO" class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <div class="dropdown-divider d-lg-none"></div>
+            <li *ngIf="!isLogged" class="nav-item m-auto">
+                <a class="nav-link" [routerLink]="['/login']" (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="SOY EMPRENDEDOR"
+                        class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <li *ngIf="isLogged" class="nav-item m-auto d-none d-lg-block" ngbDropdown
+                (openChange)="checkDropDown($event)" display="dynamic" placement="bottom-right">
+                <a class="nav-link" [ngClass]="{'active': isDropdownOpened}" tabindex="0" ngbDropdownToggle
+                    role="button" id="profileDropDown">
+                    <button pButton pRipple type="button" class="p-button navbar-button no-label profile-button">
+                        <!--<i class="pi mr-2" [ngClass]="!isDropdownOpened ? 'pi-chevron-down' : 'pi-chevron-up'" style="font-size: 1rem"></i>-->
+                        <span class="custom-button-label">{{ usuario.nombre.toUpperCase() }}</span>
+                        <img class="rounded-circle ml-3" src="{{ mediaUrl }}{{ usuario.foto_perfil }}"
+                            alt="Foto de perfil">
+                    </button>
+                </a>
+                <div ngbDropdownMenu aria-labelledby="profileDropDown" class="dropdown-menu bg-darker mt-3">
+                    <a ngbDropdownItem [routerLink]="['/profile', usuario.id]"
+                        [ngClass]="{'active': url == '/profile/' + usuario.id}" (click)="isMenuCollapsed = true">
+                        <button pButton pRipple type="button" label="Ver perfil"
+                            class="p-button navbar-button my-1"></button>
+                    </a>
+                    <a ngbDropdownItem [routerLink]="['/management']" [ngClass]="{'active': url == '/management'}"
+                        (click)="isMenuCollapsed = true">
+                        <button pButton pRipple type="button" label="Mi emprendimiento"
+                            class="p-button navbar-button my-1"></button>
+                    </a>
+                    <a ngbDropdownItem [routerLink]="'/finance'" [ngClass]="{'active': url == '/finance'}"
+                        (click)="isMenuCollapsed = true">
+                        <button pButton pRipple type="button" label="Finanzas"
+                            class="p-button navbar-button my-1"></button>
+                    </a>
+                    <a ngbDropdownItem [routerLink]="'/forum'" [ngClass]="{'active': url == '/forum'}"
+                        (click)="isMenuCollapsed = true">
+                        <button pButton pRipple type="button" label="Foro" class="p-button navbar-button my-1"></button>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a ngbDropdownItem (click)="cerrarSesion()">
+                        <button pButton pRipple type="button" label="Cerrar sesión"
+                            class="p-button navbar-button my-1"></button>
+                    </a>
+                </div>
+            </li>
+            <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
+                <a class="nav-link" [routerLink]="['/profile', usuario.id]"
+                    [ngClass]="{'active': url == '/profile/' + usuario.id}" (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="VER PERFIL" class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
+                <a class="nav-link" [routerLink]="['/management']" [ngClass]="{'active': url == '/management'}"
+                    (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="MI EMPRENDIMIENTO"
+                        class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
+                <a class="nav-link" [routerLink]="'/finance'" [ngClass]="{'active': url == '/finance'}"
+                    (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="FINANZAS" class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
+                <a class="nav-link" [routerLink]="'/forum'" [ngClass]="{'active': url == '/forum'}"
+                    (click)="isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="FORO" class="p-button navbar-button"></button>
+                </a>
+            </li>
+            <div *ngIf="isLogged" class="dropdown-divider d-lg-none"></div>
+            <li *ngIf="isLogged" class="nav-item m-auto d-lg-none">
+                <a class="nav-link" [routerLink]="'.'" (click)="cerrarSesion(); isMenuCollapsed = true">
+                    <button pButton pRipple type="button" label="CERRAR SESIÓN" class="p-button navbar-button"></button>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

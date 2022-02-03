@@ -1,0 +1,61 @@
+<app-navbar [isLogin]="true"></app-navbar>
+
+<div class="container-fliud container-full-height bg-lighter d-flex flex-column justify-content-center">
+    <div class="container-sm py-3 d-flex flex-column justify-content-center">
+        <p-card class="m-auto w-100 my-3" [style]="{'max-width': '60rem', 'margin': 'auto'}">
+            <div class="d-flex justify-content-around align-items-center">
+                <div class="login-container p-fluid d-none d-md-block my-md-3 my-lg-5 ml-lg-5 px-md-3">
+                    <img class="h-100 w-100" src="../../assets/img/login-image.png" alt="Emprende Store LogIn">
+                </div>
+                <div
+                    class="login-container p-fluid d-flex flex-column justify-content-around my-md-3 my-lg-5 mr-lg-5 px-md-3 text-center">
+                    <form [formGroup]="loginForm" (submit)="iniciarSesion()" class="d-flex flex-column">
+                        <h4 class="login-title">Inicio de sesión</h4>
+                        <span class="p-input-filled p-input-icon-left p-float-label mt-4">
+                            <i class="pi pi-envelope"></i>
+                            <input pInputText
+                                [ngClass]="(submittedLoginForm && loginForm.get('email')?.invalid) || messageEmail? 'ng-dirty ng-invalid' : ''"
+                                id="email" type="text" formControlName="email" name="email"
+                                aria-describedby="email-help">
+                            <label for="email">E-mail</label>
+                        </span>
+                        <small *ngIf="submittedLoginForm && loginForm.get('email')?.errors?.['required']" id="email-help"
+                            class="p-error">Ingrese su E-mail.</small>
+                        <small *ngIf="submittedLoginForm && loginForm.get('email')?.errors?.['email']" id="email-help"
+                            class="p-error">El E-mail no es válido.</small>
+                        <small *ngIf="messageEmail" id="email-help" class="p-error">{{messageEmail}}</small>
+                        <span class="p-input-filled p-input-icon-left p-input-icon-right p-float-label mt-4-5">
+                            <i class="pi pi-shield"></i>
+                            <i class="c-pointer pi" [ngClass]="passMask ? 'pi-eye' : 'pi-eye-slash'"
+                                (click)="passMask = !passMask"></i>
+                            <input pInputText
+                                [ngClass]="(submittedLoginForm && loginForm.get('password')?.invalid) || messagePassword ? 'ng-dirty ng-invalid' : ''"
+                                id="password" [attr.type]="passMask ? 'password' : 'text'" formControlName="password"
+                                name="password" aria-describedby="password-help">
+                            <label for="password">Contraseña</label>
+                        </span>
+                        <small *ngIf="submittedLoginForm && loginForm.get('password')?.invalid" id="password-help"
+                            class="p-error">Ingrese su contraseña.</small>
+                        <small *ngIf="messagePassword" id="password-help" class="p-error">{{messagePassword}}</small>
+                        <div>
+                            <button pButton pRipple type="submit" label="INICIAR SESIÓN"
+                                icon="pi pi-sign-in" [disabled]="sendingLoginForm" [loading]="sendingLoginForm"
+                                class="p-button login-button mt-4"></button>
+                            <p class="mb-0 d-flex gap-1 justify-content-center align-items-center">
+                                <a class="small-link" [routerLink]="'.'">
+                                    <small>Olvidé mi contraseña</small>
+                                </a>
+                                <span>|</span>
+                                <a class="small-link" [routerLink]="'/home'" fragment="contact">
+                                    <small>Ser miembro</small>
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </p-card>
+    </div>
+</div>
+
+<app-footbar></app-footbar>
