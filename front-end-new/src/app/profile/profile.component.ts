@@ -16,20 +16,25 @@ export class ProfileComponent implements OnInit {
   mediaUrl: string = environment.mediaURL;
   notFound: boolean = false;
   unexpected: boolean = false;
+
   owned: boolean = false;
   userId: any;
   usuario: any = null;
+
   productos: any = null;
   productsCurrentPage: number = 0;
-  productsRows: number = 5;
+  productsRows: number = 12;
   loadingProducts: boolean = false;
+  showProductFilters: boolean = false;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private cookieService: CookieService,
     private usuarioService: UsuarioService,
-    private publicacionService: PublicacionService
+    private publicacionService: PublicacionService,
+    private ipService: IpService,
+    private visitaService: VisitaService,
   ) {}
 
   ngOnInit(): void {
@@ -40,8 +45,9 @@ export class ProfileComponent implements OnInit {
       this.usuario = null;
       this.productos = null;
       this.productsCurrentPage = 0;
-      this.productsRows = 5;
+      this.productsRows = 12;
       this.loadingProducts = false;
+      this.showProductFilters = false;
       this.userId = userId;
 
       if (
@@ -50,7 +56,40 @@ export class ProfileComponent implements OnInit {
       ) {
         this.owned = true;
       }
-      //this.usuarioService
+      this.usuarioService.getUsuarioById(this.userId).subscribe({
+        next: (res) => {
+          this.usuario = res.result;
+          if (!this.owned) {
+            this.ipService.getIPAddress().subscribe({
+              next: (resIp) => {
+                Object.assign(resIp, {
+                  usuario_id: this.usuario.id,
+                });
+                this.visitaService.createVisitaPerfil(resIp).subscribe();
+              },
+              error: () => {
+                let payload = {
+                  usuario_id: this.usuario.id,
+                };
+                this.visitaService.createVisitaPerfil(payload).subscribe();
+              },
+            });
+          }
+        },
+        error: (err) => {
+          if (err.status == '404') {
+            this.notFound = true;
+          } else {
+            this.unexpected = true;
+          }
+        },
+      });
+      this.publicacionService.getPublicacionesByUsuario(this.userId).subscribe({
+        next: (res) => {
+          this.productos = res.result;
+        },
+        error: () => {},
+      })
     });
     /*if (
       this.cookieService.check('usuario_id') &&

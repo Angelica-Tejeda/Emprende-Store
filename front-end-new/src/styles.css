@@ -583,6 +583,12 @@ button {
   text-decoration: none !important;
 }
 
+.profile-network-button button{
+  background-color: #ffffff;
+  color: var(--primary);
+  border: 1px solid #ffffff;
+}
+
 .footbar-button button {
   background: #2d2f60;
   border: 1px solid #2d2f60;
@@ -647,6 +653,10 @@ button {
   padding: 0.25rem 0.5rem !important;
 }
 
+a.link-button-responsive {
+  width: 100%;
+}
+
 .p-button.button-responsive {
   width: 100%;
 }
@@ -666,6 +676,10 @@ button {
 
   .button-dialog-container {
     height: auto;
+  }
+
+  a.link-button-responsive {
+    width: auto;
   }
 
   .p-button.button-responsive {

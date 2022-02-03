@@ -3,55 +3,129 @@
 <app-not-found *ngIf="notFound"></app-not-found>
 <app-unexpected-error *ngIf="unexpected"></app-unexpected-error>
 
-
-
-<!--<div class="padding">
-    <div class="col-md-12">
-        <div class="card"> <img class="card-img-top" src="{{ mediaUrl }}{{ usuario.foto_portada }}"
-                alt="Card image cap">
-            <div class="card-body little-profile text-center">
-                <div class="pro-img"><img src="{{ mediaUrl }}{{ usuario.foto_perfil }}" alt="user"></div>
-                <h3 class="m-b-0">{{ usuario.nombre }} {{ usuario.apellido }}</h3>
-                <p>{{ usuario.bio }}</p>
-                <a [routerLink]="['/detallesProfile']" routerLinkActive="router-link-active"
-                    class="mt-4 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Más
-                    detalles</a>
-                <div class="row text-center m-t-20">
-                    <div class="col-lg-4 col-md-4 m-t-20 text-center">
-                        <h3 class="m-b-0 font-light text-center">{{ nProductos }}</h3>Productos publicados<small>
-
-                        </small>
-                    </div>
-                    <div class="col-lg-4 col-md-4 m-t-20 text-center">
-                        <h3 class="m-b-0 font-light text-center">{{ usuario.puntuacion }}</h3><small>Puntuación
-                            promedio</small>
-                    </div>
-                    <div class="col-lg-4 col-md-4 m-t-20 text-center">
-                        <h3 class="m-b-0 font-light text-center">{{ usuario.fecha_inicio }}</h3><small>Vendiendo
-                            desde</small>
-                    </div>
+<div *ngIf="!notFound && !unexpected && usuario" class="bg-lighter container-full-height">
+    <div class="container-sm py-3 py-sm-4 py-lg-5 d-flex gap-3 gap-lg-4 flex-column">
+        <div class="pictures-container">
+            <div class="banner-container custom-card p-0">
+                <img src="{{ mediaUrl + usuario.foto_portada }}" alt="">
+            </div>
+            <div class="profile-pic-container">
+                <img src="{{ mediaUrl + usuario.foto_perfil }}" alt="">
+            </div>
+        </div>
+        <div class="text-center">
+            <h2 class="m-0">{{ usuario.negocio ? usuario.negocio : usuario.nombre + ' ' + usuario.apellido }}</h2>
+            <p class="m-0" *ngIf="usuario.negocio">Propietario: {{usuario.nombre + ' ' + usuario.apellido}}</p>
+        </div>
+        <div *ngIf="owned" class="d-flex justify-content-center">
+            <a class="link-button link-button-responsive" [routerLink]="['/management']" fragment="personalInfo">
+                <button pButton pRipple label="Editar Perfil" icon="pi pi-id-card"
+                    class="p-button button-responsive"></button>
+            </a>
+        </div>
+        <div class="d-flex gap-3 gap-lg-4 justify-content-center flex-wrap">
+            <a *ngIf="usuario.facebook" class="link-button profile-network-button" target="_blank"
+                href="{{usuario.facebook}}">
+                <p-button styleClass="p-2">
+                    <ng-template pTemplate="content">
+                        <i class="pi pi-facebook" style="font-size: 2rem"></i>
+                    </ng-template>
+                </p-button>
+            </a>
+            <a *ngIf="usuario.twitter" class="link-button profile-network-button" target="_blank"
+                href="https://twitter.com/{{usuario.twitter}}/">
+                <p-button styleClass="p-2">
+                    <ng-template pTemplate="content">
+                        <i class="pi pi-twitter" style="font-size: 2rem"></i>
+                    </ng-template>
+                </p-button>
+            </a>
+            <a *ngIf="usuario.instagram" class="link-button profile-network-button" target="_blank"
+                href="https://www.instagram.com/{{usuario.instagram}}/">
+                <p-button styleClass="p-2">
+                    <ng-template pTemplate="content">
+                        <i class="pi pi-instagram" style="font-size: 2rem"></i>
+                    </ng-template>
+                </p-button>
+            </a>
+            <a *ngIf="usuario.linkedin" class="link-button profile-network-button" target="_blank"
+                href="{{ usuario.linkedin }}">
+                <p-button styleClass="p-2">
+                    <ng-template pTemplate="content">
+                        <i class="pi pi-linkedin" style="font-size: 2rem"></i>
+                    </ng-template>
+                </p-button>
+            </a>
+        </div>
+        <div class="custom-card d-flex flex-column flex-md-row justify-content-around">
+            <div class="text-center">
+                <h2>{{ productos.count }}</h2>
+                <h6>Productos Publicados</h6>
+            </div>
+            <p-divider class="d-md-none"></p-divider>
+            <p-divider class="d-none d-md-block" layout="vertical"></p-divider>
+            <div class="text-center">
+                <ng-template #t let-fill="fill">
+                    <span class="star" [class.full]="fill === 100">
+                        <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                    </span>
+                </ng-template>
+                <div class="d-flex gap-2 justify-content-center align-items-center mb-2">
+                    <ngb-rating [(rate)]="usuario.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
+                    </ngb-rating>
+                    <h2 *ngIf="usuario.puntuacion !== null" class="mb-0">{{ usuario.puntuacion }}</h2>
+                    <h6 *ngIf="usuario.puntuacion === null" class="mb-0 font-weight-normal">No hay datos</h6>
                 </div>
-                <div class="row text-center mt-4 col-md-6 m-auto">
-
-                    <div class="col-lg-4 col-md-2 m-t-20 text-center">
-                        <i class="bi bi-facebook"></i>
-                    </div>
-                    <div class="col-lg-4 col-md-2 m-t-20 text-center">
-                        <i class="bi bi-instagram"></i>
-                    </div>
-                    <div class="col-lg-4 col-md-2 m-t-20 text-center">
-                        <i class="bi bi-twitter"></i>
-                    </div>
+                <h6>Promedio de Calificaciones</h6>
+            </div>
+            <p-divider class="d-md-none"></p-divider>
+            <p-divider class="d-none d-md-block" layout="vertical"></p-divider>
+            <div class="text-center">
+                <h2>{{ usuario.fecha_inicio | date: 'LL/YYYY' }}</h2>
+                <h6>Vendiendo Desde</h6>
+            </div>
+        </div>
+        <div>
+            <h3>Descripción</h3>
+            <div class="custom-card">
+                <p class="m-0 text-justify">{{ usuario.bio }}</p>
+            </div>
+        </div>
+        <div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3 class="mb-0">Publicaciones <span *ngIf="productos.count > 0">({{ productos.count }})</span></h3>
+                <div *ngIf="owned" class="d-flex gap-3">
+                    <a class="link-button" [routerLink]="['/management']" fragment="products">
+                        <button pButton pRipple label="Administrar Publicaciones" icon="pi pi-th-large"
+                            class="p-button p-button-sm d-none d-md-block"></button>
+                        <button pButton pRipple icon="pi pi-th-large" class="p-button p-button-sm d-md-none"></button>
+                    </a>
+                    <button pButton pRipple [label]="showProductFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'"
+                        [icon]="showProductFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                        class="p-button-sm d-none d-md-block"
+                        (click)="showProductFilters = !showProductFilters;"></button>
+                    <button pButton pRipple [icon]="showProductFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                        class="p-button-sm d-md-none" (click)="showProductFilters = !showProductFilters;"></button>
                 </div>
-                <div class="row text-center mt-4 col-md-3 m-auto">
-                    <a href="javascript:void(0)" class="mt-3 waves-effect waves-dark btn btn-primary btn-md btn-rounded"
-                        data-abc="true">Subir Productos</a>
-                    <a href="javascript:void(0)" class="mt-4 waves-effect waves-dark btn btn-primary btn-md btn-rounded"
-                        data-abc="true">Ver Mis Productos</a>
+                <div *ngIf="!owned">
+                    <button pButton pRipple [label]="showProductFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'"
+                        [icon]="showProductFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                        class="p-button-sm d-none d-sm-block"
+                        (click)="showProductFilters = !showProductFilters;"></button>
+                    <button pButton pRipple [icon]="showProductFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                        class="p-button-sm d-sm-none" (click)="showProductFilters = !showProductFilters;"></button>
                 </div>
+            </div>
+            <!--<button pButton pRipple label="Mostrar Filtros" [icon]="showProductFilters ? 'pi pi-filter-slash' : 'pi pi-filter'" class="p-button p-button-sm button-responsive mb-2"></button>
+            <a class="link-button link-button-responsive d-sm-none" [routerLink]="['/management']" fragment="products">
+                <button pButton pRipple label="Administrar Publicaciones" icon="pi pi-th-large" class="p-button p-button-sm button-responsive mb-2"></button>
+            </a>-->
+            <div class="d-flex flex-wrap gap-3 gap-lg-4 justify-content-start align-items-stretch">
+                <app-product-card *ngFor="let product of productos.rows" [product]="product" [showOwner]="false">
+                </app-product-card>
             </div>
         </div>
     </div>
-</div>-->
+</div>
 
 <app-footbar></app-footbar>

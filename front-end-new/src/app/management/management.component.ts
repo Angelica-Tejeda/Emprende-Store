@@ -17,8 +17,10 @@ import { MenuItem } from 'primeng/api';
 })
 export class ManagementComponent implements OnInit {
   mediaUrl: string = environment.mediaURL;
+
   notAllowed: boolean = false;
   unexpected: boolean = false;
+
   items: MenuItem[] = [
     {
       id: '1',
@@ -54,13 +56,13 @@ export class ManagementComponent implements OnInit {
     },
   ];
   activeItem: MenuItem = this.items[0];
-  usuario: any;
+
   productos: any;
-  visitasPerfil: any;
-  visitasProductos: any;
-  visitasContacto: any;
-  final: any = new Date();
-  inicio: any = new Date(this.final.getTime() - 1000 * 60 * 60 * 24 * 365);
+  productsCurrentPage: number = 0;
+  productsRows: number = 12;
+  loadingProducts: boolean = false;
+  updatingProducts: any = null;
+  showProductFilters: boolean = false;
 
   comentarios: any;
   commentsCurrentPage: number = 0;
@@ -80,6 +82,7 @@ export class ManagementComponent implements OnInit {
   commentFilterCampo: any = [
     { label: 'Fecha', value: 'creado' },
     { label: 'Publicación', value: 'publicacion' },
+    { label: 'Usuario', value: 'nombre' },
     { label: 'Puntuación', value: 'puntuacion' },
     { label: 'Ocultos', value: 'oculto' },
     { label: 'Celular', value: 'celular' },
@@ -88,6 +91,39 @@ export class ManagementComponent implements OnInit {
     { label: 'Ascendente', value: 'ASC' },
     { label: 'Descendente', value: 'DESC' },
   ];
+
+  visitasPerfil: any;
+  visitasProductos: any;
+  visitasContacto: any;
+  final: any = new Date();
+  inicio: any = new Date(this.final.getTime() - 1000 * 60 * 60 * 24 * 365);
+
+  usuario: any;
+  submittedUserEditForm: boolean = false;
+  sendingUserEditForm: boolean = false;
+  userEditForm: FormGroup = new FormGroup(
+    {
+      nombre: new FormControl(null, Validators.required),
+      apellido: new FormControl(null, Validators.required),
+      fecha_nacimiento: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      celular: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern('^[0][9][0-9]+'),
+      ]),
+      bio: new FormControl(null, null),
+      negocio: new FormControl(null, null),
+      fecha_inicio: new FormControl(null, null),
+      facebook: new FormControl(null, null),
+      instagram: new FormControl(null, null),
+      twitter: new FormControl(null, null),
+      linkedin: new FormControl(null, null),
+    },
+    { updateOn: 'submit' }
+  )
+  maxDateValue: Date = new Date();
 
   constructor(
     private router: Router,
@@ -121,6 +157,8 @@ export class ManagementComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.usuario = res.result;
+            this.cargarUserEditForm();
+            this.maxDateValue = new Date(this.usuario.creado);
           },
           error: (err) => {
             console.error(err);
@@ -131,7 +169,7 @@ export class ManagementComponent implements OnInit {
         .getOwnPublicacionesByUsuario(+this.cookieService.get('usuario_id'))
         .subscribe({
           next: (res) => {
-            this.productos = res.result.rows;
+            this.productos = res.result;
           },
           error: (err) => {
             console.error(err);
@@ -365,5 +403,28 @@ export class ManagementComponent implements OnInit {
           },
         });
     }
+  }
+
+  cargarUserEditForm() {
+    this.userEditForm.get('nombre')?.setValue(this.usuario.nombre);
+    this.userEditForm.get('apellido')?.setValue(this.usuario.apellido);
+    this.userEditForm.get('fecha_nacimiento')?.setValue(new Date(this.usuario.fecha_nacimiento));
+    this.userEditForm.get('email')?.setValue(this.usuario.email);
+    this.userEditForm.get('celular')?.setValue("0" + this.usuario.celular.substring(3));
+    this.userEditForm.get('bio')?.setValue(this.usuario.bio);
+    this.userEditForm.get('negocio')?.setValue(this.usuario.negocio);
+    this.userEditForm.get('fecha_inicio')?.setValue(new Date(this.usuario.fecha_inicio));
+    this.userEditForm.get('facebook')?.setValue(this.usuario.facebook);
+    this.userEditForm.get('instagram')?.setValue(this.usuario.instagram);
+    this.userEditForm.get('twitter')?.setValue(this.usuario.twitter);
+    this.userEditForm.get('linkedin')?.setValue(this.usuario.linkedin);
+  }
+
+  //TODO: Añadir un CormfirmDialog altes de reestablecer los datos
+
+  //TODO: Sanitizar los datos con espacios y datos vacíos antes de envíar el formulario
+
+  actualizarDatosUsuario() {
+    //TODO: Realizar mecanizmo para enviar los datos
   }
 }

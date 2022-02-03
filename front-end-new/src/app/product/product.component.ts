@@ -16,12 +16,15 @@ import { environment } from '../../environments/environment';
 })
 export class ProductComponent implements OnInit {
   mediaUrl: string = environment.mediaURL;
+
   notFound: boolean = false;
   unexpected: boolean = false;
+
   owned: boolean = false;
   publId: any;
   product: any = null;
   mensajeContacto: string = '';
+
   comentarios: any = null;
   commentsCurrentPage: number = 0;
   commentsRows: number = 5;
@@ -33,7 +36,6 @@ export class ProductComponent implements OnInit {
   commentForm: FormGroup = new FormGroup(
     {
       nombre: new FormControl(null, null),
-      //email: new FormControl(null, [Validators.required, Validators.email]),
       celular: new FormControl(null, [
         Validators.minLength(10),
         Validators.pattern('^[0][9][0-9]+'),
@@ -338,9 +340,9 @@ export class ProductComponent implements OnInit {
       this.commentForm = new FormGroup(
         {
           nombre: new FormControl(null, null),
-          //email: new FormControl(null, [Validators.required, Validators.email]),
           celular: new FormControl(null, [
             Validators.minLength(10),
+            Validators.maxLength(10),
             Validators.pattern('^[0][9][0-9]+'),
           ]),
           puntuacion: new FormControl(null, Validators.required),
