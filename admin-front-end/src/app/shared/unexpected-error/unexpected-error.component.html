@@ -1,0 +1,20 @@
+<div class="bg-lighter">
+    <div class="container-sm container-full-height py-3 py-sm-4 py-lg-5 text-center d-flex flex-column justify-content-center">
+        <div class="custom-card">
+            <img class="mx-auto mb-3" src="../../../assets/img/unexpected-image.png" alt="unexpected-error">
+            <h3>Error del servidor</h3>
+            <p class="mx-auto mb-0">Ha ocurrido un error inesperado en el servidor.</p>
+            <p class="mx-auto">Vuelve a intentarlo más tarde.</p>
+            <div class="d-flex flex-column flex-sm-row-reverse justify-content-center gap-3">
+                <a class="link-button" (click)="reload()">
+                    <button pButton pRipple type="button" label="Recargar" icon="pi pi-refresh"
+                        class="p-button-lg button-responsive"></button>
+                </a>
+                <a class="link-button" (click)="goBack()">
+                    <button pButton pRipple type="button" label="Volver" icon="pi pi-arrow-circle-left"
+                        class="p-button-lg button-responsive"></button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

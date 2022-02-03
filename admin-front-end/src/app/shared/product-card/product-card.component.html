@@ -1,0 +1,28 @@
+<p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="product.fotos.length > 1 ? true : false"
+    [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
+    <ng-template pTemplate="item" let-item>
+        <a [routerLink]="['/product', product.id]" class="w-100">
+            <div class="image-galleria-template d-flex justify-content-center align-items-center"
+                [ngClass]="product.descuento ? 'discount-card no-border-bottom' : ''">
+                <img [src]="mediaUrl + item" />
+            </div>
+        </a>
+    </ng-template>
+</p-galleria>
+<a [routerLink]="['/product', product.id]">
+    <div class="custom-card p-md-4 d-flex flex-column" [ngClass]="product.descuento ? 'discount-card no-border-top' : ''">
+        <h4 *ngIf="product.precio && !product.descuento" class="mb-1 text-nowrap">$ {{product.precio}}</h4>
+        <h4 *ngIf="!product.precio" class="text-nowrap">Sin precio</h4>
+        <div *ngIf="product.descuento && product.precio" class="d-flex align-items-center flex-wrap-reverse">
+            <h4 class="text-success mb-1 mr-2 text-nowrap">$ {{ product.precio - (product.precio * product.descuento
+                / 100) | number: '1.2-2'}}</h4>
+            <small class="text-danger mb-0 text-nowrap"><s>$ {{ product.precio }}</s></small>
+        </div>
+        <h6 *ngIf="product.titulo" class="h-100" [ngClass]="!showOwner ? 'mb-0' : ''">{{product.titulo}}</h6>
+        <h6 *ngIf="!product.titulo" class="h-100" [ngClass]="!showOwner ? 'mb-0' : ''">Sin título</h6>
+        <small *ngIf="product.usuario.negocio && showOwner">{{product.usuario.negocio}}</small>
+        <small *ngIf="!product.usuario.negocio && showOwner">{{product.usuario.nombre}}
+            {{product.usuario.apellido}}</small>
+        <!--TODO: Agregar funcinoalidad para editar, ocultar y eliminar productos.-->
+    </div>
+</a>

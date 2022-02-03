@@ -1,0 +1,23 @@
+<div class="bg-lighter">
+    <div class="container-sm container-full-height py-3 py-sm-4 py-lg-5 text-center d-flex flex-column justify-content-center">
+        <div class="custom-card">
+            <img class="mx-auto mb-3" src="../../../assets/img/not-allowed-image.png" alt="not-found">
+            <h3>Acceso no permitido</h3>
+            <p class="mx-auto" [ngClass]="!isLogged ? 'mb-0' : ''">No tiene suficientes permisos acceder a este
+                contenido.
+            </p>
+            <p *ngIf="!isLogged" class="mx-auto">Inicia sesión para verificar tu identidad.</p>
+            <div class="d-flex flex-column flex-sm-row-reverse justify-content-center gap-3">
+                <a *ngIf="!isLogged" class="link-button" [routerLink]="['/login']"
+                    [queryParams]="{ redirect: true }">
+                    <button pButton pRipple type="button" label="Iniciar sesión" icon="pi pi-sign-in"
+                        class="p-button-lg button-responsive"></button>
+                </a>
+                <a class="link-button" (click)="goBack()">
+                    <button pButton pRipple type="button" label="Volver" icon="pi pi-arrow-circle-left"
+                        class="p-button-lg button-responsive"></button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

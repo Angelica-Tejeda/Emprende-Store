@@ -16,24 +16,24 @@
                 <form [formGroup]="transactionForm" (submit)="registrarTransaccion"
                     class="d-flex flex-column justify-content-center">
                     <div class="input d-flex align-items-center mb-4 gap-3">
-                        <label for="type" class="font-weight-bold pr-4"> Tipo: </label>
-                        <p-dropdown [options]="tipo" formControlName="type" placeholder="Tipo de transacción"
+                        <label for="ingreso" class="font-weight-bold pr-4"> Tipo: </label>
+                        <p-dropdown [options]="tipo" optionLabel="label" optionValue="value" formControlName="ingreso" placeholder="Tipo de transacción"
                             class="w-100" [styleClass]="'w-100'">
                         </p-dropdown>
                     </div>
                     <div class="input d-flex align-items-center mb-4 gap-3">
-                        <label for="date" class="font-weight-bold pr-4"> Fecha: </label>
-                        <p-calendar formControlName="date" placeholder=" dd/mm/aaaa" dateFormat="dd/mm/yy" class="w-100"
+                        <label for="fecha" class="font-weight-bold pr-4"> Fecha: </label>
+                        <p-calendar formControlName="fecha" placeholder=" dd/mm/aaaa" dateFormat="dd/mm/yy" class="w-100"
                             [styleClass]="'w-100'"></p-calendar>
                     </div>
                     <div class="input d-flex align-items-center mb-4 gap-3">
-                        <label for="description" class="font-weight-bold pr-4"> Detalle: </label>
-                        <textarea pInputTextarea placeholder="Describa la transacción" formControlName="description"
+                        <label for="detalle" class="font-weight-bold pr-4"> Detalle: </label>
+                        <textarea pInputTextarea placeholder="Describa la transacción" formControlName="detalle"
                             class="w-100"></textarea>
                     </div>
                     <div class="input d-flex align-items-center mb-4 gap-3">
-                        <label for="ammount" class="font-weight-bold pr-4"> Valor: </label>
-                        <p-inputNumber formControlName="ammount" mode="currency" currency="USD"></p-inputNumber>
+                        <label for="valor" class="font-weight-bold pr-4"> Valor: </label>
+                        <p-inputNumber formControlName="valor" mode="currency" currency="USD"></p-inputNumber>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button pButton pRipple type="submit" label="Registrar" icon="pi pi-save"
@@ -60,10 +60,10 @@
                                 [ngClass]="!response.valor.includes('-') ? 'text-success': 'text-danger'">$
                                 {{response.valor}}</td>
                             <td class="align-middle"> <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button button-responsive xs-button mr-2" [iconPos]="'right'"></button>
+                                    class="p-button button-responsive xs-button mr-2" [iconPos]="'right'" (click)="editarTransaccion(response)"></button>
                                 <button pButton pRipple icon="pi pi-times"
                                     class="p-button button-responsive xs-button p-button-danger" [iconPos]="'right'"
-                                    (click)="eliminarRegistro(response.id)"></button>
+                                    (click)="eliminarTransaccion(response.id)"></button>
                             </td>
                         </tr>
                     </ng-template>

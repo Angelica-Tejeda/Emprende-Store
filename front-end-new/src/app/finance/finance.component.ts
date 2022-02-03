@@ -10,7 +10,7 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./finance.component.css'],
 })
 export class FinanceComponent implements OnInit {
-  tipo: string[] = ["Ingreso", "Egreso"];
+  tipo: any = [{label: "Ingreso", value: true}, {label: "Egreso", value: false}];
   selected: any;
   responses: any = {
     "status": "success",
@@ -48,10 +48,11 @@ export class FinanceComponent implements OnInit {
 
   transactionForm: FormGroup = new FormGroup(
     {
-      date: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
-      type: new FormControl('', Validators.required),
-      ammount: new FormControl('', Validators.required)
+      fecha: new FormControl('', Validators.required),
+      detalle: new FormControl('', Validators.required),
+      ingreso: new FormControl('', Validators.required),
+      valor: new FormControl('', Validators.required),
+      id: new FormControl(null,null)
     },
     { updateOn: 'submit' }
   );
@@ -64,11 +65,90 @@ export class FinanceComponent implements OnInit {
   ngOnInit(): void { }
 
   registrarTransaccion() {
+    if (this.transactionForm.valid && !this.transactionForm.get('id')?.value) {
+      this.transactionForm.disable();
+      this.movimientoService.createMovimiento(this.transactionForm.value()).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            key: 'user',
+            severity: 'success',
+            summary: 'Transacción registrada',
+            detail: res.message,
+            life: 3000,
+          });
+        },
+        error: (err) => {
+          console.error(err);
+          if (err.status == '400') {
+            this.messageService.add({
+              key: 'user',
+              severity: 'error',
+              summary: 'Error',
+              detail: err.error.message,
+              life: 3000,
+            });
+          } else {
+            this.messageService.add({
+              key: 'user',
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+              life: 3000,
+            });
+          }
+          this.transactionForm.enable();
+        },
+      });
+    } else {
+      this.transactionForm.disable();
+      this.movimientoService.updateMovimiento(+this.cookieService.get('usuario_id'),this.transactionForm.get('id')?.value,this.transactionForm.value()).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            key: 'user',
+            severity: 'success',
+            summary: 'Transacción Actualizada',
+            detail: res.message,
+            life: 3000,
+          });
+        },
+        error: (err) => {
+          console.error(err);
+          if (err.status == '400') {
+            this.messageService.add({
+              key: 'user',
+              severity: 'error',
+              summary: 'Error',
+              detail: err.error.message,
+              life: 3000,
+            });
+          } else {
+            this.messageService.add({
+              key: 'user',
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+              life: 3000,
+            });
+          }
+          this.transactionForm.enable();
+        },
+      });
+      
+    }
   }
-  eliminarRegistro(id: number) {
+  editarTransaccion(transaccion:any){
+    this.transactionForm.get("fecha")?.setValue(new Date(transaccion.fecha));
+    this.transactionForm.get("detalle")?.setValue(transaccion.detalle);
+    this.transactionForm.get('ingreso')?.setValue(transaccion.ingreso);
+    this.transactionForm.get('valor')?.setValue(transaccion.valor);
+    this.transactionForm.get('id')?.setValue(transaccion.id);
+  }
+  eliminarTransaccion(id: number) {
     this.confirmationService.confirm({
-      message: '¿Seguro que quieres de cerrar tu sesión?',
-      header: 'Cerrar sesión',
+      message: '¿Seguro que deseas eliminar esta transacción?',
+      header: 'Eliminar Transacción',
       icon: 'pi pi-exclamation-circle',
       accept: () => {
         this.movimientoService.deleteMovimiento(+this.cookieService.get('usuario_id'), id).subscribe({
