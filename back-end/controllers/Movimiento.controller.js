@@ -6,7 +6,7 @@ exports.createMovimiento = async (req, res) => {
         usuario_id: req.user.id,
         fecha: req.body.fecha,
         detalle: req.body.detalle,
-        valor: req.body.valor,
+        valor: req.body.valor > 0 && req.body.ingreso ? req.body.valor : req.body.valor * -1,
         ingreso: req.body.ingreso,
     })
         .then((movimiento) => {
@@ -50,6 +50,13 @@ exports.getMovimientosByUser = async (req, res) => {
         where: {
             usuario_id: req.user.id,
         },
+        order: [
+            [
+                req.query.field ? req.query.field : "fecha",
+                req.query.order ? req.query.order : "DESC",
+            ],
+            ["id", req.query.order ? req.query.order : "DESC"],
+        ]
     })
         .then((movimientos) => {
             if (movimientos.count > 0) {
@@ -99,7 +106,7 @@ exports.updateMovimiento = async (req, res) => {
         {
             fecha: req.body.fecha,
             detalle: req.body.detalle,
-            valor: req.body.valor,
+            valor: req.body.valor > 0 && req.body.ingreso ? req.body.valor : req.body.valor * -1,
             ingreso: req.body.ingreso,
         },
         {

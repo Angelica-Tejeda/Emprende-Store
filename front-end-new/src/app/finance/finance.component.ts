@@ -4,6 +4,7 @@ import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { ConfirmationService } from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
+
 @Component({
   selector: 'app-finance',
   templateUrl: './finance.component.html',
@@ -12,46 +13,14 @@ import { MessageService } from 'primeng/api';
 export class FinanceComponent implements OnInit {
   tipo: any = [{label: "Ingreso", value: true}, {label: "Egreso", value: false}];
   selected: any;
-  responses: any = {
-    "status": "success",
-    "message": "Movimientos obtenidos con éxito.",
-    "result": {
-      "count": 3,
-      "rows": [
-        {
-          "id": "2",
-          "fecha": "2022-01-13T00:00:00.000Z",
-          "detalle": "Venta de quesos",
-          "valor": "25.00",
-          "ingreso": true
-        },
-        {
-          "id": "3",
-          "fecha": "2022-01-13T00:00:00.000Z",
-          "detalle": "Compra de ingredientes",
-          "valor": "-40.50",
-          "ingreso": false
-        },
-        {
-          "id": "4",
-          "fecha": "2022-01-13T00:00:00.000Z",
-          "detalle": "Venta de galletas",
-          "valor": "12.45",
-          "ingreso": true
-        }
-      ],
-      "total": "-3.05",
-      "ingresos": "37.45",
-      "egresos": "-40.50"
-    }
-  }
+  responses: any = null;
 
   transactionForm: FormGroup = new FormGroup(
     {
-      fecha: new FormControl('', Validators.required),
-      detalle: new FormControl('', Validators.required),
-      ingreso: new FormControl('', Validators.required),
-      valor: new FormControl('', Validators.required),
+      fecha: new FormControl(null, Validators.required),
+      detalle: new FormControl(null, Validators.required),
+      ingreso: new FormControl(null, Validators.required),
+      valor: new FormControl(null, Validators.required),
       id: new FormControl(null,null)
     },
     { updateOn: 'submit' }
@@ -62,20 +31,31 @@ export class FinanceComponent implements OnInit {
     private cookieService: CookieService,
     private messageService: MessageService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.transactionForm.reset();
+    this.transactionForm.get('fecha')?.setValue(new Date());
+    this.movimientoService.getMovimientosByUser(+this.cookieService.get('usuario_id')).subscribe({
+      next: (res) => {
+        this.responses = res;
+      }
+    })
+  }
 
   registrarTransaccion() {
     if (this.transactionForm.valid && !this.transactionForm.get('id')?.value) {
       this.transactionForm.disable();
-      this.movimientoService.createMovimiento(this.transactionForm.value()).subscribe({
+      this.movimientoService.createMovimiento(this.transactionForm.value).subscribe({
         next: (res) => {
           this.messageService.add({
             key: 'user',
             severity: 'success',
             summary: 'Transacción registrada',
             detail: res.message,
-            life: 3000,
+            life: 5000,
           });
+          this.transactionForm.enable();
+          this.transactionForm.reset();
+          this.ngOnInit();
         },
         error: (err) => {
           console.error(err);
@@ -85,7 +65,7 @@ export class FinanceComponent implements OnInit {
               severity: 'error',
               summary: 'Error',
               detail: err.error.message,
-              life: 3000,
+              life: 5000,
             });
           } else {
             this.messageService.add({
@@ -94,7 +74,7 @@ export class FinanceComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 3000,
+              life: 5000,
             });
           }
           this.transactionForm.enable();
@@ -102,15 +82,16 @@ export class FinanceComponent implements OnInit {
       });
     } else {
       this.transactionForm.disable();
-      this.movimientoService.updateMovimiento(+this.cookieService.get('usuario_id'),this.transactionForm.get('id')?.value,this.transactionForm.value()).subscribe({
+      this.movimientoService.updateMovimiento(+this.cookieService.get('usuario_id'),this.transactionForm.get('id')?.value,this.transactionForm.value).subscribe({
         next: (res) => {
           this.messageService.add({
             key: 'user',
             severity: 'success',
             summary: 'Transacción Actualizada',
             detail: res.message,
-            life: 3000,
+            life: 5000,
           });
+          this.ngOnInit();
         },
         error: (err) => {
           console.error(err);
@@ -120,7 +101,7 @@ export class FinanceComponent implements OnInit {
               severity: 'error',
               summary: 'Error',
               detail: err.error.message,
-              life: 3000,
+              life: 5000,
             });
           } else {
             this.messageService.add({
@@ -129,7 +110,7 @@ export class FinanceComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 3000,
+              life: 5000,
             });
           }
           this.transactionForm.enable();
@@ -138,6 +119,7 @@ export class FinanceComponent implements OnInit {
       
     }
   }
+
   editarTransaccion(transaccion:any){
     this.transactionForm.get("fecha")?.setValue(new Date(transaccion.fecha));
     this.transactionForm.get("detalle")?.setValue(transaccion.detalle);
@@ -158,9 +140,19 @@ export class FinanceComponent implements OnInit {
               severity: 'success',
               summary: 'Registro Eliminado',
               detail: res.message,
-              life: 3000,
+              life: 5000,
             });
+            this.ngOnInit();
           },
+          error: (err) => {
+            this.messageService.add({
+              key: 'user',
+              severity: 'error',
+              summary: 'Operacinó fallida',
+              detail: "Ha ocurrido un error al procesar la petición. Intentelo nuevamente más tarde.",
+              life: 5000,
+            });
+          }
         });
       },
       reject: () => { },

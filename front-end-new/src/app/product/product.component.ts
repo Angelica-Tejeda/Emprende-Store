@@ -470,7 +470,6 @@ export class ProductComponent implements OnInit {
     this.commentForm
       .get('texto')
       ?.setValue(textoClean === '' || !textoClean ? null : textoClean);
-    this.commentForm.updateValueAndValidity();
   }
 
   enviarComentario() {
@@ -491,7 +490,7 @@ export class ProductComponent implements OnInit {
             severity: 'success',
             summary: 'Comentario enviado',
             detail: res.message,
-            life: 3000,
+            life: 5000,
           });
           this.sendingCommentForm = false;
           this.commentForm.reset();
@@ -514,7 +513,7 @@ export class ProductComponent implements OnInit {
               severity: 'error',
               summary: 'Error',
               detail: err.error.message,
-              life: 3000,
+              life: 5000,
             });
           } else {
             this.messageService.add({
@@ -523,7 +522,7 @@ export class ProductComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 3000,
+              life: 5000,
             });
           }
           this.sendingCommentForm = false;
@@ -553,7 +552,7 @@ export class ProductComponent implements OnInit {
             severity: 'success',
             summary: 'Comentario actualizado',
             detail: res.message,
-            life: 3000,
+            life: 5000,
           });
           coment.oculto = !coment.oculto;
           this.updatingComment = null;
@@ -566,7 +565,7 @@ export class ProductComponent implements OnInit {
               severity: 'error',
               summary: 'Error',
               detail: err.error.message,
-              life: 3000,
+              life: 5000,
             });
           } else {
             this.messageService.add({
@@ -575,7 +574,7 @@ export class ProductComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 3000,
+              life: 5000,
             });
           }
           this.updatingComment = null;
@@ -612,7 +611,7 @@ export class ProductComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 3000,
+              life: 5000,
             });
             this.loadingComments = false;
           },
@@ -640,7 +639,7 @@ export class ProductComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 3000,
+              life: 5000,
             });
             this.loadingComments = false;
           },

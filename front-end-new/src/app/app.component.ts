@@ -10,8 +10,6 @@ import { MessageService } from 'primeng/api';
   providers: [ConfirmationService, MessageService],
 })
 export class AppComponent implements OnInit {
-  title = 'Emprende Store';
-
   constructor(private primengConfig: PrimeNGConfig) {}
 
   ngOnInit() {

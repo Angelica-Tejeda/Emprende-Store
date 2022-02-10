@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { PublicacionService } from 'src/services/publicacion.service';
 import { environment } from '../../environments/environment';
 
@@ -9,8 +10,8 @@ import { environment } from '../../environments/environment';
 })
 export class StoreComponent implements OnInit {
   mediaUrl: string = environment.mediaURL;
-  categProductos = [];
-  categServicios = [];
+  categProductos: string[] = [];
+  categServicios: string[] = [];
   productosDestacados: any = [
     {
       id: 7,
@@ -402,13 +403,16 @@ export class StoreComponent implements OnInit {
       },
     },
   ];
-  constructor(private publicacionService: PublicacionService) {}
+  constructor(
+    private titleService: Title,
+    private publicacionService: PublicacionService) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle('Emprende Store')
     this.publicacionService.getCategorias().subscribe({
       next: (res) => {
-        this.categProductos = res.result.categoriasProductos;
-        this.categServicios = res.result.categoriasServicios;
+        this.categProductos = res.result.categoriasProductos.slice(0, 5);
+        this.categServicios = res.result.categoriasServicios.slice(0, 5);
       }
     })
   }

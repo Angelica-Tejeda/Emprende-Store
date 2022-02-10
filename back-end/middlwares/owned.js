@@ -1,5 +1,4 @@
 module.exports = (req, res, next) => {
-    //console.log(req.headers);
     if (req.user.id == req.params.userId) {
         next();
     } else {

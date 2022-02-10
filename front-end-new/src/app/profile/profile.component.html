@@ -81,7 +81,8 @@
             <p-divider class="d-md-none"></p-divider>
             <p-divider class="d-none d-md-block" layout="vertical"></p-divider>
             <div class="text-center">
-                <h2>{{ usuario.fecha_inicio ? usuario.fecha_inicio : usuario.creado | date: 'LL/YYYY' }}</h2>
+                <h2 *ngIf="usuario.fecha_inicio">{{ usuario.fecha_inicio | date: 'LL/YYYY' }}</h2>
+                <h2 *ngIf="!usuario.fecha_inicio">{{ usuario.creado | date: 'LL/YYYY' }}</h2>
                 <h6>Vendiendo Desde</h6>
             </div>
         </div>

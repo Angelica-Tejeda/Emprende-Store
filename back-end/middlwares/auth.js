@@ -37,6 +37,12 @@ module.exports = (req, res, next) => {
                 secure: process.env.SECURECOOKIE,
                 maxAge: 1,
             })
+            .cookie("usuario_verif", null, {
+                signed: false,
+                httpOnly: false,
+                secure: process.env.SECURECOOKIE,
+                maxAge: 1,
+            })
             .status(401)
             .json({
                 status: "error",
@@ -72,6 +78,12 @@ module.exports = (req, res, next) => {
                             maxAge: 1,
                         })
                         .cookie("usuario_act", null, {
+                            signed: false,
+                            httpOnly: false,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1,
+                        })
+                        .cookie("usuario_verif", null, {
                             signed: false,
                             httpOnly: false,
                             secure: process.env.SECURECOOKIE,
@@ -123,6 +135,12 @@ module.exports = (req, res, next) => {
                         secure: process.env.SECURECOOKIE,
                         maxAge: 1,
                     })
+                    .cookie("usuario_verif", null, {
+                        signed: false,
+                        httpOnly: false,
+                        secure: process.env.SECURECOOKIE,
+                        maxAge: 1,
+                    })
                     .status(401)
                     .json({
                         status: "error",
@@ -132,7 +150,7 @@ module.exports = (req, res, next) => {
                     });
             } else {
                 Usuario.findByPk(decoded.usuario.id, {
-                    attributes: ["id", "rol", "activo"],
+                    attributes: ["id", "rol", "activo", "verificado"],
                 })
                     .then((usuario) => {
                         if (!usuario) {
@@ -148,6 +166,7 @@ module.exports = (req, res, next) => {
                                         id: usuario.id,
                                         rol: usuario.rol,
                                         activo: usuario.activo,
+                                        verificado: usuario.verificado,
                                     },
                                 },
                                 process.env.AUTHSECRET,
@@ -159,6 +178,7 @@ module.exports = (req, res, next) => {
                                         id: usuario.id,
                                         rol: usuario.rol,
                                         activo: usuario.activo,
+                                        verificado: usuario.verificado,
                                     },
                                 },
                                 process.env.REFRESHSECRET,
@@ -189,6 +209,12 @@ module.exports = (req, res, next) => {
                                     maxAge: 1000 * 60 * 60,
                                 })
                                 .cookie("usuario_act", usuario.activo, {
+                                    signed: false,
+                                    httpOnly: false,
+                                    secure: process.env.SECURECOOKIE,
+                                    maxAge: 1000 * 60 * 60,
+                                })
+                                .cookie("usuario_verif", usuario.verificado, {
                                     signed: false,
                                     httpOnly: false,
                                     secure: process.env.SECURECOOKIE,

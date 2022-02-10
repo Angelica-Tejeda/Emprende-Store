@@ -1,7 +1,10 @@
 <div class="close-navbar-toggler fixed-top" *ngIf="!isMenuCollapsed" (click)="isMenuCollapsed = true"></div>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-darker fixed-top">
-    <a *ngIf="!isHome && !isLogin" class="navbar-brand mr-0" [routerLink]="['/store']">
+    <a class="navbar-brand mr-0" [routerLink]="['/store']">
+        <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
+    </a>
+    <!--<a *ngIf="!isHome && !isLogin" class="navbar-brand mr-0" [routerLink]="['/store']">
         <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
     </a>
     <a *ngIf="isHome" class="navbar-brand mr-0" [routerLink]="['/home']" fragment="header">
@@ -9,7 +12,7 @@
     </a>
     <a *ngIf="isLogin" class="navbar-brand mr-0" [routerLink]="['/home']">
         <img src="../../../assets/img/logo-darker.png" alt="Emprende Store Logo">
-    </a>
+    </a>-->
     <a *ngIf="!isLogin" [ngClass]="{'active': !isMenuCollapsed}">
         <button pButton pRipple class="navbar-toggler p-button navbar-button no-label" type="button"
             (click)="isMenuCollapsed = !isMenuCollapsed">

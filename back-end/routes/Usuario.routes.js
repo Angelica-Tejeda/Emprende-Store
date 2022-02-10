@@ -5,8 +5,6 @@ const auth = require("../middlwares/auth")
 const owned = require("../middlwares/owned")
 const admin = require("../middlwares/admin")
 
-router.post("/", auth, admin, controller.createUsuario);
-
 router.get("/all", auth, admin, controller.getAllUsuarios);
 router.get("/min/:userId", auth, owned, controller.getMinUsuarioById);
 router.get("/own/:userId", auth, owned, controller.getOwnUsuarioById);

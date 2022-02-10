@@ -88,6 +88,5 @@ export class HomeComponent implements OnInit {
     this.contactForm
       .get('mensaje')
       ?.setValue(mensajeClean === '' ? null : mensajeClean);
-    this.contactForm.updateValueAndValidity();
   }
 }

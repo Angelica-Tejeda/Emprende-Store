@@ -20,11 +20,21 @@
   }
 }
 
+.userEdit-form-textarea {
+  height: 8rem;
+}
+.userEdit-form-textarea textarea {
+  resize: none;
+}
+
 @media (min-width: 768px) {
   .comment-input-product {
     width: calc(100% - 12.1rem - 282.5px);
   }
   .comment-input-field {
     width: 10.1rem;
+  }
+  .userEdit-form-textarea {
+    height: 100%;
   }
 }

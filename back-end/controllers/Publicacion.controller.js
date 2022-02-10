@@ -101,62 +101,6 @@ exports.getCategorias = async (req, res) => {
     }
 };
 
-exports.getAllPublicaciones = async (req, res) => {
-    Publicacion.findAndCountAll({
-        attributes: { exclude: ["usuario_id"] },
-        include: [
-            {
-                model: Usuario,
-                attributes: [
-                    "id",
-                    "nombre",
-                    "apellido",
-                    "negocio",
-                    "foto_perfil",
-                    "celular",
-                    "facebook",
-                    "instagram",
-                    "twitter",
-                    "tiktok",
-                    "linkedin",
-                    "activo",
-                ],
-            },
-        ],
-    })
-        .then((publicaciones) => {
-            if (publicaciones.count > 0) {
-                for (publicacion of publicaciones.rows) {
-                    let categ = [];
-                    for (cat of publicacion.categoria) {
-                        categ.push(cat.split(".")[1]);
-                    }
-                    publicacion.categoria = categ;
-                }
-                res.status(200).json({
-                    status: "success",
-                    message: "Publicaciones obtenidas con éxito.",
-                    result: publicaciones,
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Publicaciones no encontradas.",
-                    result: publicaciones,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message:
-                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
-                error: err,
-            });
-        });
-};
-
 exports.getOwnPublicacionesByUsuario = async (req, res) => {
     Publicacion.findAndCountAll({
         where: { usuario_id: req.params.userId },
@@ -266,14 +210,10 @@ exports.getOwnPublicacionById = async (req, res) => {
                     "foto_perfil",
                     "activo",
                 ],
-                /*where: {
-                    activo: true,
-                },*/
             },
         ],
         where: {
             id: req.params.publId,
-            //activo: true,
         },
     })
         .then((publicacion) => {
@@ -395,81 +335,6 @@ exports.getPublicacionesBySearch = async (req, res) => {
                     status: "error",
                     message: "Publicaciones no encontradas.",
                     result: publicaciones,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                status: "error",
-                message:
-                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
-                error: err,
-            });
-        });
-};
-
-exports.getDiscountPublicaciones = async (req, res) => {
-    Publicacion.findAll({
-        where: {
-            activo: true,
-            descuento: {
-                [Op.gt]: 0,
-            },
-        },
-        attributes: { exclude: ["usuario_id"] },
-        include: [
-            {
-                model: Usuario,
-                attributes: [
-                    "id",
-                    "nombre",
-                    "apellido",
-                    "negocio",
-                    "foto_perfil",
-                    "celular",
-                    "facebook",
-                    "instagram",
-                    "twitter",
-                    "tiktok",
-                    "linkedin",
-                    "activo",
-                ],
-            },
-        ],
-    })
-        .then((publicaciones) => {
-            let pubsFinal = [];
-            publicaciones.forEach((e) => {
-                if (e.usuario.activo) {
-                    pubsFinal.push(e);
-                }
-            });
-            const nPubs = pubsFinal.length;
-            if (nPubs > 0) {
-                for (publicacion of publicaciones.rows) {
-                    let categ = [];
-                    for (cat of publicacion.categoria) {
-                        categ.push(cat.split(".")[1]);
-                    }
-                    publicacion.categoria = categ;
-                }
-                res.status(200).json({
-                    status: "success",
-                    message: "Publicaciones obtenidas con éxito.",
-                    result: {
-                        count: nPubs,
-                        rows: pubsFinal,
-                    },
-                });
-            } else {
-                res.status(404).json({
-                    status: "error",
-                    message: "Publicaciones no encontradas.",
-                    result: {
-                        count: nPubs,
-                        rows: pubsFinal,
-                    },
                 });
             }
         })

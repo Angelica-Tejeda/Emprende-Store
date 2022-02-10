@@ -4,7 +4,60 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 exports.registrarUsuario = async (req, res) => {
-    const prepass = req.body.password;
+    Usuario.create({
+        email: req.body.email,
+        password: null,
+        nombre: req.body.nombre,
+        apellido: req.body.apellido,
+        fecha_nacimiento: req.body.fecha_nacimiento,
+        celular: req.body.celular
+        ? "593" + req.body.celular.substring(1)
+        : null,
+        rol: false,
+    })
+        .then((usuario) => {
+            res.status(200).json({
+                status: "success",
+                message: "El usuario se ha creado con éxito.",
+                result: usuario,
+            });
+        })
+        .catch((err) => {
+            console.log("ERROR: " + err);
+            if (err.name === "SequelizeUniqueConstraintError") {
+                res.status(403).json({
+                    status: "error",
+                    message:
+                        "El " +
+                        err.errors[0].path +
+                        " ingresado ya ha sido registrado.",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeValidationError") {
+                res.status(400).json({
+                    status: "error",
+                    message:
+                        "El valor ingresado en el campo " +
+                        err.errors[0].path +
+                        " no es válido.",
+                    error: err,
+                });
+            } else if (err.name === "SequelizeDatabaseError") {
+                res.status(400).json({
+                    status: "error",
+                    message: "Uno de los valores ingresados no es válido.",
+                    error: err,
+                });
+            } else {
+                res.status(500).json({
+                    status: "error",
+                    message:
+                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                    error: err,
+                });
+            }
+        });
+    /*const prepass = req.body.password;
     if (prepass === null || prepass.length < 8) {
         res.status(400).json({
             status: "error",
@@ -12,65 +65,13 @@ exports.registrarUsuario = async (req, res) => {
         });
     } else {
         const password = bcrypt.hashSync(prepass, 10);
-        Usuario.create({
-            email: req.body.email,
-            password: password,
-            nombre: req.body.nombre,
-            apellido: req.body.apellido,
-            fecha_nacimiento: req.body.fecha_nacimiento,
-            celular: req.body.celular,
-            rol: req.body.rol,
-        })
-            .then((usuario) => {
-                res.status(200).json({
-                    status: "success",
-                    message: "El usuario se ha creado con éxito.",
-                    result: usuario,
-                });
-            })
-            .catch((err) => {
-                console.log("ERROR: " + err);
-                if (err.name === "SequelizeUniqueConstraintError") {
-                    res.status(403).json({
-                        status: "error",
-                        message:
-                            "El " +
-                            err.errors[0].path +
-                            " ingresado ya ha sido registrado.",
-                        error: err,
-                    });
-                } else if (err.name === "SequelizeValidationError") {
-                    res.status(400).json({
-                        status: "error",
-                        message:
-                            "El valor ingresado en el campo " +
-                            err.errors[0].path +
-                            " no es válido.",
-                        error: err,
-                    });
-                } else if (err.name === "SequelizeDatabaseError") {
-                    res.status(400).json({
-                        status: "error",
-                        message: "Uno de los valores ingresados no es válido.",
-                        error: err,
-                    });
-                } else {
-                    res.status(500).json({
-                        status: "error",
-                        message:
-                            "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
-                        error: err,
-                    });
-                }
-            });
-    }
+    }*/
 };
 
 exports.iniciarSesionEmpr = async (req, res) => {
     Usuario.findOne({
         where: { email: req.body.email },
-        attributes: ["id", "password", "rol", "activo"],
-        // attributes: { exclude: ["password"] },
+        attributes: ["id", "password", "rol", "activo", "verificado"],
     })
         .then((usuario) => {
             if (!usuario) {
@@ -84,11 +85,6 @@ exports.iniciarSesionEmpr = async (req, res) => {
                     message:
                         "El email ingresado no corresponde con el de un usuario emprendedor.",
                 });
-                /*} else if (!usuario.activo) {
-                res.status(403).json({
-                    status: "error",
-                    message: "Este usuario ha sido deshabilitado.",
-                });*/
             } else {
                 if (bcrypt.compareSync(req.body.password, usuario.password)) {
                     const accessToken = jwt.sign(
@@ -97,6 +93,7 @@ exports.iniciarSesionEmpr = async (req, res) => {
                                 id: usuario.id,
                                 rol: usuario.rol,
                                 activo: usuario.activo,
+                                verificado: usuario.verificado,
                             },
                         },
                         process.env.AUTHSECRET,
@@ -108,6 +105,7 @@ exports.iniciarSesionEmpr = async (req, res) => {
                                 id: usuario.id,
                                 rol: usuario.rol,
                                 activo: usuario.activo,
+                                verificado: usuario.verificado,
                             },
                         },
                         process.env.REFRESHSECRET,
@@ -143,6 +141,12 @@ exports.iniciarSesionEmpr = async (req, res) => {
                             secure: process.env.SECURECOOKIE,
                             maxAge: 1000 * 60 * 60
                         })
+                        .cookie("usuario_verif", usuario.verificado, {
+                            signed: false,
+                            httpOnly: false,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60
+                        })
                         .status(200)
                         .json({
                             status: "success",
@@ -152,6 +156,7 @@ exports.iniciarSesionEmpr = async (req, res) => {
                                 id: usuario.id,
                                 rol: usuario.rol,
                                 activo: usuario.activo,
+                                verificado: usuario.verificado,
                             },
                         });
                 } else {
@@ -176,8 +181,7 @@ exports.iniciarSesionEmpr = async (req, res) => {
 exports.iniciarSesionAdmin = async (req, res) => {
     Usuario.findOne({
         where: { email: req.body.email },
-        attributes: ["id", "password", "rol", "activo"],
-        // attributes: { exclude: ["password"] },
+        attributes: ["id", "password", "rol", "activo", "verificado"],
     })
         .then((usuario) => {
             if (!usuario) {
@@ -191,11 +195,6 @@ exports.iniciarSesionAdmin = async (req, res) => {
                     message:
                         "El email ingresado no corresponde con el de un usuario administrador.",
                 });
-                /*} else if (!usuario.activo) {
-                res.status(403).json({
-                    status: "error",
-                    message: "Este usuario ha sido deshabilitado.",
-                });*/
             } else {
                 if (bcrypt.compareSync(req.body.password, usuario.password)) {
                     const accessToken = jwt.sign(
@@ -204,6 +203,7 @@ exports.iniciarSesionAdmin = async (req, res) => {
                                 id: usuario.id,
                                 rol: usuario.rol,
                                 activo: usuario.activo,
+                                verificado: verificado,
                             },
                         },
                         process.env.AUTHSECRET,
@@ -215,6 +215,7 @@ exports.iniciarSesionAdmin = async (req, res) => {
                                 id: usuario.id,
                                 rol: usuario.rol,
                                 activo: usuario.activo,
+                                verificado: verificado,
                             },
                         },
                         process.env.REFRESHSECRET,
@@ -250,6 +251,12 @@ exports.iniciarSesionAdmin = async (req, res) => {
                             secure: process.env.SECURECOOKIE,
                             maxAge: 1000 * 60 * 60
                         })
+                        .cookie("usuario_verif", usuario.verificado, {
+                            signed: false,
+                            httpOnly: false,
+                            secure: process.env.SECURECOOKIE,
+                            maxAge: 1000 * 60 * 60
+                        })
                         .status(200)
                         .json({
                             status: "success",
@@ -259,6 +266,7 @@ exports.iniciarSesionAdmin = async (req, res) => {
                                 id: usuario.id,
                                 rol: usuario.rol,
                                 activo: usuario.activo,
+                                verificado: usuario.verificado
                             },
                         });
                 } else {

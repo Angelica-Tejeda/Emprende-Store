@@ -29,12 +29,15 @@ video {
 .contact-form-textarea {
   height: 8rem;
 }
+.contact-form-textarea textarea {
+  resize: none;
+}
 
 @media (min-width: 992px) {
   .contact-form {
     width: calc(50% - 1rem);
   }
   .contact-form-textarea {
-    height: calc(100% - 32.625rem);
+    height: 100%;
   }
 }

@@ -41,10 +41,6 @@ export class PublicacionService {
     });
   }
 
-  getDiscountPublicaciones(): Observable<any> {
-    return this.http.get(`${_apiUrl}/descuento`);
-  }
-
   getPublicacionesByUsuario(userId: number): Observable<any> {
     return this.http.get(`${_apiUrl}/user/${userId}`);
   }

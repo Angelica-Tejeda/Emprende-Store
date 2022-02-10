@@ -130,8 +130,7 @@ Usuario.init(
         },
         fecha_inicio: {
             type: Sequelize.INTEGER,
-            allowNull: false,
-            defaultValue: sequelize.literal("CURRENT_DATE"),
+            allowNull: true,
         },
         puntuacion: {
             type: Sequelize.DECIMAL(2, 1),
@@ -156,6 +155,11 @@ Usuario.init(
             type: Sequelize.DATE,
             allowNull: false,
             defaultValue: sequelize.literal("now()"),
+        },
+        verificado: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
         },
     },
     {

@@ -8,7 +8,7 @@
         <p-tabMenu #tab [model]="items" [activeItem]="activeItem"></p-tabMenu>
     </div>
 
-    <div *ngIf="activeItem.id == '1'" class="container-sm py-3 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
+    <div *ngIf="activeItem.id == '1'" class="container-sm py-3 pb-sm-4 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="mb-0">Publicaciones<span *ngIf="productos !== null"> ({{productos.count}})</span></h3>
@@ -24,11 +24,6 @@
                     class="p-button-sm d-md-none" (click)="showProductFilters = !showProductFilters;"></button>
             </div>
         </div>
-        <!--<div class="d-flex flex-column flex-md-row justify-content-between gap-3">
-            <input pInputText type="text" placeholder="Filtrar por titulo">
-            <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
-                class="p-button button-responsive"></button>
-        </div>-->
         <div>
             <div class="d-flex flex-wrap gap-3 gap-lg-4 justify-content-start align-items-stretch">
                 <app-product-card *ngFor="let product of productos.rows" [product]="product" [showOwner]="false">
@@ -37,7 +32,7 @@
         </div>
     </div>
 
-    <div *ngIf="activeItem.id == '2'" id="comments" class="container-sm py-3 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
+    <div *ngIf="activeItem.id == '2'" id="comments" class="container-sm py-3 pb-sm-4 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="mb-0">Comentarios<span *ngIf="comentarios !== null"> ({{comentarios.count}})</span></h3>
@@ -139,7 +134,7 @@
         </div>
     </div>
 
-    <div *ngIf="activeItem.id == '3'" class="container-sm py-3 pt-lg-4 pb-lg-5">
+    <div *ngIf="activeItem.id == '3'" class="container-sm py-3 pb-sm-4 pt-lg-4 pb-lg-5">
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
             <input pInputText type="text" placeholder="Filtrar por titulo">
             <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
@@ -183,9 +178,9 @@
         </div>
     </div>
 
-    <div *ngIf="activeItem.id == '4'" class="container-sm py-3 pt-lg-4 pb-lg-5">
+    <div *ngIf="activeItem.id == '4'" class="container-sm py-3 pb-sm-4 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
         <div class="custom-card">
-            <form action="" [formGroup]="userEditForm" (submit)="sanitizeUserEditForm(); actualizarDatosUsuario()">
+            <form [formGroup]="userEditForm" (submit)="actualizarDatosUsuario()">
                 <div class="d-flex flex-column flex-md-row justify-content-center gap-md-3">
                     <div class="d-flex flex-column align-items-stretch w-100">
                         <h5 class="text-center mb-0">Datos Personales</h5>
@@ -203,12 +198,13 @@
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
                             <p-calendar inputId="fecha_nacimiento" formControlName="fecha_nacimiento"
-                                [maxDate]="maxDateValue" styleClass="w-100">
+                                [maxDate]="maxDateValue" dateFormat="dd/mm/yy" styleClass="w-100">
                             </p-calendar>
                             <label for="fecha_nacimiento">Fecha de nacimiento *</label>
                         </span>
                         <span class="p-input-filled p-float-label mt-4-5">
-                            <input pInputText id="email" type="text" formControlName="email" class="w-100" maxlength="125"
+                            <input pInputText id="email" type="text" formControlName="email" class="w-100"
+                                maxlength="125"
                                 [ngClass]="(submittedUserEditForm && userEditForm.get('email')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                             <label for="email">E-mail <span class="text-danger">*</span></label>
                         </span>
@@ -218,11 +214,12 @@
                                 [ngClass]="(submittedUserEditForm && userEditForm.get('celular')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                             <label for="celular">Número celular <span class="text-danger">*</span></label>
                         </span>
-                        <span class="p-input-filled p-float-label mt-4-5">
-                            <textarea pInputTextarea id="bio" [rows]="4" formControlName="bio" class="w-100" maxlength="2500"></textarea>
+                        <span class="p-input-filled p-float-label mt-4-5 userEdit-form-textarea">
+                            <textarea pInputTextarea id="bio" formControlName="bio" class="w-100 h-100"
+                                maxlength="2500"></textarea>
                             <label for="bio">Descripción</label>
                         </span>
-                        <div>
+                        <div class="d-md-none">
                             <small class="font-italic"><span class="text-danger">*</span> Estos campos no pueden estar
                                 vacios.</small>
                         </div>
@@ -233,7 +230,8 @@
                         <div>
                             <h5 class="text-center mb-0">Datos del Negocio</h5>
                             <span class="p-input-filled p-float-label mt-4">
-                                <input pInputText id="negocio" type="text" formControlName="negocio" class="w-100" maxlength="60">
+                                <input pInputText id="negocio" type="text" formControlName="negocio" class="w-100"
+                                    maxlength="60">
                                 <label for="negocio">Nombre del negocio</label>
                             </span>
                             <span class="p-input-filled p-float-label mt-4-5">
@@ -246,33 +244,95 @@
                         <div>
                             <h5 class="text-center mb-0">Redes Sociales</h5>
                             <span class="p-input-filled p-float-label mt-4">
-                                <input pInputText id="facebook" type="text" formControlName="facebook" class="w-100" maxlength="125">
+                                <input pInputText id="facebook" type="text" formControlName="facebook" class="w-100"
+                                    maxlength="125">
                                 <label for="facebook">Facebook</label>
                             </span>
                             <span class="p-input-filled p-float-label mt-4-5">
-                                <input pInputText id="instagram" type="text" formControlName="instagram" class="w-100" maxlength="125">
+                                <input pInputText id="instagram" type="text" formControlName="instagram" class="w-100"
+                                    maxlength="125">
                                 <label for="instagram">Instagram</label>
                             </span>
                             <span class="p-input-filled p-float-label mt-4-5">
-                                <input pInputText id="twitter" type="text" formControlName="twitter" class="w-100" maxlength="125">
+                                <input pInputText id="twitter" type="text" formControlName="twitter" class="w-100"
+                                    maxlength="125">
                                 <label for="twitter">Twitter</label>
                             </span>
                             <span class="p-input-filled p-float-label mt-4-5">
-                                <input pInputText id="linkedin" type="text" formControlName="linkedin" class="w-100" maxlength="125">
+                                <input pInputText id="linkedin" type="text" formControlName="linkedin" class="w-100"
+                                    maxlength="125">
                                 <label for="linkedin">Linkedin</label>
                             </span>
                         </div>
                     </div>
                 </div>
+                <div class="d-none d-md-block">
+                    <small class="font-italic"><span class="text-danger">*</span> Estos campos no pueden estar
+                        vacios.</small>
+                </div>
                 <div class="d-flex flex-column-reverse flex-sm-row gap-3 justify-content-end mt-3">
                     <button pButton pRipple type="button" label="Reestablecer" icon="pi pi-times"
-                        [disabled]="sendingUserEditForm" class="p-button p-button-danger" (click)="resetUserEditForm()">
+                        [disabled]="sendingUserEditForm" class="p-button p-button-danger"
+                        (click)="cargarUserEditInfo()">
                     </button>
                     <button pButton pRipple type="submit" label="Guardar Cambios" icon="pi pi-save"
                         [disabled]="sendingUserEditForm" [loading]="sendingUserEditForm" class="p-button">
                     </button>
                 </div>
             </form>
+        </div>
+        <div class="d-flex flex-column flex-lg-row gap-3">
+            <div class="custom-card w-100">
+                <h5 class="text-center mb-0">Actualizar fotos</h5>
+            </div>
+            <div class="custom-card">
+                <form [formGroup]="newPasswordForm" (submit)="actualizarContrasena()">
+                    
+                    <h5 class="text-center">Cambiar Contraseña</h5>
+                    <div>
+                        <p class="mb-0">Tu nueva contrseña debe tener:</p>
+                    <ul class="mb-0">
+                        <li>Al menos una letra minúscula</li>
+                        <li>Al menos una letra mayúscula</li>
+                        <li>Al menos un número</li>
+                        <li>Entre 8 y 24 caracteres</li>
+                    </ul>
+                </div>
+                    <span class="p-input-filled p-input-icon-right p-float-label mt-4-5 w-100">
+                        <i class="c-pointer pi" [ngClass]="passMask1 ? 'pi-eye' : 'pi-eye-slash'"
+                            (click)="passMask1 = !passMask1"></i>
+                        <input pInputText id="password1" [attr.type]="passMask1 ? 'password' : 'text'"
+                            formControlName="password1" class="w-100" maxlength="28"
+                            [ngClass]="(submittedNewPasswordForm && newPasswordForm.get('password1')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                        <label for="password1">Contraseña actual</label>
+                    </span>
+                    <p-divider></p-divider>
+                    <span class="p-input-filled p-input-icon-right p-float-label mt-3 w-100">
+                        <i class="c-pointer pi" [ngClass]="passMask2 ? 'pi-eye' : 'pi-eye-slash'"
+                            (click)="passMask2 = !passMask2"></i>
+                        <input pPassword id="password2" [attr.type]="passMask2 ? 'password' : 'text'"
+                            formControlName="password2" class="w-100" maxlength="28" promptLabel="Ingrese su nueva contraseña" weakLabel="Débil" mediumLabel="Regular" strongLabel="Fuerte"
+                            [ngClass]="(submittedNewPasswordForm && newPasswordForm.get('password2')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                        <label for="password2">Nueva contraseña</label>
+                    </span>
+                    <span class="p-input-filled p-input-icon-right p-float-label mt-4-5 w-100">
+                        <i class="c-pointer pi" [ngClass]="passMask3 ? 'pi-eye' : 'pi-eye-slash'"
+                            (click)="passMask3 = !passMask3"></i>
+                        <input pInputText id="password3" [attr.type]="passMask3 ? 'password' : 'text'"
+                            formControlName="password3" class="w-100" maxlength="28"
+                            [ngClass]="(submittedNewPasswordForm && newPasswordForm.get('password3')?.invalid) ? 'ng-dirty ng-invalid' : ''">
+                        <label for="password3">Repetir nueva contraseña</label>
+                    </span>
+                    <div class="d-flex flex-column-reverse flex-sm-row gap-3 justify-content-end mt-3">
+                        <button pButton pRipple type="reset" label="Reestablecer" icon="pi pi-times"
+                            [disabled]="sendingNewPasswordForm" class="p-button p-button-danger">
+                        </button>
+                        <button pButton pRipple type="submit" label="Guardar Cambios" icon="pi pi-save"
+                            [disabled]="sendingNewPasswordForm" [loading]="sendingNewPasswordForm" class="p-button">
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

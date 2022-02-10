@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
     this.submittedLoginForm = true;
     let emailClean = this.loginForm.get('email')?.value?.trim();
     this.loginForm.get('email')?.setValue(emailClean === "" ? null : emailClean);
-    this.loginForm.updateValueAndValidity()
     this.messagePassword = '';
     this.messageEmail = '';
     if (this.loginForm.valid) {
@@ -80,7 +79,7 @@ export class LoginComponent implements OnInit {
                 severity: 'error',
                 summary: 'Error',
                 detail: err.error.message,
-                life: 4000,
+                life: 5000,
               });
             }
           } else {
@@ -90,7 +89,7 @@ export class LoginComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 4000,
+              life: 5000,
             });
           }
         },

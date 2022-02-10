@@ -25,9 +25,12 @@ export class NavbarComponent implements OnInit {
   isLogged = false;
   public restrictedToast = false;
   usuario: any = null;
-  searchForm: FormGroup = new FormGroup({
-    busqueda: new FormControl(null, Validators.required),
-  });
+  searchForm: FormGroup = new FormGroup(
+    {
+      busqueda: new FormControl(null, Validators.required),
+    },
+    { updateOn: 'submit' }
+  );
 
   constructor(
     private router: Router,
@@ -61,8 +64,39 @@ export class NavbarComponent implements OnInit {
                 sticky: true,
               });
             }
+            if (!this.usuario.verificado) {
+              this.messageService.clear('restrict');
+              this.messageService.add({
+                key: 'restrict',
+                severity: 'warn',
+                summary: 'Verificar cuenta',
+                detail:
+                  'Por favor, verifique su cuenta. Mientras no lo haga sus publicaciones no serán visibles para los visitantes de la página y algunas funciones pueden no estar disponibles. Si no le ha llegado un correo para verificar su cuenta, solicitelo en la sección de editar perfil.',
+                sticky: true,
+              });
+            }
           },
-          error: (err) => {},
+          error: (err) => {
+            if (err.status == '403') {
+              this.authService.cerrarSesion().subscribe({});
+              this.router.navigate(['/login', {redirect: true}]).then(() => {
+                this.cookieService.delete('usuario_verif')
+                this.cookieService.delete('usuario_act');
+                this.cookieService.delete('usuario_rol');
+                this.cookieService.delete('usuario_id');
+                this.isLogged = false;
+                this.messageService.clear('restrict');
+                this.messageService.clear('user');
+                this.messageService.add({
+                  key: 'general',
+                  severity: 'warning',
+                  summary: 'Sesión finalizada',
+                  detail: "La sesión ha finalizado debido a un error inesperado. Vuelve a iniciar sesión.",
+                  life: 5000,
+                });
+              });
+            }
+          },
         });
     }
     if (this.isSearch) {
@@ -80,9 +114,9 @@ export class NavbarComponent implements OnInit {
 
   buscarProductos() {
     let busquedaClean = this.searchForm.get('busqueda')?.value?.trim();
-    this.searchForm.get('busqueda')?.setValue(busquedaClean === "" ? null : busquedaClean);
-    this.searchForm.updateValueAndValidity()
-    alert(this.searchForm.valid);
+    this.searchForm
+      .get('busqueda')
+      ?.setValue(busquedaClean === '' ? null : busquedaClean);
     if (this.searchForm.valid) {
       this.router.navigate(['search', busquedaClean]);
     }
@@ -97,6 +131,7 @@ export class NavbarComponent implements OnInit {
         this.authService.cerrarSesion().subscribe({
           next: (res) => {
             this.router.navigate(['/login']).then(() => {
+              this.cookieService.delete('usuario_verif')
               this.cookieService.delete('usuario_act');
               this.cookieService.delete('usuario_rol');
               this.cookieService.delete('usuario_id');
@@ -108,7 +143,7 @@ export class NavbarComponent implements OnInit {
                 severity: 'success',
                 summary: 'Sesión finalizada',
                 detail: res.message,
-                life: 3000,
+                life: 5000,
               });
             });
           },

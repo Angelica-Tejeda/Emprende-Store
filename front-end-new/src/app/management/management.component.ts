@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { CookieService } from 'ngx-cookie-service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -11,7 +12,6 @@ import { VisitaService } from 'src/services/visita.service';
 import { PublicacionService } from 'src/services/publicacion.service';
 import { ComentarioService } from 'src/services/comentario.service';
 import { environment } from '../../environments/environment';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-management',
@@ -160,9 +160,36 @@ export class ManagementComponent implements OnInit {
   originalUserFormValue: any = null;
   maxDateValue: Date = new Date();
 
+  passMask1: boolean = true;
+  passMask2: boolean = true;
+  passMask3: boolean = true;
+  submittedNewPasswordForm: boolean = false;
+  sendingNewPasswordForm: boolean = false;
+  newPasswordForm: FormGroup = new FormGroup(
+    {
+      password1: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(24),
+      ]),
+      password2: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(24),
+      ]),
+      password3: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(24),
+      ]),
+    },
+    { updateOn: 'submit' }
+  );
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private titleService: Title,
     private cookieService: CookieService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
@@ -177,12 +204,16 @@ export class ManagementComponent implements OnInit {
     this.route.fragment.subscribe((frag) => {
       if (frag == 'personalInfo') {
         this.activeItem = this.items[3];
+        this.titleService.setTitle('Información Personal - Emprende Store');
       } else if (frag == 'statistics') {
         this.activeItem = this.items[2];
+        this.titleService.setTitle('Estadísticas - Emprende Store');
       } else if (frag == 'comments') {
         this.activeItem = this.items[1];
+        this.titleService.setTitle('Comentarios - Emprende Store');
       } else {
         this.activeItem = this.items[0];
+        this.titleService.setTitle('Publicaciones - Emprende Store');
       }
     });
     if (
@@ -196,11 +227,14 @@ export class ManagementComponent implements OnInit {
             this.usuario = res.result;
             this.cargarUserEditInfo();
             this.userEditForm.enable();
-            this.maxDateValue = new Date(this.usuario.creado);
           },
           error: (err) => {
             console.error(err);
-            this.unexpected = true;
+            if (err.status == '403') {
+              this.notAllowed = true;
+            } else {
+              this.unexpected = true;
+            }
           },
         });
       this.publicacionService
@@ -282,7 +316,7 @@ export class ManagementComponent implements OnInit {
             severity: 'success',
             summary: 'Comentario actualizado',
             detail: res.message,
-            life: 3000,
+            life: 5000,
           });
           coment.oculto = !coment.oculto;
           this.updatingComment = null;
@@ -295,7 +329,7 @@ export class ManagementComponent implements OnInit {
               severity: 'error',
               summary: 'Error',
               detail: err.error.message,
-              life: 3000,
+              life: 5000,
             });
           } else {
             this.messageService.add({
@@ -304,7 +338,7 @@ export class ManagementComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 3000,
+              life: 5000,
             });
           }
           this.updatingComment = null;
@@ -343,7 +377,7 @@ export class ManagementComponent implements OnInit {
                 summary: 'Error',
                 detail:
                   'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-                life: 3000,
+                life: 5000,
               });
             }
             this.loadingComments = false;
@@ -369,7 +403,7 @@ export class ManagementComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 3000,
+              life: 5000,
             });
             this.loadingComments = false;
           },
@@ -405,7 +439,7 @@ export class ManagementComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 3000,
+              life: 5000,
             });
             this.loadingComments = false;
           },
@@ -435,7 +469,7 @@ export class ManagementComponent implements OnInit {
               summary: 'Error',
               detail:
                 'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-              life: 3000,
+              life: 5000,
             });
             this.loadingComments = false;
           },
@@ -443,40 +477,21 @@ export class ManagementComponent implements OnInit {
     }
   }
 
-  resetUserEditForm() {
-    //this.userEditForm.controls['nombre'].updateValueAndValidity();
-    //alert(this.userEditForm.valid)
-    //this.validateEditUserForm();
-    //alert(this.userEditForm.valid)
-    //if (JSON.stringify(this.userEditForm.value) !== JSON.stringify(this.originalUserFormValue)) {
-      this.confirmationService.confirm({
-        message:
-          'Al hacer esto perderás los cambios realizados y se cargarán nuevamente los datos actuales del usuario.',
-        header: 'Reestablecer Formulario',
-        icon: 'pi pi-exclamation-circle',
-        accept: () => {
-          this.cargarUserEditInfo();
-        },
-        reject: () => {},
-      });
-    //}
-  }
-
   cargarUserEditInfo() {
     let userData = {
       nombre: this.usuario.nombre,
       apellido: this.usuario.apellido,
-      fecha_nacimiento: new Date(this.usuario.fecha_nacimiento),
+      fecha_nacimiento: this.usuario.fecha_nacimiento ? new Date(this.usuario.fecha_nacimiento) : null,
       email: this.usuario.email,
       celular: '0' + this.usuario.celular.substring(3),
       bio: this.usuario.bio,
       negocio: this.usuario.negocio,
-      fecha_inicio: new Date(this.usuario.fecha_inicio),
+      fecha_inicio: this.usuario.fecha_inicio ? new Date(this.usuario.fecha_inicio) : null,
       facebook: this.usuario.facebook,
       instagram: this.usuario.instagram,
       twitter: this.usuario.twitter,
       linkedin: this.usuario.linkedin,
-    }
+    };
     this.originalUserFormValue = userData;
     this.userEditForm.setValue(userData);
   }
@@ -520,16 +535,16 @@ export class ManagementComponent implements OnInit {
     this.userEditForm
       .get('linkedin')
       ?.setValue(linkedinClean === '' ? null : linkedinClean);
-    this.userEditForm.updateValueAndValidity();
   }
 
   actualizarDatosUsuario() {
     this.submittedUserEditForm = true;
     this.sendingUserEditForm = true;
+    this.sanitizeUserEditForm();
     if (
-      this.userEditForm.valid /*&&
+      this.userEditForm.valid &&
       JSON.stringify(this.userEditForm.value) !==
-        JSON.stringify(this.originalUserFormValue)*/
+        JSON.stringify(this.originalUserFormValue)
     ) {
       this.userEditForm.disable();
       this.usuarioService
@@ -544,11 +559,11 @@ export class ManagementComponent implements OnInit {
               severity: 'success',
               summary: 'Comentario enviado',
               detail: res.message,
-              life: 3000,
+              life: 5000,
             });
             this.sendingUserEditForm = false;
             this.usuario = res.data;
-            this.cargarUserEditInfo;
+            this.cargarUserEditInfo();
             this.userEditForm.enable();
           },
           error: (err) => {
@@ -559,7 +574,7 @@ export class ManagementComponent implements OnInit {
                 severity: 'error',
                 summary: 'Error',
                 detail: err.error.message,
-                life: 3000,
+                life: 5000,
               });
             } else {
               this.messageService.add({
@@ -568,7 +583,7 @@ export class ManagementComponent implements OnInit {
                 summary: 'Error',
                 detail:
                   'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
-                life: 3000,
+                life: 5000,
               });
             }
             this.sendingUserEditForm = false;
@@ -580,11 +595,49 @@ export class ManagementComponent implements OnInit {
     }
   }
 
-  /*validateEditUserForm() {
-    Object.keys(this.userEditForm.controls).forEach(field => {
-      let control = this.userEditForm.controls[field];
-      control.;
-      control.updateValueAndValidity();
-    });
-  }*/
+  actualizarContrasena() {
+    this.submittedNewPasswordForm = true;
+    this.sendingNewPasswordForm = true;
+    if(this.newPasswordForm.valid ) {
+      this.newPasswordForm.disable()
+      this.usuarioService.updateUsuarioPassword(+this.cookieService.get('usuario_id'), this.newPasswordForm.value).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            key: 'general',
+            severity: 'success',
+            summary: 'Contrseña actualizada',
+            detail: res.message,
+            life: 5000,
+          });
+          this.sendingNewPasswordForm = false;
+          this.newPasswordForm.enable();
+        },
+        error: (err) => {
+          console.error(err);
+          if (err.status == '400' || err.status == '401' || err.status == '403') {
+            this.messageService.add({
+              key: 'general',
+              severity: 'error',
+              summary: 'Error',
+              detail: err.error.message,
+              life: 5000,
+            });
+          } else {
+            this.messageService.add({
+              key: 'general',
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.',
+              life: 5000,
+            });
+          }
+          this.sendingNewPasswordForm = false;
+          this.newPasswordForm.enable();
+        },
+      })
+    } else {
+        this.sendingNewPasswordForm = false;
+    }
+  }
 }

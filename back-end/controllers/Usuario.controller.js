@@ -34,53 +34,6 @@ const uploadImage = multer({
     fileFilter,
 });
 
-exports.createUsuario = async (req, res) => {
-    Usuario.create({
-        email: req.body.email,
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        fecha_nacimiento: req.body.fecha_nacimiento,
-        celular:
-            req.body.celular !== null
-                ? "593" + req.body.celular.substring(1)
-                : null,
-    })
-        .then((usuario) => {
-            res.status(200).json({
-                status: "success",
-                message: "El usuario ha sido creado con éxico.",
-                result: usuario,
-            });
-        })
-        .catch((err) => {
-            console.log("ERROR: " + err);
-            if (err.name === "SequelizeValidationError") {
-                res.status(400).json({
-                    status: "error",
-                    message:
-                        "El valor ingresado en el campo " +
-                        err.errors[0].path +
-                        " no es válido. Ingrese un valor válido e inténtelo nuevamente.",
-                    error: err,
-                });
-            } else if (err.name === "SequelizeDatabaseError") {
-                res.status(400).json({
-                    status: "error",
-                    message:
-                        "Uno de los valores ingresados no es válido. Revise los valores ingresados e intentelo nuevamente.",
-                    error: err,
-                });
-            } else {
-                res.status(500).json({
-                    status: "error",
-                    message:
-                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
-                    error: err,
-                });
-            }
-        });
-};
-
 exports.getAllUsuarios = async (req, res) => {
     Usuario.findAndCountAll({
         limit: req.query.limit ? req.query.limit : undefined,
@@ -137,7 +90,7 @@ exports.getAllUsuarios = async (req, res) => {
 
 exports.getMinUsuarioById = async (req, res) => {
     Usuario.findByPk(req.params.userId, {
-        attributes: ["id", "nombre", "foto_perfil", "activo"],
+        attributes: ["id", "nombre", "foto_perfil", "activo", "verificado"],
     })
         .then((usuario) => {
             if (usuario) {
@@ -201,10 +154,10 @@ exports.getUsuarioById = async (req, res) => {
             id: req.params.userId,
             rol: false,
             activo: true,
-            password: { [Op.not]: null },
+            verificado: true,
         },
         attributes: {
-            exclude: ["password", "rol", "activo", "modificado"],
+            exclude: ["password", "rol", "activo", "verificado", "modificado"],
         },
     })
         .then((usuario) => {
@@ -302,48 +255,81 @@ exports.updateUsuarioActivo = async (req, res) => {
 };
 
 exports.updateUsuarioPassword = async (req, res) => {
-    const prepass = req.body.password;
-    if (prepass === null || prepass.length < 8) {
-        res.status(400).json({
-            status: "error",
-            message: "El valor ingresado en el campo contraseña no es válido.",
-        });
-    } else {
-        const password = bcrypt.hashSync(prepass, 10);
-        Usuario.update(
-            {
-                password: password,
-            },
-            {
-                where: { id: req.params.userId },
-            }
-        )
-            .then((result) => {
-                if (result == 1) {
-                    res.status(200).json({
-                        status: "success",
-                        message: "La contraseña se ha actualizado con éxito.",
-                        result: result,
+    Usuario.findOne({
+        where: { id: req.params.userId },
+        attributes: ["password"],
+    })
+        .then((usuario) => {
+            if (
+                usuario &&
+                bcrypt.compareSync(req.body.password1, usuario.password)
+            ) {
+                const prepass = req.body.password2;
+                if (
+                    prepass === null ||
+                    prepass.length < 8 ||
+                    prepass > 24 ||
+                    !prepass.match(
+                        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})"
+                    )
+                ) {
+                    res.status(400).json({
+                        status: "error",
+                        message: "La nueva contraseña no es válida",
                     });
                 } else {
-                    res.status(403).json({
-                        status: "error",
-                        message:
-                            "La contraseña no se ha podido actualizar. Inténtenlo nuevamente después de un momento.",
-                        result: result,
-                    });
+                    const newPassword = bcrypt.hashSync(prepass, 10);
+                    Usuario.update(
+                        {
+                            password: newPassword,
+                        },
+                        {
+                            where: { id: req.params.userId },
+                        }
+                    )
+                        .then((result) => {
+                            if (result == 1) {
+                                res.status(200).json({
+                                    status: "success",
+                                    message:
+                                        "La contraseña se ha actualizado con éxito.",
+                                    result: result,
+                                });
+                            } else {
+                                res.status(403).json({
+                                    status: "error",
+                                    message:
+                                        "La contraseña no se ha podido actualizar. Inténtenlo nuevamente después de un momento.",
+                                    result: result,
+                                });
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            res.status(500).json({
+                                status: "error",
+                                message:
+                                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                                error: err,
+                            });
+                        });
                 }
-            })
-            .catch((err) => {
-                console.log(err);
-                res.status(500).json({
+            } else {
+                res.status(400).json({
                     status: "error",
-                    message:
-                        "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
-                    error: err,
+                    message: "La contraseña ingresada no es correcta.",
                 });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                status: "error",
+                message:
+                    "Ha ocurrido un error inesperado al procesar la petición. Por favor, inténtelo nuevamente más tarde.",
+                error: err,
             });
-    }
+        });
 };
 
 exports.updateUsuarioFotoPerfil = async (req, res) => {

@@ -13,7 +13,7 @@ import { StoreComponent } from './store/store.component';
 import { ForumComponent } from './forum/forum.component';
 import { QuestionViewComponent } from './question-view/question-view.component';
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'store', pathMatch: 'full' },
   { path: 'finance', component: FinanceComponent },
   { path: 'forum', component: ForumComponent },
   { path: 'home', component: HomeComponent },
