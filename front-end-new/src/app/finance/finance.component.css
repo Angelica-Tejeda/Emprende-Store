@@ -1,12 +1,12 @@
 label{
-    width: 4.75rem;
+    width: 3rem;
 }
 .title{
-    font-size: 3rem;
+    font-size: 2rem;
 }
 .balance{
-    font-size: 4.5rem;
+    font-size: 3rem;
 }
 .ingresos, .egresos{
-    font-size: 2rem;
+    font-size: 1.5rem;
 }

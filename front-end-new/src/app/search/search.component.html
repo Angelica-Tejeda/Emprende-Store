@@ -1,10 +1,48 @@
 <app-navbar [isSearch]="true"></app-navbar>
 
 <div class="bg-lighter">
-    <div class="container-sm container-full-height py-3 py-sm-4 py-lg-5">
-        <h2>Resultados:</h2>
-        <div *ngIf="resultados !== null" class="d-flex flex-wrap gap-3 gap-lg-4 justify-content-start align-items-stretch">
-            <app-product-card *ngFor="let product of resultados" [product]="product"></app-product-card>
+    <div class="container-sm container-full-height py-3 py-sm-4 py-lg-5 d-flex flex-column gap-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="mb-0">Resultados<span *ngIf="resultados!== null"> ({{resultados.count}})</span></h3>
+            </div>
+            <button pButton pRipple [label]="showSearchFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'"
+                [icon]="showSearchFilters ? 'pi pi-filter-slash' : 'pi pi-filter'" class="p-button-sm d-none d-sm-block"
+                (click)="showSearchFilters = !showSearchFilters;"></button>
+            <button pButton pRipple [icon]="showSearchFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                class="p-button-sm d-sm-none" (click)="showSearchFilters = !showSearchFilters;"></button>
+        </div>
+        <form *ngIf="showSearchFilters" class="d-flex flex-column gap-3" [formGroup]="searchFilterForm">
+            <div class="d-flex flex-column flex-md-row justify-content-center gap-3 flex-wrap">
+                <p-selectButton class="select-button-3" [options]="searchFilterType" formControlName="tipo"
+                    optionLabel="label" optionValue="value" [styleClass]="'w-100'"></p-selectButton>
+                <span class="p-input-filled p-float-label text-left search-input-category">
+                    <p-dropdown [options]="searchFilterForm.get('tipo')?.value !== null ? searchFilterForm.get('tipo')?.value ? searchFilterCategoryServices : searchFilterCategoryProducts : searchFilterCategory" optionLabel="label" optionValue="value" id="categoria"
+                        formControlName="categoria" [styleClass]="'w-100'" [scrollHeight]="'504px'" [disabled]="searchFilterForm.get('tipo')?.value === null">
+                    </p-dropdown>
+                    <label [style]="{'margin-top': '-0.1rem'}" for="producto">Publicación</label>
+                </span>
+                <p-selectButton class="select-button-1" [options]="[{label: 'Solo ofertas', value: true}]" formControlName="descuento"
+                    optionLabel="label" optionValue="value" [styleClass]="'w-100'" [multiple]="true"></p-selectButton>
+                <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+                    <span class="p-input-filled p-float-label text-left search-input-field mt-2 mt-md-0">
+                        <p-dropdown [options]="searchFilterCampo" optionLabel="label" optionValue="value" id="campo"
+                            formControlName="campo" [styleClass]="'w-100'" [scrollHeight]="'504px'">
+                        </p-dropdown>
+                        <label [style]="{'margin-top': '-0.1rem'}" for="campo">Ordenar por</label>
+                    </span>
+                    <p-selectButton class="select-button-2" [options]="searchFilterOrder" formControlName="orden"
+                        optionLabel="label" optionValue="value" [styleClass]="'w-100'"></p-selectButton>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="submit" pButton pRipple label="Aplicar" icon="pi pi-search"
+                    class="p-button button-responsive"></button>
+            </div>
+        </form>
+        <div *ngIf="resultados !== null"
+            class="d-flex flex-wrap gap-3 gap-lg-4 justify-content-start align-items-stretch">
+            <app-product-card *ngFor="let product of resultados.rows" [product]="product"></app-product-card>
         </div>
         <div *ngIf="resultados === null" class="custom-card text-center">
             <h5 class="mb-0">No se encontraron resultados para esta búsqueda.</h5>

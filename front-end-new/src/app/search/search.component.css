@@ -1,0 +1,8 @@
+@media (min-width: 768px) {
+    .search-input-category {
+        width: 30rem;
+    }
+    .search-input-field {
+        width: 10rem;
+    }
+  }

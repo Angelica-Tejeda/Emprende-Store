@@ -11,13 +11,13 @@
 
 <div class="bg-lighter">
     <div class="container-sm py-3 py-sm-4 py-lg-5">
-        <h2>Categorias Destacadas</h2>
-        <div class=" d-flex flex-column flex-md-row gap-2">
+        <h2>Categorias</h2>
+        <div class="d-flex flex-column flex-md-row gap-2">
             <div class="w-100 d-flex flex-column">
                 <h4 class="text-md-center">Productos</h4>
                 <div class="d-flex flex-wrap gap-3 justify-content-center align-items-center">
                     <a *ngFor="let categ of categProductos" [routerLink]="['/store']">
-                        <button pButton pRipple label="{{categ}}" class="p-button link-button"></button>
+                        <button pButton pRipple label="{{categ}}" class="p-button p-button-sm link-button"></button>
                     </a>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <h4 class="text-md-center">Servicios</h4>
                 <div class="d-flex flex-wrap gap-3 justify-content-center align-items-center">
                     <a *ngFor="let categ of categServicios" [routerLink]="['/store']">
-                        <button pButton pRipple label="{{categ}}" class="p-button link-button"></button>
+                        <button pButton pRipple label="{{categ}}" class="p-button p-button-sm link-button"></button>
                     </a>
                 </div>
             </div>

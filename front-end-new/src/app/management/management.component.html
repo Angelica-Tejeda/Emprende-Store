@@ -32,7 +32,8 @@
         </div>
     </div>
 
-    <div *ngIf="activeItem.id == '2'" id="comments" class="container-sm py-3 pb-sm-4 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
+    <div *ngIf="activeItem.id == '2'" id="comments"
+        class="container-sm py-3 pb-sm-4 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="mb-0">Comentarios<span *ngIf="comentarios !== null"> ({{comentarios.count}})</span></h3>
@@ -58,7 +59,7 @@
                     </p-dropdown>
                     <label [style]="{'margin-top': '-0.1rem'}" for="campo">Ordenar por</label>
                 </span>
-                <p-selectButton class="select-button-2" [options]="commentFilterOrden" formControlName="orden"
+                <p-selectButton class="select-button-2" [options]="commentFilterOrder" formControlName="orden"
                     optionLabel="label" optionValue="value" [styleClass]="'w-100'"></p-selectButton>
             </div>
             <div class="d-flex justify-content-end">
@@ -134,15 +135,35 @@
         </div>
     </div>
 
-    <div *ngIf="activeItem.id == '3'" class="container-sm py-3 pb-sm-4 pt-lg-4 pb-lg-5">
-        <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
-            <input pInputText type="text" placeholder="Filtrar por titulo">
-            <button pButton pRipple label="Nueva Publicacion" icon="pi pi-plus"
-                class="p-button button-responsive"></button>
+    <div *ngIf="activeItem.id == '3'" class="container-sm py-3 pb-sm-4 pt-lg-4 pb-lg-5 d-flex flex-column gap-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="mb-0">Estadísticas</h3>
+            </div>
+            <button pButton pRipple [label]="showStatiticsFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'"
+                [icon]="showStatiticsFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                class="p-button-sm d-none d-sm-block" (click)="showStatiticsFilters = !showStatiticsFilters;"></button>
+            <button pButton pRipple [icon]="showStatiticsFilters ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                class="p-button-sm d-sm-none" (click)="showStatiticsFilters = !showStatiticsFilters;"></button>
         </div>
-        <div class="pt-3 pt-lg-4">
-            <h4>Mostrando estadisticas desde {{inicio | date: 'dd/LL/YY'}} hasta {{final | date: 'dd/LL/YY'}}:</h4>
-        </div>
+        <form *ngIf="showStatiticsFilters"
+            class="d-flex flex-column flex-md-row justify-content-between flex-wrap gap-3"
+            [formGroup]="statiticsFilterForm" (submit)="cargarEstadisticas()">
+            <div class="d-flex flex-column flex-sm-row gap-3">
+                <span class="p-input-filled p-float-label statitics-date-picker">
+                    <p-calendar selectionMode="range" inputId="fechas" formControlName="fechas" [minDate]="minDateValue"
+                        [maxDate]="maxDateValue" dateFormat="dd/mm/yy" [styleClass]="'w-100'">
+                    </p-calendar>
+                    <label [style]="{'margin-top': '-0.1rem'}" for="fechas">Rango de fechas</label>
+                </span>
+                <p-selectButton class="select-button-2" [options]="statiticsUnique" formControlName="unico"
+                    optionLabel="label" optionValue="value" [styleClass]="'w-100'"></p-selectButton>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="submit" pButton pRipple label="Aplicar" icon="pi pi-search"
+                    class="p-button button-responsive"></button>
+            </div>
+        </form>
         <div class="d-flex flex-column gap-3 text-center">
             <div class="d-flex flex-column flex-sm-row gap-3">
                 <div class="custom-card w-100">
@@ -287,17 +308,17 @@
             </div>
             <div class="custom-card">
                 <form [formGroup]="newPasswordForm" (submit)="actualizarContrasena()">
-                    
+
                     <h5 class="text-center">Cambiar Contraseña</h5>
                     <div>
                         <p class="mb-0">Tu nueva contrseña debe tener:</p>
-                    <ul class="mb-0">
-                        <li>Al menos una letra minúscula</li>
-                        <li>Al menos una letra mayúscula</li>
-                        <li>Al menos un número</li>
-                        <li>Entre 8 y 24 caracteres</li>
-                    </ul>
-                </div>
+                        <ul class="mb-0">
+                            <li>Al menos una letra minúscula</li>
+                            <li>Al menos una letra mayúscula</li>
+                            <li>Al menos un número</li>
+                            <li>Entre 8 y 24 caracteres</li>
+                        </ul>
+                    </div>
                     <span class="p-input-filled p-input-icon-right p-float-label mt-4-5 w-100">
                         <i class="c-pointer pi" [ngClass]="passMask1 ? 'pi-eye' : 'pi-eye-slash'"
                             (click)="passMask1 = !passMask1"></i>
@@ -311,7 +332,9 @@
                         <i class="c-pointer pi" [ngClass]="passMask2 ? 'pi-eye' : 'pi-eye-slash'"
                             (click)="passMask2 = !passMask2"></i>
                         <input pPassword id="password2" [attr.type]="passMask2 ? 'password' : 'text'"
-                            formControlName="password2" class="w-100" maxlength="28" promptLabel="Ingrese su nueva contraseña" weakLabel="Débil" mediumLabel="Regular" strongLabel="Fuerte"
+                            formControlName="password2" class="w-100" maxlength="28"
+                            promptLabel="Ingrese su nueva contraseña" weakLabel="Débil" mediumLabel="Regular"
+                            strongLabel="Fuerte" [feedback]="false"
                             [ngClass]="(submittedNewPasswordForm && newPasswordForm.get('password2')?.invalid) ? 'ng-dirty ng-invalid' : ''">
                         <label for="password2">Nueva contraseña</label>
                     </span>

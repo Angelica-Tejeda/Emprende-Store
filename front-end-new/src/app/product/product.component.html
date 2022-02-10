@@ -17,53 +17,61 @@
                 </ng-template>
             </p-galleria>
         </div>
-        <div class="custom-card product-details" [ngClass]="product.descuento ? 'discount-card' : ''">
-            <div class="d-flex flex-column justify-content-around h-100">
-                <div>
-                    <a [routerLink]="['/profile', product.usuario.id]">
-                        <p-chip
-                            [label]="product.usuario.negocio ? product.usuario.negocio : product.usuario.nombre + ' ' + product.usuario.apellido"
-                            [image]="mediaUrl + product.usuario.foto_perfil"></p-chip>
-                    </a>
-                    <h3 *ngIf="product.titulo">{{ product.titulo }}</h3>
-                    <h3 *ngIf="!product.titulo">Sin título</h3>
-                    <ng-template #t let-fill="fill">
-                        <span class="star" [class.full]="fill === 100">
-                            <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
-                        </span>
-                    </ng-template>
-                    <div class="d-flex gap-2 align-items-center">
-                        <ngb-rating [(rate)]="product.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
-                        </ngb-rating>
-                        <h5 *ngIf="product.puntuacion !== null" class="mb-0 font-weight-normal">{{ product.puntuacion }}
-                        </h5>
-                        <h6 *ngIf="product.puntuacion === null" class="mb-0 font-weight-normal">No hay datos</h6>
-                    </div>
-                </div>
-                <h1 *ngIf="product.precio && !product.descuento" class="text-nowrap">$ {{ product.precio }}</h1>
-                <h1 *ngIf="!product.precio" class="text-nowrap">Sin precio</h1>
-                <div *ngIf="product.descuento && product.precio" class="d-flex align-items-center flex-wrap-reverse">
-                    <h1 class="text-success mr-3 text-nowrap">$ {{ product.precio - (product.precio * product.descuento
-                        / 100) | number: '1.2-2'}}</h1>
-                    <h6 class="text-danger mb-0 text-nowrap"><s>$ {{ product.precio }}</s></h6>
-                </div>
-                <a *ngIf="!owned" class="link-button align-self-sm-center" target="_blank"
-                    href="https://wa.me/{{ product.usuario.celular }}?text={{ mensajeContacto }}">
-                    <button pButton pRipple type="button" label="CONTACTAR" icon="pi pi-whatsapp"
-                        class="p-button-lg p-button-success button-responsive" (click)="registrarCompra()"></button>
-                </a>
-                <div *ngIf="owned" class="link-button align-self-sm-center">
-                    <button pButton pRipple type="button" label="CONTACTAR" icon="pi pi-whatsapp"
-                        class="p-button-lg p-button-success button-responsive" disabled></button>
-                </div>
-                <div class="mt-3">
-                    <h6>Categorías:</h6>
-                    <div class="d-flex flex-wrap gap-2 justify-content-center">
-                        <a *ngFor="let categoria of product.categoria" class="link-button align-self-sm-center"
-                            [routerLink]="'.'">
-                            <p-chip [label]="categoria" styleClass="product-category-chip"></p-chip>
+        <div style="position: relative">
+            <div class="discount-signal p-1 p-md-2 pr-2 pt-2" *ngIf="product.descuento">
+                <h6 class="mb-0">Descuento: {{product.descuento}}%</h6>
+            </div>
+            <div class="custom-card product-details h-100" [ngClass]="product.descuento ? 'discount-card' : ''">
+                <div class="d-flex flex-column justify-content-around h-100">
+                    <div>
+                        <a [routerLink]="['/profile', product.usuario.id]">
+                            <p-chip
+                                [label]="product.usuario.negocio ? product.usuario.negocio : product.usuario.nombre + ' ' + product.usuario.apellido"
+                                [image]="mediaUrl + product.usuario.foto_perfil"></p-chip>
                         </a>
-                        <h5 *ngIf="product.categoria.length === 0">No hay categorías</h5>
+                        <h3 *ngIf="product.titulo">{{ product.titulo }}</h3>
+                        <h3 *ngIf="!product.titulo">Sin título</h3>
+                        <ng-template #t let-fill="fill">
+                            <span class="star" [class.full]="fill === 100">
+                                <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                            </span>
+                        </ng-template>
+                        <div class="d-flex gap-2 align-items-center">
+                            <ngb-rating [(rate)]="product.puntuacion" [starTemplate]="t" [readonly]="true" [max]="5">
+                            </ngb-rating>
+                            <h5 *ngIf="product.puntuacion !== null" class="mb-0 font-weight-normal">{{
+                                product.puntuacion }}
+                            </h5>
+                            <h6 *ngIf="product.puntuacion === null" class="mb-0 font-weight-normal">No hay datos</h6>
+                        </div>
+                    </div>
+                    <h1 *ngIf="product.precio && !product.descuento" class="text-nowrap">$ {{ product.precio }}</h1>
+                    <h1 *ngIf="!product.precio" class="text-nowrap">Sin precio</h1>
+                    <div *ngIf="product.descuento && product.precio"
+                        class="d-flex align-items-center flex-wrap-reverse">
+                        <h1 class="text-success mr-3 text-nowrap">$ {{ product.precio - (product.precio *
+                            product.descuento
+                            / 100) | number: '1.2-2'}}</h1>
+                        <h6 class="text-danger mb-0 text-nowrap"><s>$ {{ product.precio }}</s></h6>
+                    </div>
+                    <a *ngIf="!owned" class="link-button align-self-sm-center" target="_blank"
+                        href="https://wa.me/{{ product.usuario.celular }}?text={{ mensajeContacto }}">
+                        <button pButton pRipple type="button" label="CONTACTAR" icon="pi pi-whatsapp"
+                            class="p-button-lg p-button-success button-responsive" (click)="registrarCompra()"></button>
+                    </a>
+                    <div *ngIf="owned" class="link-button align-self-sm-center">
+                        <button pButton pRipple type="button" label="CONTACTAR" icon="pi pi-whatsapp"
+                            class="p-button-lg p-button-success button-responsive" disabled></button>
+                    </div>
+                    <div class="mt-3">
+                        <h6>Categorías:</h6>
+                        <div class="d-flex flex-wrap gap-2 justify-content-center">
+                            <a *ngFor="let categoria of product.categoria" class="link-button align-self-sm-center"
+                                [routerLink]="'.'">
+                                <p-chip [label]="categoria" styleClass="product-category-chip"></p-chip>
+                            </a>
+                            <h5 *ngIf="product.categoria.length === 0">No hay categorías</h5>
+                        </div>
                     </div>
                 </div>
             </div>

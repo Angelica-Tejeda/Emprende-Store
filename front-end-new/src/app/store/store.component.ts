@@ -411,8 +411,8 @@ export class StoreComponent implements OnInit {
     this.titleService.setTitle('Emprende Store')
     this.publicacionService.getCategorias().subscribe({
       next: (res) => {
-        this.categProductos = res.result.categoriasProductos.slice(0, 5);
-        this.categServicios = res.result.categoriasServicios.slice(0, 5);
+        this.categProductos = res.result.categoriasProductos//.slice(0, 5);
+        this.categServicios = res.result.categoriasServicios//.slice(0, 5);
       }
     })
   }

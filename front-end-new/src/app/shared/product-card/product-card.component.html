@@ -1,11 +1,12 @@
 <p-galleria [value]="product.fotos" [circular]="true" [showItemNavigators]="product.fotos.length > 1 ? true : false"
     [showThumbnails]="false" [showIndicators]="false" [changeItemOnIndicatorHover]="true" [showIndicatorsOnItem]="true">
     <ng-template pTemplate="item" let-item>
-        <a [routerLink]="['/product', product.id]" class="w-100">
+        <a [routerLink]="['/product', product.id]" style="position: relative" class="w-100">
             <div class="image-galleria-template d-flex justify-content-center align-items-center"
                 [ngClass]="product.descuento ? 'discount-card no-border-bottom' : ''">
                 <img [src]="mediaUrl + item" />
             </div>
+            <div class="discount-signal p-1 p-md-2 pr-2 pt-2" *ngIf="product.descuento"><h6 class="mb-0">-{{product.descuento}}%</h6></div>
         </a>
     </ng-template>
 </p-galleria>

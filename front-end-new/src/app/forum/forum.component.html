@@ -4,8 +4,11 @@
         <div class="text-center">
             <h1>Foro</h1>
         </div>
-        <div class="d-flex flex-column flex-md-row justify-content-between mb-4">
-            <p-dropdown [options]="options" [(ngModel)]="selectedOption"></p-dropdown>
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-4">
+            <span class="p-input-filled p-float-label text-left comment-input-field mt-2 mt-md-0">
+                <p-dropdown [options]="options" [inputId]="'categoria'" [styleClass]="'w-100'" [(ngModel)]="selectedOption"></p-dropdown>
+                <label [style]="{'margin-top': '-0.1rem'}" for="categoria">Preguntas</label>
+            </span>
             <button (click)="show()" pButton pRipple label="Nueva Pregunta" icon="pi pi-plus"
                 class="p-button button-responsive"></button>
         </div>

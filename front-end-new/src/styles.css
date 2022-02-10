@@ -547,6 +547,14 @@ button {
 
 .discount-card {
   border: solid 4px var(--warning);
+  /*position: relative;*/
+}
+.discount-signal {
+  background-color: var(--warning);
+  position: absolute;
+  border-radius: 0 25px 0 15px;
+  top: 0;
+  right: 0;
 }
 .no-border-top {
   border-top: none;
@@ -620,6 +628,10 @@ button {
   flex: none !important;
 }
 
+.select-button-1 .p-button {
+  width: 100%;
+  border-radius: 25px !important;
+}
 .select-button-2 .p-button {
   width: 50%;
 }

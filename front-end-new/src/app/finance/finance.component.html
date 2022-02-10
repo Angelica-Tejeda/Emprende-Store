@@ -2,16 +2,21 @@
 
 <div class="bg-lighter container-full-height">
     <div class="container-sm py-3 py-sm-4 py-lg-5 d-flex flex-column justify-content-center align-items-center">
-        <div class="custom-card balance-cont d-flex flex-column align-items-center mb-4">
+        <div class="custom-card balance-cont d-flex flex-column align-items-center mb-4 w-100">
             <span class="title">Balance</span>
             <span class="balance font-weight-bold" [ngClass]="!responses.result.total.includes('-') ? 'text-success': 'text-danger'">$ {{responses.result.total}}</span>
-            <div class="stats d-flex justify-content-between">
-                <span class="ingresos mr-5">Ingresos: <span class="text-success font-weight-bold">$ {{responses.result.ingresos}}
-                    </span></span>
-                <span class="egresos">Egresos: <span class="text-danger font-weight-bold">$ {{responses.result.egresos}}</span></span>
+            <div class="stats d-flex justify-content-around text-center w-100">
+                <div class="d-flex flex-column">
+                    <span class="ingresos">Ingresos:</span>
+                    <span class="ingresos text-success font-weight-bold">$ {{responses.result.ingresos}}</span>
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="egresos">Egresos:</span>
+                    <span class="egresos text-danger font-weight-bold">$ {{responses.result.egresos}}</span>
+                </div>
             </div>
         </div>
-        <div class="tabs-cont d-flex flex-column flex-lg-row justify-content-between gap-4">
+        <div class="tabs-cont d-flex flex-column flex-lg-row justify-content-between gap-4 w-100">
             <div class="custom-card form">
                 <form [formGroup]="transactionForm" (submit)="registrarTransaccion()"
                     class="d-flex flex-column justify-content-center">
@@ -35,16 +40,16 @@
                         <label for="valor" class="font-weight-bold pr-4"> Valor: </label>
                         <p-inputNumber formControlName="valor" mode="currency" currency="USD"></p-inputNumber>
                     </div>
-                    <div class="d-flex justify-content-center gap-3">
+                    <div class="d-flex flex-column-reverse flex-md-row justify-content-center gap-3">
                         <button pButton pRipple type="reset" label="Limpiar" icon="pi pi-times"
-                            class="p-button p-button-danger mt-4 button-responsive" [iconPos]="'right'"></button>
+                            class="p-button p-button-danger button-responsive" [iconPos]="'right'"></button>
                         <button pButton pRipple type="submit" label="Registrar" icon="pi pi-save"
-                            class="p-button mt-4 button-responsive" [iconPos]="'right'"></button>
+                            class="p-button button-responsive" [iconPos]="'right'"></button>
                     </div>
                 </form>
             </div>
             <div class="custom-card table m-0">
-                <p-table [value]="responses.result.rows" responsiveLayout="scroll">
+                <p-table [value]="responses.result.rows" responsiveLayout="stack">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Fecha</th>
@@ -60,10 +65,10 @@
                             <td class="align-middle font-weight-bold"
                                 [ngClass]="!response.valor.includes('-') ? 'text-success': 'text-danger'">$
                                 {{response.valor}}</td>
-                            <td class="align-middle"> <button pButton pRipple icon="pi pi-pencil"
+                            <td class="align-middle"> <button pButton pRipple icon="pi pi-pencil" label="Editar"
                                     class="p-button button-responsive xs-button mr-2" [iconPos]="'right'" (click)="editarTransaccion(response)"></button>
                                 <button pButton pRipple icon="pi pi-times"
-                                    class="p-button button-responsive xs-button p-button-danger" [iconPos]="'right'"
+                                    class="p-button button-responsive xs-button p-button-danger" label="Eliminar" [iconPos]="'right'"
                                     (click)="eliminarTransaccion(response.id)"></button>
                             </td>
                         </tr>

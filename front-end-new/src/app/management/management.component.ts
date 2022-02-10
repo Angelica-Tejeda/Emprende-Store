@@ -59,6 +59,8 @@ export class ManagementComponent implements OnInit {
     },
   ];
   activeItem: MenuItem = this.items[0];
+  minDateValue: Date = new Date();
+  maxDateValue: Date = new Date();
 
   productos: any;
   productsCurrentPage: number = 0;
@@ -90,7 +92,7 @@ export class ManagementComponent implements OnInit {
     { label: 'Ocultos', value: 'oculto' },
     { label: 'Celular', value: 'celular' },
   ];
-  commentFilterOrden: any = [
+  commentFilterOrder: any = [
     { label: 'Ascendente', value: 'ASC' },
     { label: 'Descendente', value: 'DESC' },
   ];
@@ -100,6 +102,19 @@ export class ManagementComponent implements OnInit {
   visitasContacto: any;
   final: any = new Date();
   inicio: any = new Date(this.final.getTime() - 1000 * 60 * 60 * 24 * 365);
+  loadingStatitics: boolean = false;
+  showStatiticsFilters: boolean = false;
+  statiticsFilterForm: FormGroup = new FormGroup(
+    {
+      fechas: new FormControl(null),
+      unico: new FormControl(false),
+    },
+    { updateOn: 'submit' }
+  );
+  statiticsUnique: any = [
+    { label: 'Todos', value: false },
+    { label: 'Únicos', value: true },
+  ];
 
   usuario: any = {};
   submittedUserEditForm: boolean = false;
@@ -158,7 +173,6 @@ export class ManagementComponent implements OnInit {
     { updateOn: 'submit' }
   );
   originalUserFormValue: any = null;
-  maxDateValue: Date = new Date();
 
   passMask1: boolean = true;
   passMask2: boolean = true;
@@ -225,6 +239,10 @@ export class ManagementComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.usuario = res.result;
+            this.minDateValue = new Date(this.usuario.creado);
+            this.statiticsFilterForm.get('fechas')?.setValue([this.minDateValue, this.maxDateValue]);
+            this.cargarEstadisticas();
+            this.cargarComentarios();
             this.cargarUserEditInfo();
             this.userEditForm.enable();
           },
@@ -270,33 +288,14 @@ export class ManagementComponent implements OnInit {
             this.visitasPerfil = res.result;
           },
         });
-      this.visitaService
-        .getVisitaPublicacionByUsuario(
-          +this.cookieService.get('usuario_id'),
-          this.inicio,
-          this.final
-        )
-        .subscribe({
-          next: (res) => {
-            this.visitasProductos = res.result;
-          },
-        });
-      this.visitaService
-        .getContactoPublicacionByUsuario(
-          +this.cookieService.get('usuario_id'),
-          this.inicio,
-          this.final
-        )
-        .subscribe({
-          next: (res) => {
-            this.visitasContacto = res.result;
-          },
-        });
-      this.cargarComentarios();
     } else {
       this.notAllowed = true;
     }
   }
+
+  //* FUNCIONES PUBLICACIONES *//
+  
+  //* FUNCIONES COMENTARIOS *//
 
   cambiarEstadoComentario(coment: any) {
     let payload = {
@@ -476,6 +475,38 @@ export class ManagementComponent implements OnInit {
         });
     }
   }
+
+  //* FUNCIONES ESTADISTICAS *//
+
+  cargarEstadisticas() {
+    //TODO: Arreglar esta función, servicio relacionado y backend relacionado
+    this.visitaService
+    .getVisitaPublicacionByUsuario(
+      +this.cookieService.get('usuario_id'),
+      this.statiticsFilterForm.get('fechas')?.value[0],
+      this.statiticsFilterForm.get('fechas')?.value[1],
+    )
+    .subscribe({
+      next: (res) => {
+        this.visitasProductos = res.result;
+      },
+    });
+  this.visitaService
+    .getContactoPublicacionByUsuario(
+      +this.cookieService.get('usuario_id'),
+      this.statiticsFilterForm.get('fechas')?.value[0],
+      this.statiticsFilterForm.get('fechas')?.value[1],
+    )
+    .subscribe({
+      next: (res) => {
+        this.visitasContacto = res.result;
+      },
+    });
+    //alert(JSON.stringify(this.statiticsFilterForm.value))
+  }
+
+
+  //* FUNCIONES MIS DATOS*//
 
   cargarUserEditInfo() {
     let userData = {

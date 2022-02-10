@@ -20,6 +20,12 @@
   }
 }
 
+@media (min-width: 576px) {
+  .statitics-date-picker {
+    width: 19.2875rem;
+  }
+}
+
 .userEdit-form-textarea {
   height: 8rem;
 }

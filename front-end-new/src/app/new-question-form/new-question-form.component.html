@@ -1,16 +1,16 @@
 <div class="bg-lighter">
     <div class="container-sm py-3 py-sm-4 py-lg-5 flex-column justify-content-center align-items-center">
         <form [formGroup]="questionForm" (submit)="newQuestion()" class="d-flex flex-column">
-            <div class="input d-flex align-items-center mb-4 gap-3">
+            <div class="input d-flex align-items-center mb-4 gap-3 w-100">
                 <label class="font-weight-bold "> Título: </label>
                 <input type="text" pInputText class="w-100 font-italic" formControlName="titulo" placeholder='"¿Cómo promocionar mejor mis productos"?'/>
             </div>
-            <div class="input d-flex align-items-center mb-4 gap-3">
+            <div class="input d-flex align-items-center mb-4 gap-3 w-100">
                 <label for="descripcion" class="font-weight-bold "> Descripción: </label>
                 <textarea pInputTextarea placeholder="Describa la pregunta" formControlName="descripcion"
                     class="w-100" ></textarea>
             </div>
-            <div class="input d-flex align-items-center mb-4 gap-3">
+            <div class="input d-flex align-items-center mb-4 gap-3 w-100">
                 <label for="categoria" class="font-weight-bold "> Categoría: </label>
                 <p-dropdown [options]="categorias" formControlName="categoria" placeholder="Categoría de la pregunta"
                     class="w-100" [styleClass]="'w-100'">

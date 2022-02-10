@@ -16,7 +16,7 @@ export class QuestionViewComponent implements OnInit {
     titulo: "¿Cómo publicitar mejor mis productos?",
     texto: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non animi corporis nulla sequi quo amet, quisquam reprehenderit eligendi est suscipit, a beatae modi assumenda vel voluptas, quos quod accusamus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non animi corporis nulla sequi quo amet, quisquam reprehenderit eligendi est suscipit, a beatae modi assumenda vel voluptas, quos quod accusamus.",
     categoria: "Publicidad y marketing",
-    activo: true,
+    activo: false,
     creado: new Date(),
     modificado: new Date(),
     usuario: {
